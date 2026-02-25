@@ -1,0 +1,1260 @@
+2026-02-19 16:29:54 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:29:54 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=73
+2026-02-19 16:29:54 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:29:54 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=2
+2026-02-19 16:29:54 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:29:54 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=2
+2026-02-19 16:29:54 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:29:54 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=4
+2026-02-19 16:30:29 INFO podcast_maker api_request method=POST path=/create-podcast/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:32:03 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:32:03 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=16
+2026-02-19 16:32:03 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:32:03 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=3
+2026-02-19 16:32:03 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:32:03 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=2
+2026-02-19 16:32:03 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:32:03 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=1
+2026-02-19 16:32:25 INFO podcast_maker api_request method=POST path=/create-podcast/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:32:25 INFO podcast_maker create_podcast task_id=e2b58841-3bb7-4d55-9e53-6d5f53838348 topic=Ford–Fulkerson Algorithm and flow network host_ids=['sarah_curious', 'mike_expert']
+2026-02-19 16:32:25 INFO podcast_maker api_response method=POST path=/create-podcast/ status=200 duration_ms=74
+2026-02-19 16:32:25 ERROR podcast_maker pipeline_failed task_id=e2b58841-3bb7-4d55-9e53-6d5f53838348 error=File C:/Users/Lenovo/repos/podcastMaker/podcast-creator-486719-2f6edbe22de3.json was not found.
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\app\main.py", line 140, in run_podcast_pipeline
+    storage = GoogleCloudStorageProvider(BUCKET_NAME)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\podcast_maker\services\google_cloud_storage_provider.py", line 11, in __init__
+    self.client = storage.Client() # Assumes credentials are set in environment
+                  ^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\google\cloud\storage\client.py", line 265, in __init__
+    super(Client, self).__init__(
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\google\cloud\client\__init__.py", line 339, in __init__
+    _ClientProjectMixin.__init__(self, project=project, credentials=credentials)
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\google\cloud\client\__init__.py", line 287, in __init__
+    project = self._determine_default(project)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\google\cloud\client\__init__.py", line 306, in _determine_default
+    return _determine_default_project(project)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\google\cloud\_helpers\__init__.py", line 152, in _determine_default_project
+    _, project = google.auth.default()
+                 ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\google\auth\_default.py", line 718, in default
+    credentials, project_id = checker()
+                              ^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\google\auth\_default.py", line 711, in <lambda>
+    lambda: _get_explicit_environ_credentials(quota_project_id=quota_project_id),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\google\auth\_default.py", line 353, in _get_explicit_environ_credentials
+    credentials, project_id = load_credentials_from_file(
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\google\auth\_default.py", line 179, in load_credentials_from_file
+    raise exceptions.DefaultCredentialsError(
+google.auth.exceptions.DefaultCredentialsError: File C:/Users/Lenovo/repos/podcastMaker/podcast-creator-486719-2f6edbe22de3.json was not found.
+2026-02-19 16:32:25 INFO podcast_maker api_request method=GET path=/status/e2b58841-3bb7-4d55-9e53-6d5f53838348 client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:32:26 INFO podcast_maker api_response method=GET path=/status/e2b58841-3bb7-4d55-9e53-6d5f53838348 status=200 duration_ms=615
+2026-02-19 16:35:38 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:35:38 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=15
+2026-02-19 16:35:38 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:35:38 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=2
+2026-02-19 16:35:38 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:35:38 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=2
+2026-02-19 16:35:38 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:35:38 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=4
+2026-02-19 16:36:03 INFO podcast_maker api_request method=POST path=/create-podcast/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:40:43 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:40:43 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=12
+2026-02-19 16:40:43 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:40:43 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=1
+2026-02-19 16:40:43 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:40:43 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=2
+2026-02-19 16:40:43 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:40:43 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=1
+2026-02-19 16:41:04 INFO podcast_maker api_request method=POST path=/create-podcast/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:41:04 INFO podcast_maker create_podcast task_id=24bc465b-42cc-4078-bf1f-ffd5a4eacfec topic=Ford–Fulkerson Algorithm and flow network host_ids=['sarah_curious', 'mike_expert']
+2026-02-19 16:41:04 INFO podcast_maker api_response method=POST path=/create-podcast/ status=200 duration_ms=12
+2026-02-19 16:41:04 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:41:04 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=4
+2026-02-19 16:41:09 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:41:09 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=4
+2026-02-19 16:41:14 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:41:14 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:41:19 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:41:19 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:41:24 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:41:24 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:41:29 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:41:29 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:41:34 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:41:34 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:41:35 INFO podcast_maker Architect blueprint usage: prompt_tokens=927, response_tokens=2229, total_tokens=6310
+2026-02-19 16:41:39 INFO podcast_maker agent_done agent=architect url=https://storage.googleapis.com/podcast-files-storage/FordFulkerson_Algorithm_and_flow_network/blueprint.json?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260219%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260219T144139Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=61f8c784dfcfdf7c8969f1e20fff86e130144628041b8515761429b2b9909b727ac059a6c3a1721aec5d5e18f18e4a0226609de2bcb8805de1777ac6f92e63340378948096aef94b218873e5474591f6fe5352418690dd6b15d7f8f8c8e58afa23a62c381f78f7323b5aeb115be2499a7d5b39943d76cda2836eda40c851fedbd00806f356a01ddc14d8e6583dba3f567d70039c1eb47f88c0c4c2c199b375a151ff960b499b7f389b19ad65daccc63d4c811a3d4ca9f14f98b11af7cd151d3f256b21b6658842c7397de0ad15cb75a46d009cbb54902bbbbcbd78168df8bc82c2e146e1e7217baa315416e4cf5a8e211115bb51e3cc4e772f9064436d5a20fc
+2026-02-19 16:41:39 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:41:39 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:41:44 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:41:44 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:41:49 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:41:49 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:41:54 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:41:54 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:41:59 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:41:59 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:42:04 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:42:04 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:42:09 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:42:09 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:42:14 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:42:14 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=6
+2026-02-19 16:42:19 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:42:19 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:42:24 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:42:24 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=3
+2026-02-19 16:42:29 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:42:29 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:42:34 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:42:34 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:42:39 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:42:39 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:42:44 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:42:44 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:42:49 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:42:49 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:42:54 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:42:54 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:42:59 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:42:59 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:43:04 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:43:04 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:43:09 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:43:09 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:43:14 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:43:14 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:43:19 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:43:19 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:43:24 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:43:24 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:43:29 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:43:29 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:43:34 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:43:34 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:43:39 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:43:39 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:43:44 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:43:44 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=3
+2026-02-19 16:43:49 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:43:49 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:43:54 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:43:54 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:43:59 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:43:59 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:44:04 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:44:04 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=5
+2026-02-19 16:44:09 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:44:09 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:44:14 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:44:14 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=4
+2026-02-19 16:44:19 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:44:19 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:44:24 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:44:24 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:44:29 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:44:29 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:44:31 INFO podcast_maker Researcher total usage: prompt_tokens=12121, response_tokens=24317, total_tokens=55061
+2026-02-19 16:44:31 INFO podcast_maker agent_done agent=researcher url=https://storage.googleapis.com/podcast-files-storage/FordFulkerson_Algorithm_and_flow_network/research.md?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260219%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260219T144431Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=e747a4d328b11f32d8bafd2451b8cc7734c00cc54cc5ac96625ca25aea5723afef7bf0581aff93c7ec0fd0db5d6e7bbd8b397d9768d52e97f3aa82aba34335ab56c7d4c39400a078e134e3fc00301e214bbf90f22726bf11d063028078ff4a1056af38cb7a5d5f24ae9f754ab979133ed28342edf2a8a89a717332cf2205b01c7b8dc99c65f11517459f7e6307d99270786efe42fd3f106c56f3aa945247c197bd2493a3d71e84102a2bd0cde011e9ac3b1363e0c741d2a6b8b01972eda4eecb9e0463a4b99861c976eda6bfc1a8e2761d55399af4f63f0978c577171c39100ff9c2f276bb7f39c407b754a8f5e9b03d896194307908e4e9ab794be3fbd59df3
+2026-02-19 16:44:34 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:44:34 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:44:39 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:44:39 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:44:44 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:44:44 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:44:49 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:44:49 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:44:54 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:44:54 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:44:59 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:44:59 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:45:04 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:45:04 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:45:09 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:45:09 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=3
+2026-02-19 16:45:10 INFO podcast_maker Outliner usage: prompt_tokens=32347, response_tokens=4528, total_tokens=39716
+2026-02-19 16:45:11 INFO podcast_maker agent_done agent=outliner url=https://storage.googleapis.com/podcast-files-storage/FordFulkerson_Algorithm_and_flow_network/outline.json?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260219%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260219T144511Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=b0c82772ac8ca96000aea1a45b50241cc14f970b751ac894769e485f953cc4599e375975054f458b7d94232809c51071f97a6ac5aa66456a20e85b0e263aee1c0280944e93c966adb4787ad37db11bec36f3b5fec9c3020c2244a166aa66bc9074fc2e76a5803807eb0ae92f9757a508b953b933331906c223af95b9109279ae4a656c4bed558791c830a565341ecbbd609ebc4842d6c6b9629318f58c2f80de06fb41de9af3a9e82876a00cbb5190bf0c92bda1a7273deba29f3c72db434d31bb8ea0464918ea1e219c4763343497b14797bae412f1be53a6ecc3cf29604d1025d8977cfc6ec668f274c45b72cdf49130965b2319b199687453920352887a33
+2026-02-19 16:45:14 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:45:14 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:45:19 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:45:19 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:45:24 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:45:24 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:45:29 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:45:29 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:45:34 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:45:34 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:45:39 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:45:39 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=4
+2026-02-19 16:45:44 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:45:44 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:45:49 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:45:49 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:45:54 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:45:54 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:45:59 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:45:59 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=3
+2026-02-19 16:46:04 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:46:04 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:46:09 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:46:09 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:46:14 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:46:14 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:46:19 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:46:19 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:46:24 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:46:24 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=3
+2026-02-19 16:46:29 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:46:29 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=3
+2026-02-19 16:46:34 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:46:34 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:46:39 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:46:39 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=4
+2026-02-19 16:46:44 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:46:44 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=3
+2026-02-19 16:46:49 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:46:49 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:46:54 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:46:54 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:46:59 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:46:59 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:47:04 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:47:04 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:47:09 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:47:09 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:47:14 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:47:14 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:47:19 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:47:19 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=3
+2026-02-19 16:47:24 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:47:24 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:47:29 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:47:29 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:47:34 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:47:34 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=4
+2026-02-19 16:47:35 INFO podcast_maker ScriptWriter total usage: prompt_tokens=389776, response_tokens=10364, total_tokens=411960
+2026-02-19 16:47:35 INFO podcast_maker agent_done agent=scriptwriter url=https://storage.googleapis.com/podcast-files-storage/FordFulkerson_Algorithm_and_flow_network/script.txt?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260219%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260219T144735Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=a787f6ef8e7a8999e7f07aef268f07cb3c70be321c738d20edbad9bc659ed97f2060e83c4aaf4f2a325dcaf753ab8c753d76752969cb7d28beb8ab644bceba4c24d8d08009cb547817f82ad7d96c577e581d80426c70414b5d04ae1c4d74b1262aa25bd980f5ce4ac28d9dda578285b67e4f70a6f831ffa1ef6c94f36d181a56cbebbe6c71bf55cf6e0e1826e8c2a175bf9fddd391b02749937be4e4594d0107c5bf6b5786f7fdecc45ec39203fd41dff98209cbf592fb5e6928fb60ddfa1d9e9a84ffe5fe20e91e462523e16ea6ed893dde3ff3b632fc19e1d09b8bf018cbcf300b2b4c0e4feb4a600f82ce63e612be2b512d0b00182bc49fc15afa7c719599
+2026-02-19 16:47:39 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:47:39 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:47:44 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:47:44 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=4
+2026-02-19 16:47:49 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:47:49 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:47:54 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:47:54 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:47:59 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:47:59 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=3
+2026-02-19 16:48:04 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:48:04 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:48:09 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:48:09 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:48:14 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:48:14 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:48:19 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:48:19 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:48:24 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:48:24 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:48:29 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:48:29 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:48:34 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:48:34 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:48:39 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:48:39 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=3
+2026-02-19 16:48:44 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:48:44 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:48:49 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:48:49 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:48:54 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:48:54 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:48:59 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:48:59 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:49:04 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:49:04 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:49:09 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:49:09 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:49:14 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:49:14 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:49:19 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:49:19 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:49:24 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:49:24 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:49:29 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:49:29 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=7
+2026-02-19 16:49:34 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:49:34 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:49:39 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:49:39 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:49:44 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:49:44 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:49:49 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:49:49 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:49:54 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:49:54 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=5
+2026-02-19 16:49:59 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:49:59 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=4
+2026-02-19 16:50:04 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:50:04 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:50:09 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:50:09 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:50:14 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:50:14 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:50:19 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:50:19 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:50:24 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:50:24 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:50:29 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:50:29 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:50:34 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:50:34 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:50:39 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:50:39 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=3
+2026-02-19 16:50:44 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:50:44 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=4
+2026-02-19 16:50:49 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:50:49 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:50:54 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:50:54 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:50:59 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:50:59 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:51:04 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:51:04 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:51:09 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:51:09 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=3
+2026-02-19 16:51:14 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:51:14 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:51:19 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:51:19 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=3
+2026-02-19 16:51:24 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:51:24 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:51:29 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:51:29 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:51:34 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:51:34 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:51:39 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:51:39 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=5
+2026-02-19 16:51:44 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:51:44 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=4
+2026-02-19 16:51:49 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:51:49 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:51:54 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:51:54 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=6
+2026-02-19 16:51:59 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:51:59 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=3
+2026-02-19 16:52:04 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:52:04 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=3
+2026-02-19 16:52:09 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:52:09 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:52:14 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:52:14 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:52:19 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:52:19 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:52:24 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:52:24 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:52:29 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:52:29 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:52:34 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:52:34 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:52:39 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:52:39 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:52:44 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:52:44 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:52:49 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:52:49 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:52:54 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:52:54 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=3
+2026-02-19 16:52:59 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:52:59 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:53:04 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:53:04 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=3
+2026-02-19 16:53:09 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:53:09 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:53:14 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:53:14 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:53:19 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:53:19 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:53:24 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:53:24 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:53:29 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:53:29 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=3
+2026-02-19 16:53:34 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:53:34 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:53:39 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:53:39 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:53:44 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:53:44 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:53:49 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:53:49 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:53:54 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:53:54 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:53:59 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:53:59 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:54:04 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:54:04 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:54:09 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:54:09 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:54:11 INFO podcast_maker Done generating audio with timestamps. Total characters: 36141, Segments: 246
+2026-02-19 16:54:14 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:54:14 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:54:19 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:54:19 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:54:24 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:54:24 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:54:29 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:54:29 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=1
+2026-02-19 16:54:34 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:54:34 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:54:39 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:54:39 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:54:44 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:54:44 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:54:49 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:54:49 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=0
+2026-02-19 16:54:54 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:54:54 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=2
+2026-02-19 16:54:56 INFO podcast_maker transcript_done format=json url=https://storage.googleapis.com/podcast-files-storage/FordFulkerson_Algorithm_and_flow_network/transcript.json?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260219%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260219T145456Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=b77063f2bcd0cc6c633d06ea1868d3bd58efa78f5c8afaf4e43ec0ad4e54001f1fbf524128e97cf67cc22e913cd42422cb3130a8224f7aaeec29af46dfc1d3d20946d72670ab1b00424e57d24635d07c9a35c76f85d90983939760e326666b6a8f9af9f3c5d54d36443043a37e6f95f031d968ba1a59543c09d39d118d1c82ab629e9118eb4c9746f82698f9b4abb4823a3e5ea2f7e019f1b6ca6e06ce2710d78637fa2b9ecd893913cb5eac8fef7383482cab6edf7ea10d79840c34014318bd49bf46c934ac1f2a357b92ec8b4b4803a9d90180cd1979054efde1dac7e66d6ee63be9c6d141c6c1978731fdb9795502f5702847d85b57d3e79a3f2bb2c51dea
+2026-02-19 16:54:56 INFO podcast_maker transcript_done format=vtt url=https://storage.googleapis.com/podcast-files-storage/FordFulkerson_Algorithm_and_flow_network/transcript.vtt?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260219%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260219T145456Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=9fa7863f58302e3f38b1ed9524bf40c9e15b498b6f0e9c14c26b83cf5b861ba06efe35c300e67a9cd07ef73ae098ff7684efb0ecc62b716ed42de1961a6ca354cad4f71f33175f32fb19ce854cc175e006386701d1160a53e493b819b0cd4ef0b32a135edf0dc6c33396dccf0ba10207ce599aa84edf91327d6854c3eca33e752a9beec1c1bc31006e34183a1fef9d6433a566c501d7853e1593ec0a5f6b383c68264043696d7d789f2f7e34d94a2e13ed8f70e7cead00c0a6fc8c1e38416bb3d5c9c4076518e698436efe6edffe5b44034146d8ee4a8462dbc1421c555be242f5a09758c7ddb24231890558fbb1f8c6bf97dc6591fd91fd07875012a8e65f0d
+2026-02-19 16:54:56 INFO podcast_maker pipeline_completed task_id=24bc465b-42cc-4078-bf1f-ffd5a4eacfec urls={'blueprint': 'https://storage.googleapis.com/podcast-files-storage/FordFulkerson_Algorithm_and_flow_network/blueprint.json?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260219%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260219T144139Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=61f8c784dfcfdf7c8969f1e20fff86e130144628041b8515761429b2b9909b727ac059a6c3a1721aec5d5e18f18e4a0226609de2bcb8805de1777ac6f92e63340378948096aef94b218873e5474591f6fe5352418690dd6b15d7f8f8c8e58afa23a62c381f78f7323b5aeb115be2499a7d5b39943d76cda2836eda40c851fedbd00806f356a01ddc14d8e6583dba3f567d70039c1eb47f88c0c4c2c199b375a151ff960b499b7f389b19ad65daccc63d4c811a3d4ca9f14f98b11af7cd151d3f256b21b6658842c7397de0ad15cb75a46d009cbb54902bbbbcbd78168df8bc82c2e146e1e7217baa315416e4cf5a8e211115bb51e3cc4e772f9064436d5a20fc', 'research': 'https://storage.googleapis.com/podcast-files-storage/FordFulkerson_Algorithm_and_flow_network/research.md?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260219%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260219T144431Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=e747a4d328b11f32d8bafd2451b8cc7734c00cc54cc5ac96625ca25aea5723afef7bf0581aff93c7ec0fd0db5d6e7bbd8b397d9768d52e97f3aa82aba34335ab56c7d4c39400a078e134e3fc00301e214bbf90f22726bf11d063028078ff4a1056af38cb7a5d5f24ae9f754ab979133ed28342edf2a8a89a717332cf2205b01c7b8dc99c65f11517459f7e6307d99270786efe42fd3f106c56f3aa945247c197bd2493a3d71e84102a2bd0cde011e9ac3b1363e0c741d2a6b8b01972eda4eecb9e0463a4b99861c976eda6bfc1a8e2761d55399af4f63f0978c577171c39100ff9c2f276bb7f39c407b754a8f5e9b03d896194307908e4e9ab794be3fbd59df3', 'outline': 'https://storage.googleapis.com/podcast-files-storage/FordFulkerson_Algorithm_and_flow_network/outline.json?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260219%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260219T144511Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=b0c82772ac8ca96000aea1a45b50241cc14f970b751ac894769e485f953cc4599e375975054f458b7d94232809c51071f97a6ac5aa66456a20e85b0e263aee1c0280944e93c966adb4787ad37db11bec36f3b5fec9c3020c2244a166aa66bc9074fc2e76a5803807eb0ae92f9757a508b953b933331906c223af95b9109279ae4a656c4bed558791c830a565341ecbbd609ebc4842d6c6b9629318f58c2f80de06fb41de9af3a9e82876a00cbb5190bf0c92bda1a7273deba29f3c72db434d31bb8ea0464918ea1e219c4763343497b14797bae412f1be53a6ecc3cf29604d1025d8977cfc6ec668f274c45b72cdf49130965b2319b199687453920352887a33', 'script': 'https://storage.googleapis.com/podcast-files-storage/FordFulkerson_Algorithm_and_flow_network/script.txt?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260219%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260219T144735Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=a787f6ef8e7a8999e7f07aef268f07cb3c70be321c738d20edbad9bc659ed97f2060e83c4aaf4f2a325dcaf753ab8c753d76752969cb7d28beb8ab644bceba4c24d8d08009cb547817f82ad7d96c577e581d80426c70414b5d04ae1c4d74b1262aa25bd980f5ce4ac28d9dda578285b67e4f70a6f831ffa1ef6c94f36d181a56cbebbe6c71bf55cf6e0e1826e8c2a175bf9fddd391b02749937be4e4594d0107c5bf6b5786f7fdecc45ec39203fd41dff98209cbf592fb5e6928fb60ddfa1d9e9a84ffe5fe20e91e462523e16ea6ed893dde3ff3b632fc19e1d09b8bf018cbcf300b2b4c0e4feb4a600f82ce63e612be2b512d0b00182bc49fc15afa7c719599', 'audio': 'https://storage.googleapis.com/podcast-files-storage/FordFulkerson_Algorithm_and_flow_network/podcast_audio.mp3?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260219%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260219T145456Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=1f839c708e3a45f5c200d2db2d70b6cf20975e6d2a172a3aae14caaf9cdb3820f9c27d17726844826050e4d2aad9631b2400e2c0a0a97a35ca7ea1718c52ef7929f0253adcb5e0a69956ce135ae922e80056dde070bb4e5e7bc39a9f667aed09baaaaf96cadd6768b0160bac3f4baab8f95648e05bb6e3e01053d7cdc7bf09e25cddba3e44c678a192270507edb24d1a30aa32a05bb31d6a17e17317a8daf3851c8a0b277e90c3daf603632b93114d2c764fe99f46b3ae2ab16b2c8a07998e461e6c45f96d587b3ce64a2df8c07b808af9f30dfa276b85de2fe3493a2a265797c8f1472062323557031b614d7ceee54026ccd955e917170cd117c21470872374', 'transcript': 'https://storage.googleapis.com/podcast-files-storage/FordFulkerson_Algorithm_and_flow_network/transcript.json?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260219%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260219T145456Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=b77063f2bcd0cc6c633d06ea1868d3bd58efa78f5c8afaf4e43ec0ad4e54001f1fbf524128e97cf67cc22e913cd42422cb3130a8224f7aaeec29af46dfc1d3d20946d72670ab1b00424e57d24635d07c9a35c76f85d90983939760e326666b6a8f9af9f3c5d54d36443043a37e6f95f031d968ba1a59543c09d39d118d1c82ab629e9118eb4c9746f82698f9b4abb4823a3e5ea2f7e019f1b6ca6e06ce2710d78637fa2b9ecd893913cb5eac8fef7383482cab6edf7ea10d79840c34014318bd49bf46c934ac1f2a357b92ec8b4b4803a9d90180cd1979054efde1dac7e66d6ee63be9c6d141c6c1978731fdb9795502f5702847d85b57d3e79a3f2bb2c51dea', 'transcript_vtt': 'https://storage.googleapis.com/podcast-files-storage/FordFulkerson_Algorithm_and_flow_network/transcript.vtt?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260219%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260219T145456Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=9fa7863f58302e3f38b1ed9524bf40c9e15b498b6f0e9c14c26b83cf5b861ba06efe35c300e67a9cd07ef73ae098ff7684efb0ecc62b716ed42de1961a6ca354cad4f71f33175f32fb19ce854cc175e006386701d1160a53e493b819b0cd4ef0b32a135edf0dc6c33396dccf0ba10207ce599aa84edf91327d6854c3eca33e752a9beec1c1bc31006e34183a1fef9d6433a566c501d7853e1593ec0a5f6b383c68264043696d7d789f2f7e34d94a2e13ed8f70e7cead00c0a6fc8c1e38416bb3d5c9c4076518e698436efe6edffe5b44034146d8ee4a8462dbc1421c555be242f5a09758c7ddb24231890558fbb1f8c6bf97dc6591fd91fd07875012a8e65f0d'}
+2026-02-19 16:54:59 INFO podcast_maker api_request method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec client=127.0.0.1 origin=http://localhost:5173
+2026-02-19 16:54:59 INFO podcast_maker api_response method=GET path=/status/24bc465b-42cc-4078-bf1f-ffd5a4eacfec status=200 duration_ms=3
+2026-02-21 21:04:22 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:04:22 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=6
+2026-02-21 21:04:22 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:04:22 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=4
+2026-02-21 21:04:22 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:04:22 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=3
+2026-02-21 21:04:22 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:04:22 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=1
+2026-02-21 21:04:27 INFO podcast_maker api_request method=POST path=/create-podcast/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:04:27 INFO podcast_maker create_podcast task_id=7ef5d4a2-f2df-4971-bf77-25bc96c78369 topic=the worst building host_ids=['sarah_curious', 'mike_expert']
+2026-02-21 21:04:27 INFO podcast_maker api_response method=POST path=/create-podcast/ status=200 duration_ms=5
+2026-02-21 21:04:27 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:04:27 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=3
+2026-02-21 21:04:32 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:04:32 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=0
+2026-02-21 21:04:37 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:04:37 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=1
+2026-02-21 21:04:42 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:04:42 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=1
+2026-02-21 21:04:47 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:04:47 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=2
+2026-02-21 21:04:50 INFO podcast_maker Architect blueprint usage: prompt_tokens=921, response_tokens=1931, total_tokens=5498
+2026-02-21 21:04:52 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:04:52 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=2
+2026-02-21 21:04:56 INFO podcast_maker agent_done agent=architect url=https://storage.googleapis.com/podcast-files-storage/the_worst_building/blueprint.json?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260221%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260221T190456Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=73e613feb31dabf7f494a10a6406b7b3beacc660456dae17c1c35f2bf5844b80ad8d893f493215ed436ad85954545d6f0af92cd7488795116fc8587a1a10aa22e604103ff62809ad27ed58a15c711ba8ef64b138543bd33ad803fe4ab7ba01fcdcff1d6bb6e3881bfbc4113283414968ec9adedad3d58cce3bb8f365ba81c01e7a9b02dbfdc6fd08a07384d4935fa3e95add65d26b3782cc9681769204c2b923ff9c26958ce595fa59738f4349a51e9f8f53d73c00a8d0252bd7cc6b35e45fcf2eafe63f8460ef1882a3faeb53ad2ef98a79d0b4cdf67e53525bd8383bb2709167270f78490099a0f54521562517af5533c3f107564d38bdef75439131607a7a
+2026-02-21 21:04:57 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:04:57 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=4
+2026-02-21 21:05:02 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:05:02 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=2
+2026-02-21 21:05:07 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:05:07 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=2
+2026-02-21 21:05:12 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:05:12 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=1
+2026-02-21 21:05:17 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:05:17 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=2
+2026-02-21 21:05:22 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:05:22 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=0
+2026-02-21 21:05:28 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:05:28 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=0
+2026-02-21 21:05:32 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:05:32 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=0
+2026-02-21 21:05:38 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:05:38 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=2
+2026-02-21 21:05:45 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:05:45 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=3
+2026-02-21 21:05:47 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:05:47 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=2
+2026-02-21 21:05:53 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:05:53 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=2
+2026-02-21 21:05:58 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:05:58 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=2
+2026-02-21 21:06:02 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:06:02 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=2
+2026-02-21 21:06:08 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:06:08 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=2
+2026-02-21 21:06:13 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:06:13 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=2
+2026-02-21 21:06:18 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:06:18 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=2
+2026-02-21 21:06:22 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:06:22 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=2
+2026-02-21 21:06:27 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:06:27 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=27
+2026-02-21 21:06:32 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:06:32 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=2
+2026-02-21 21:06:39 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:06:39 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=2
+2026-02-21 21:06:42 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:06:42 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=2
+2026-02-21 21:06:47 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:06:47 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=2
+2026-02-21 21:06:52 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:06:52 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=0
+2026-02-21 21:06:58 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:06:58 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=1
+2026-02-21 21:07:02 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:07:02 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=2
+2026-02-21 21:07:07 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:07:07 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=200 duration_ms=2
+2026-02-21 21:07:30 INFO podcast_maker Researcher total usage: prompt_tokens=11854, response_tokens=21977, total_tokens=53461
+2026-02-21 21:07:30 INFO podcast_maker agent_done agent=researcher url=https://storage.googleapis.com/podcast-files-storage/the_worst_building/research.md?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260221%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260221T190730Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=a124110a3ad734fbfcb93dc8bba0f953448092429e6648b25c2cf03eb2b8b494bffdf2d7fe7ea305f64cccd419200b82bfd4838a3067187d847777b29f7a8969c6feae42c3209945bf54f1eefd6208dcb240050f476ebba441356f142cb950a307c14cb61c37795f2faf9c082501ea3857462ac6914e609b914e2469d46bde73c6e649283524ab65c0cfc7cc7b3b1517e6e7bfae3eb673a4f5787f9d8ec36a085efcede58180aa45e25f403c37698443ba6ab231b36ca1626c4fa06256ed02e97ad6f246f54640c599fbbaca21afb5d2d18a43a9514dc2eed11fdf36e79aec8a027a9ebba82f6499f91d7f3db63e76f7eabf0f3e361fa0cc2f107ea740142c48
+2026-02-21 21:08:06 INFO podcast_maker Outliner usage: prompt_tokens=29834, response_tokens=4686, total_tokens=37540
+2026-02-21 21:08:06 INFO podcast_maker agent_done agent=outliner url=https://storage.googleapis.com/podcast-files-storage/the_worst_building/outline.json?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260221%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260221T190806Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=025504a81826782dab0032e37f773ea2be98984bcb37f8167b99e65116a480e40553eef45009e81bdf5335f2da45cd37feff150117d881e6aa846faeb70e5d6d104af4b63d405e8680754b48403d886f6b68c56b8bccb5845fcc019f3a989a21ef4d80d2619be53deb68a0690fceead5f5c6c2f0155db9a9ce49f7b3622fa18602835433fd67b67680b960dbdb7f213940eebc47fc3df14a327758c352ec371cfadd2ff1e94432bc0620831ed37d1d87fb02adef94920c60a31d1a74bd8afbb09a320e4107da83759233b69204d5728a081688e8e7fe2ed18a2c558289e8657a378fe233a00fa52f32790950ebd6d94e960636b4b9da273fd8d2b27651f8140a
+2026-02-21 21:10:34 INFO podcast_maker ScriptWriter total usage: prompt_tokens=358307, response_tokens=8608, total_tokens=378583
+2026-02-21 21:10:34 INFO podcast_maker agent_done agent=scriptwriter url=https://storage.googleapis.com/podcast-files-storage/the_worst_building/script.txt?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260221%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260221T191034Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=24f933848561afb3573d03316cdaecdad5b5a9bc37e0b2480a96af1a23ae5d3407b7f96f9efbcb5afd30fe51bc1790458a9b61b20d0eaf7115cecca99c458dc78256df55f2311921004e37c3dbcb71a77095f45b8c80220134dd9be84bbd3438f10999c3f26b44621e3e0f78c22598bc6fcb780bdfb4286cdc02cb2cceca5fd8c6444b4a0c86dc124a3005499dbb7f6936cfa2711e6089512523eab35bdab1cfc8403c9fa436bd2227827406a992c7b0705c4435238e298e73b0d4c0a702f6fb44d98e5f4fc973bfa9f10a8b2babadb9096fc0061b591831cfe9948a1218b1850d4104d8815bf94bfd01ad5ddcf1a327bd3e8b461bb500e02e67cb829db4a1b7
+2026-02-21 21:15:22 INFO podcast_maker Done generating audio with timestamps. Total characters: 31253, Segments: 206
+2026-02-21 21:15:35 INFO podcast_maker transcript_done format=json url=https://storage.googleapis.com/podcast-files-storage/the_worst_building/transcript.json?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260221%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260221T191535Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=566d8ac3186fa823a58170beaaef2f31a9cbfeb850a48f932498864747827347f8b71fdd5cb4b7f549e8db5a8bb7e1ad77e7175bf48360662407e2fd159953bb2b74804c114ea07c5a7effbc6fb8999402d12bf470db7ccea86a2e63608619a4e60aea25fd29ab4092af726ad30b441ba0a28f733a8cfd1b8577307c31039a239cab03faec7d09f7a325d26bb9f787c0f822583c76b973658a156b2e481356adc53d2a4e1d294187fcb8ffebf450d5fde2ad6bbea4bfd3d3f9ebdf6f22f5aca4459d8df4da15d8840a144be3d9ca16655c92ee895bac99fe07d905b41f9b72932c6cd15565c668122f46696b2cbe95b1f51bbcae9329f1bd926bffe569a0b63f
+2026-02-21 21:15:35 INFO podcast_maker transcript_done format=vtt url=https://storage.googleapis.com/podcast-files-storage/the_worst_building/transcript.vtt?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260221%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260221T191535Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=a3aa536552df8222080b8f7af8b88f8b1775add7dce75b948db57c2e09347ab11ff5f7e97079fb892d5cf02bdf5756a67cb9ed59a9eb6a01329009d87df3c3081339e24dccdfb2737286015d79f7e1e66b10ec553fe28f7163bd74fa15ac9639a8357387aab47dc08cca8000a33fca7f1fddd88ad956a5273029f24b12ff2e393333fa17564e4c394060b78419725ff045a62674a07293c2cf085c58165002d373cc46fc52df0ebeb111d0470a7aeaefb480b4aa789fbe6dcc0bd3f18c25aad3f89d52cc61e19325661a359f62dce682ba70932059c970623b5e18969a7bed79f8ccf3a35f3f5c64b0277202831bf6223b50c11480a20c249767a91cdc3ff980
+2026-02-21 21:15:35 INFO podcast_maker pipeline_completed task_id=7ef5d4a2-f2df-4971-bf77-25bc96c78369 urls={'blueprint': 'https://storage.googleapis.com/podcast-files-storage/the_worst_building/blueprint.json?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260221%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260221T190456Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=73e613feb31dabf7f494a10a6406b7b3beacc660456dae17c1c35f2bf5844b80ad8d893f493215ed436ad85954545d6f0af92cd7488795116fc8587a1a10aa22e604103ff62809ad27ed58a15c711ba8ef64b138543bd33ad803fe4ab7ba01fcdcff1d6bb6e3881bfbc4113283414968ec9adedad3d58cce3bb8f365ba81c01e7a9b02dbfdc6fd08a07384d4935fa3e95add65d26b3782cc9681769204c2b923ff9c26958ce595fa59738f4349a51e9f8f53d73c00a8d0252bd7cc6b35e45fcf2eafe63f8460ef1882a3faeb53ad2ef98a79d0b4cdf67e53525bd8383bb2709167270f78490099a0f54521562517af5533c3f107564d38bdef75439131607a7a', 'research': 'https://storage.googleapis.com/podcast-files-storage/the_worst_building/research.md?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260221%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260221T190730Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=a124110a3ad734fbfcb93dc8bba0f953448092429e6648b25c2cf03eb2b8b494bffdf2d7fe7ea305f64cccd419200b82bfd4838a3067187d847777b29f7a8969c6feae42c3209945bf54f1eefd6208dcb240050f476ebba441356f142cb950a307c14cb61c37795f2faf9c082501ea3857462ac6914e609b914e2469d46bde73c6e649283524ab65c0cfc7cc7b3b1517e6e7bfae3eb673a4f5787f9d8ec36a085efcede58180aa45e25f403c37698443ba6ab231b36ca1626c4fa06256ed02e97ad6f246f54640c599fbbaca21afb5d2d18a43a9514dc2eed11fdf36e79aec8a027a9ebba82f6499f91d7f3db63e76f7eabf0f3e361fa0cc2f107ea740142c48', 'outline': 'https://storage.googleapis.com/podcast-files-storage/the_worst_building/outline.json?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260221%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260221T190806Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=025504a81826782dab0032e37f773ea2be98984bcb37f8167b99e65116a480e40553eef45009e81bdf5335f2da45cd37feff150117d881e6aa846faeb70e5d6d104af4b63d405e8680754b48403d886f6b68c56b8bccb5845fcc019f3a989a21ef4d80d2619be53deb68a0690fceead5f5c6c2f0155db9a9ce49f7b3622fa18602835433fd67b67680b960dbdb7f213940eebc47fc3df14a327758c352ec371cfadd2ff1e94432bc0620831ed37d1d87fb02adef94920c60a31d1a74bd8afbb09a320e4107da83759233b69204d5728a081688e8e7fe2ed18a2c558289e8657a378fe233a00fa52f32790950ebd6d94e960636b4b9da273fd8d2b27651f8140a', 'script': 'https://storage.googleapis.com/podcast-files-storage/the_worst_building/script.txt?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260221%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260221T191034Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=24f933848561afb3573d03316cdaecdad5b5a9bc37e0b2480a96af1a23ae5d3407b7f96f9efbcb5afd30fe51bc1790458a9b61b20d0eaf7115cecca99c458dc78256df55f2311921004e37c3dbcb71a77095f45b8c80220134dd9be84bbd3438f10999c3f26b44621e3e0f78c22598bc6fcb780bdfb4286cdc02cb2cceca5fd8c6444b4a0c86dc124a3005499dbb7f6936cfa2711e6089512523eab35bdab1cfc8403c9fa436bd2227827406a992c7b0705c4435238e298e73b0d4c0a702f6fb44d98e5f4fc973bfa9f10a8b2babadb9096fc0061b591831cfe9948a1218b1850d4104d8815bf94bfd01ad5ddcf1a327bd3e8b461bb500e02e67cb829db4a1b7', 'audio': 'https://storage.googleapis.com/podcast-files-storage/the_worst_building/podcast_audio.mp3?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260221%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260221T191535Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=d16aa2332bc89d823159452cbcf733aec2a7dcd41d0506e26aae3a400df1d92dd82aa99b0e2aa2ee839fc5c6a57432fe436448049f6c34d70ca6fafa3f267f4ae4b83374b80a2b4117377d5fd682a0661aca3de015fc100e443d74016e8e270c85cf67e64fc627c2eabf5f571321f79eabc2143f65dc64e9bd9cd6efb86c9a85ec0c931fed955905f7914a59916e0770ed11d031c6e80f7f6cf338690cfadeb7c8ddb2530d323436ce3487323ef45856a1efce19b490f51890a00a2f54993a51ede8c15d58a87654ad19b766afe431a642dfaab8f3cf1f96c9fb613e815a537ed73f6752a457ad8b841922fd4a5d639e693ae960b56411f4c466124a79868dfd', 'transcript': 'https://storage.googleapis.com/podcast-files-storage/the_worst_building/transcript.json?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260221%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260221T191535Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=566d8ac3186fa823a58170beaaef2f31a9cbfeb850a48f932498864747827347f8b71fdd5cb4b7f549e8db5a8bb7e1ad77e7175bf48360662407e2fd159953bb2b74804c114ea07c5a7effbc6fb8999402d12bf470db7ccea86a2e63608619a4e60aea25fd29ab4092af726ad30b441ba0a28f733a8cfd1b8577307c31039a239cab03faec7d09f7a325d26bb9f787c0f822583c76b973658a156b2e481356adc53d2a4e1d294187fcb8ffebf450d5fde2ad6bbea4bfd3d3f9ebdf6f22f5aca4459d8df4da15d8840a144be3d9ca16655c92ee895bac99fe07d905b41f9b72932c6cd15565c668122f46696b2cbe95b1f51bbcae9329f1bd926bffe569a0b63f', 'transcript_vtt': 'https://storage.googleapis.com/podcast-files-storage/the_worst_building/transcript.vtt?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=podcast-app-service-account%40podcast-creator-486719.iam.gserviceaccount.com%2F20260221%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260221T191535Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&X-Goog-Signature=a3aa536552df8222080b8f7af8b88f8b1775add7dce75b948db57c2e09347ab11ff5f7e97079fb892d5cf02bdf5756a67cb9ed59a9eb6a01329009d87df3c3081339e24dccdfb2737286015d79f7e1e66b10ec553fe28f7163bd74fa15ac9639a8357387aab47dc08cca8000a33fca7f1fddd88ad956a5273029f24b12ff2e393333fa17564e4c394060b78419725ff045a62674a07293c2cf085c58165002d373cc46fc52df0ebeb111d0470a7aeaefb480b4aa789fbe6dcc0bd3f18c25aad3f89d52cc61e19325661a359f62dce682ba70932059c970623b5e18969a7bed79f8ccf3a35f3f5c64b0277202831bf6223b50c11480a20c249767a91cdc3ff980'}
+2026-02-21 21:16:00 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:16:00 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=404 duration_ms=22
+2026-02-21 21:16:00 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:16:00 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=404 duration_ms=2
+2026-02-21 21:16:00 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:16:00 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=404 duration_ms=1
+2026-02-21 21:16:00 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:16:00 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=404 duration_ms=1
+2026-02-21 21:16:00 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:16:00 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=404 duration_ms=1
+2026-02-21 21:16:00 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:16:00 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=404 duration_ms=2
+2026-02-21 21:16:00 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:16:00 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=404 duration_ms=0
+2026-02-21 21:16:00 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:16:00 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=404 duration_ms=1
+2026-02-21 21:16:00 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:16:00 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=404 duration_ms=1
+2026-02-21 21:16:00 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:16:00 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=404 duration_ms=0
+2026-02-21 21:16:00 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:16:00 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=404 duration_ms=2
+2026-02-21 21:16:00 INFO podcast_maker api_request method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 client=127.0.0.1 origin=http://localhost:5173
+2026-02-21 21:16:00 INFO podcast_maker api_response method=GET path=/status/7ef5d4a2-f2df-4971-bf77-25bc96c78369 status=404 duration_ms=1
+2026-02-22 21:57:20 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:57:20 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=37
+2026-02-22 21:57:20 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:57:20 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=3
+2026-02-22 21:57:20 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:57:20 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=10
+2026-02-22 21:57:20 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:57:20 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=3
+2026-02-22 21:57:36 INFO podcast_maker api_request method=POST path=/create-podcast/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:57:36 INFO podcast_maker create_podcast task_id=29ff91ef-126e-4248-8455-8f78056b69ac topic=the finding of X rays host_ids=['sarah_curious', 'mike_expert']
+2026-02-22 21:57:36 INFO podcast_maker api_response method=POST path=/create-podcast/ status=200 duration_ms=15
+2026-02-22 21:57:36 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:57:36 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 21:57:40 INFO podcast_maker GeminiAdapter.generate_json called: stage=architect, model=gemini-2.5-flash, temperature=0.7
+2026-02-22 21:57:41 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:57:41 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 21:57:46 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:57:46 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 21:57:51 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:57:51 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 21:57:56 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:57:56 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 21:58:01 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:58:01 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 21:58:06 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:58:06 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 21:58:11 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:58:11 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 21:58:16 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:58:16 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 21:58:21 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:58:21 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 21:58:26 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:58:26 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 21:58:32 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:58:32 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 21:58:36 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:58:36 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 21:58:41 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:58:41 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 21:58:46 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:58:46 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 21:58:51 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:58:51 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 21:58:56 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:58:56 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 21:59:01 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:59:01 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 21:59:06 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:59:06 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 21:59:12 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:59:12 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 21:59:16 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:59:16 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 21:59:21 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:59:21 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 21:59:26 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:59:26 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 21:59:31 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:59:31 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 21:59:37 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:59:37 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 21:59:41 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:59:41 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 21:59:46 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:59:46 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 21:59:52 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:59:52 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 21:59:57 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 21:59:57 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 22:00:02 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:00:02 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:00:07 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:00:07 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 22:00:12 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:00:12 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:00:17 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:00:17 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:00:22 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:00:22 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:00:27 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:00:27 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 22:00:32 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:00:32 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=5
+2026-02-22 22:00:37 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:00:37 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 22:00:42 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:00:42 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:00:46 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:00:46 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 22:00:51 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:00:51 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:00:56 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:00:56 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:01:01 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:01:01 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:01:06 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:01:06 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:01:11 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:01:11 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 22:01:16 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:01:16 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:01:22 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:01:22 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:01:26 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:01:26 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:01:31 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:01:31 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:01:36 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:01:36 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:01:41 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:01:41 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 22:01:46 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:01:46 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 22:01:52 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:01:52 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:01:56 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:01:56 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:02:01 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:02:01 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:02:06 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:02:06 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:02:11 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:02:11 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:02:16 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:02:16 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:02:21 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:02:21 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:02:26 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:02:26 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:02:31 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:02:31 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:02:37 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:02:37 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:02:41 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:02:41 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:02:46 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:02:46 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:02:51 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:02:51 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:02:56 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:02:56 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 22:03:01 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:03:01 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:03:06 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:03:06 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:03:11 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:03:11 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:03:16 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:03:16 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:03:21 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:03:21 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:03:26 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:03:26 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:03:31 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:03:31 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:03:36 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:03:36 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:03:41 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:03:41 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:03:46 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:03:46 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:03:51 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:03:51 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:03:56 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:03:56 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:04:01 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:04:01 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:04:06 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:04:06 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:04:11 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:04:11 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:04:16 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:04:16 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:04:21 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:04:21 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:04:26 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:04:26 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 22:04:31 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:04:31 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:04:37 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:04:37 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 22:04:41 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:04:41 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:04:46 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:04:46 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 22:04:51 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:04:51 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:04:56 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:04:56 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:05:01 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:05:01 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:05:06 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:05:06 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=6
+2026-02-22 22:05:11 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:05:11 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:05:17 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:05:17 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:05:22 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:05:22 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:05:27 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:05:27 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:05:32 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:05:32 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:05:37 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:05:37 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:05:42 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:05:42 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:05:48 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:05:48 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:05:52 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:05:52 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:05:57 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:05:57 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:06:02 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:06:02 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:06:07 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:06:07 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:06:12 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:06:12 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:06:17 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:06:17 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:07:00 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:07:00 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=5
+2026-02-22 22:07:01 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:07:01 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:07:06 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:07:06 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 22:07:11 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:07:11 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:07:16 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:07:16 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=5
+2026-02-22 22:07:21 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:07:21 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:07:26 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:07:26 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:07:31 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:07:31 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=6
+2026-02-22 22:07:36 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:07:36 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:07:41 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:07:41 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 22:07:46 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:07:46 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 22:07:51 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:07:51 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:07:56 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:07:56 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 22:08:01 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:08:01 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 22:08:06 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:08:06 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:08:11 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:08:11 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:08:16 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:08:16 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:08:21 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:08:21 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:08:26 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:08:26 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 22:08:31 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:08:31 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:08:36 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:08:36 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:08:42 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:08:42 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:08:46 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:08:46 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 22:08:51 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:08:51 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 22:08:56 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:08:56 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:09:01 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:09:01 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=5
+2026-02-22 22:09:06 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:09:06 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=5
+2026-02-22 22:09:11 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:09:11 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:09:16 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:09:16 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:09:21 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:09:21 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:09:26 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:09:26 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:09:31 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:09:31 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:09:36 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:09:36 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:09:41 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:09:41 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:09:46 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:09:46 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 22:09:51 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:09:51 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:09:56 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:09:56 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 22:09:56 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:09:56 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=3
+2026-02-22 22:10:01 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:10:01 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:10:06 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:10:06 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:10:11 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:10:11 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=5
+2026-02-22 22:10:16 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:10:16 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 22:10:21 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:10:21 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:10:26 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:10:26 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 22:10:31 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:10:31 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:10:36 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:10:36 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=9
+2026-02-22 22:10:36 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:10:36 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=7
+2026-02-22 22:10:41 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:10:41 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 22:10:46 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:10:46 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 22:10:51 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:10:51 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:10:56 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:10:56 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:11:01 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:11:01 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:11:06 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:11:06 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 22:11:11 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:11:11 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:11:16 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:11:16 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:11:21 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:11:21 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:11:28 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:11:28 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 22:11:31 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:11:31 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 22:11:36 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:11:36 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:11:41 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:11:41 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:11:46 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:11:46 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:11:51 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:11:51 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:11:56 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:11:56 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:12:01 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:12:01 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 22:12:06 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:12:06 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:12:11 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:12:11 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:12:16 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:12:16 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:12:21 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:12:21 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=5
+2026-02-22 22:12:26 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:12:26 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:12:31 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:12:31 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:12:36 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:12:36 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:12:41 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:12:41 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:12:46 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:12:46 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 22:12:51 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:12:51 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:12:56 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:12:56 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:13:01 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:13:01 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:13:06 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:13:06 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:13:11 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:13:11 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:13:16 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:13:16 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 22:13:21 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:13:21 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:13:26 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:13:26 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:13:31 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:13:31 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:13:36 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:13:36 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:13:41 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:13:41 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=5
+2026-02-22 22:13:46 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:13:46 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 22:13:51 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:13:51 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=8
+2026-02-22 22:13:56 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:13:56 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:14:01 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:14:01 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:14:06 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:14:06 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:14:11 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:14:11 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:14:16 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:14:16 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=11
+2026-02-22 22:14:21 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:14:21 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:14:26 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:14:26 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:14:31 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:14:31 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:14:36 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:14:36 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:14:41 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:14:41 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=30
+2026-02-22 22:14:46 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:14:46 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 22:14:51 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:14:51 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=7
+2026-02-22 22:14:56 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:14:56 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=5
+2026-02-22 22:15:01 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:15:01 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:15:06 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:15:06 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 22:15:11 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:15:11 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 22:15:16 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:15:16 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:15:21 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:15:21 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:15:26 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:15:26 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=7
+2026-02-22 22:15:31 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:15:31 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:15:36 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:15:36 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:15:41 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:15:41 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:15:46 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:15:46 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:15:51 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:15:51 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=7
+2026-02-22 22:15:56 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:15:56 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:16:01 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:16:01 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:16:06 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:16:06 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:16:11 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:16:11 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:16:16 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:16:16 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:16:21 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:16:21 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=8
+2026-02-22 22:16:26 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:16:26 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:16:31 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:16:31 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=5
+2026-02-22 22:16:36 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:16:36 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:16:41 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:16:41 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:16:46 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:16:46 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:16:51 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:16:51 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:16:56 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:16:56 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:17:01 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:17:01 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:17:06 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:17:06 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 22:17:11 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:17:11 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 22:17:16 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:17:16 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:17:21 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:17:21 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:17:26 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:17:26 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:17:31 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:17:31 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 22:17:36 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:17:36 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=5
+2026-02-22 22:17:41 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:17:41 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=5
+2026-02-22 22:17:46 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:17:46 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:17:51 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:17:51 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 22:17:56 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:17:56 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:18:01 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:18:01 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=0
+2026-02-22 22:18:06 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:18:06 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=10
+2026-02-22 22:18:11 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:18:11 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=8
+2026-02-22 22:18:16 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:18:16 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:18:21 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:18:21 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 22:18:26 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:18:26 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:18:31 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:18:31 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:18:36 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:18:36 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:18:41 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:18:41 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:18:46 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:18:46 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:18:51 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:18:51 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:18:56 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:18:56 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:19:01 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:19:01 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:19:06 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:19:06 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 22:19:11 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:19:11 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:19:16 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:19:16 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 22:20:07 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:20:07 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=5
+2026-02-22 22:20:11 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:20:11 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 22:20:16 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:20:16 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=18
+2026-02-22 22:20:21 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:20:21 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:20:26 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:20:26 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:20:31 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:20:31 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=9
+2026-02-22 22:20:36 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:20:36 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:20:41 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:20:41 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:20:47 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:20:47 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 22:20:51 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:20:51 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:20:58 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:20:58 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=5
+2026-02-22 22:21:01 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:21:01 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:21:06 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:21:06 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:21:11 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:21:11 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:21:16 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:21:16 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 22:22:17 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:22:17 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:22:43 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:22:43 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=6
+2026-02-22 22:22:46 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:22:46 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:22:51 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:22:51 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=3
+2026-02-22 22:22:56 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:22:56 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=1
+2026-02-22 22:23:02 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:23:02 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:23:06 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:23:06 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=4
+2026-02-22 22:23:11 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:23:11 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=5
+2026-02-22 22:23:16 INFO podcast_maker api_request method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:23:16 INFO podcast_maker api_response method=GET path=/status/29ff91ef-126e-4248-8455-8f78056b69ac status=200 duration_ms=2
+2026-02-22 22:23:18 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:23:18 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=4
+2026-02-22 22:23:18 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:23:18 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=11
+2026-02-22 22:23:18 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:23:18 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=12
+2026-02-22 22:23:18 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-02-22 22:23:18 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=5
+2026-02-23 12:29:43 INFO podcast_maker GeminiAdapter.generate_json called: stage=architect, model=gemini-2.5-flash, temperature=0.7
+2026-02-23 12:30:02 INFO podcast_maker GeminiAdapter.generate_json usage: stage=architect, prompt_tokens=922, response_tokens=2321, total_tokens=4946
+2026-02-23 12:30:02 INFO podcast_maker GeminiAdapter.generate_json success: stage=architect
+2026-02-23 12:30:02 INFO podcast_maker agent_done agent=architect url=C:\Users\Lenovo\repos\podcastMaker\backend\output\claude_code_skills\blueprint.json
+2026-02-23 12:30:02 INFO podcast_maker GeminiAdapter.generate_text called: stage=researcher, model=gemini-2.5-flash, temperature=0.7
+2026-02-23 12:30:38 INFO podcast_maker GeminiAdapter.generate_text success: stage=researcher, prompt_tokens=3019, response_tokens=4384, total_tokens=13273
+2026-02-23 12:30:38 INFO podcast_maker GeminiAdapter.generate_text called: stage=researcher, model=gemini-2.5-flash, temperature=0.7
+2026-02-23 12:31:45 INFO podcast_maker GeminiAdapter.generate_text success: stage=researcher, prompt_tokens=3155, response_tokens=11376, total_tokens=21600
+2026-02-23 12:31:45 INFO podcast_maker GeminiAdapter.generate_text called: stage=researcher, model=gemini-2.5-flash, temperature=0.7
+2026-02-23 12:32:23 INFO podcast_maker GeminiAdapter.generate_text success: stage=researcher, prompt_tokens=2907, response_tokens=4721, total_tokens=13383
+2026-02-23 12:32:23 INFO podcast_maker GeminiAdapter.generate_text called: stage=researcher, model=gemini-2.5-flash, temperature=0.7
+2026-02-23 12:32:47 INFO podcast_maker GeminiAdapter.generate_text success: stage=researcher, prompt_tokens=3152, response_tokens=3874, total_tokens=7749
+2026-02-23 12:32:47 INFO podcast_maker Researcher total usage: prompt_tokens=12233, response_tokens=24355, total_tokens=56005
+2026-02-23 12:32:47 INFO podcast_maker agent_done agent=researcher url=C:\Users\Lenovo\repos\podcastMaker\backend\output\claude_code_skills\research.md
+2026-02-23 12:32:47 INFO podcast_maker GeminiAdapter.generate_json called: stage=outliner, model=gemini-2.5-flash, temperature=0.7
+2026-02-23 12:33:24 INFO podcast_maker GeminiAdapter.generate_json usage: stage=outliner, prompt_tokens=32569, response_tokens=4261, total_tokens=40522
+2026-02-23 12:33:24 INFO podcast_maker GeminiAdapter.generate_json success: stage=outliner
+2026-02-23 12:33:24 INFO podcast_maker agent_done agent=outliner url=C:\Users\Lenovo\repos\podcastMaker\backend\output\claude_code_skills\outline.json
+2026-02-23 12:33:24 INFO podcast_maker GeminiAdapter.generate_text called: stage=scriptwriter, model=gemini-2.5-flash, temperature=0.8
+2026-02-23 12:33:36 INFO podcast_maker GeminiAdapter.generate_text success: stage=scriptwriter, prompt_tokens=34172, response_tokens=659, total_tokens=35694
+2026-02-23 12:33:36 INFO podcast_maker GeminiAdapter.generate_text called: stage=scriptwriter, model=gemini-2.5-flash, temperature=0.8
+2026-02-23 12:33:49 INFO podcast_maker GeminiAdapter.generate_text success: stage=scriptwriter, prompt_tokens=34838, response_tokens=872, total_tokens=37083
+2026-02-23 12:33:49 INFO podcast_maker GeminiAdapter.generate_text called: stage=scriptwriter, model=gemini-2.5-flash, temperature=0.8
+2026-02-23 12:33:58 INFO podcast_maker GeminiAdapter.generate_text success: stage=scriptwriter, prompt_tokens=35717, response_tokens=719, total_tokens=37173
+2026-02-23 12:33:58 INFO podcast_maker GeminiAdapter.generate_text called: stage=scriptwriter, model=gemini-2.5-flash, temperature=0.8
+2026-02-23 12:34:14 INFO podcast_maker GeminiAdapter.generate_text success: stage=scriptwriter, prompt_tokens=36443, response_tokens=944, total_tokens=39131
+2026-02-23 12:34:14 INFO podcast_maker GeminiAdapter.generate_text called: stage=scriptwriter, model=gemini-2.5-flash, temperature=0.8
+2026-02-23 12:34:40 INFO podcast_maker GeminiAdapter.generate_text success: stage=scriptwriter, prompt_tokens=37394, response_tokens=1808, total_tokens=40169
+2026-02-23 12:34:40 INFO podcast_maker GeminiAdapter.generate_text called: stage=scriptwriter, model=gemini-2.5-flash, temperature=0.8
+2026-02-23 12:34:54 INFO podcast_maker GeminiAdapter.generate_text success: stage=scriptwriter, prompt_tokens=39209, response_tokens=1058, total_tokens=41248
+2026-02-23 12:34:54 INFO podcast_maker GeminiAdapter.generate_text called: stage=scriptwriter, model=gemini-2.5-flash, temperature=0.8
+2026-02-23 12:35:05 INFO podcast_maker GeminiAdapter.generate_text success: stage=scriptwriter, prompt_tokens=40274, response_tokens=814, total_tokens=42047
+2026-02-23 12:35:05 INFO podcast_maker GeminiAdapter.generate_text called: stage=scriptwriter, model=gemini-2.5-flash, temperature=0.8
+2026-02-23 12:35:18 INFO podcast_maker GeminiAdapter.generate_text success: stage=scriptwriter, prompt_tokens=41095, response_tokens=884, total_tokens=43632
+2026-02-23 12:35:18 INFO podcast_maker GeminiAdapter.generate_text called: stage=scriptwriter, model=gemini-2.5-flash, temperature=0.8
+2026-02-23 12:35:37 INFO podcast_maker GeminiAdapter.generate_text success: stage=scriptwriter, prompt_tokens=41986, response_tokens=827, total_tokens=43657
+2026-02-23 12:35:37 INFO podcast_maker GeminiAdapter.generate_text called: stage=scriptwriter, model=gemini-2.5-flash, temperature=0.8
+2026-02-23 12:35:52 INFO podcast_maker GeminiAdapter.generate_text success: stage=scriptwriter, prompt_tokens=42820, response_tokens=866, total_tokens=44604
+2026-02-23 12:35:52 INFO podcast_maker ScriptWriter total usage: prompt_tokens=383948, response_tokens=9451, total_tokens=404438
+2026-02-23 12:35:52 INFO podcast_maker agent_done agent=scriptwriter url=C:\Users\Lenovo\repos\podcastMaker\backend\output\claude_code_skills\script.txt
+2026-02-23 12:43:19 INFO podcast_maker Done generating audio with timestamps. Total characters: 34340, Segments: 219
+2026-02-23 12:43:45 INFO podcast_maker transcript_done format=json url=C:\Users\Lenovo\repos\podcastMaker\backend\output\claude_code_skills\transcript.json
+2026-02-23 12:43:45 INFO podcast_maker transcript_done format=vtt url=C:\Users\Lenovo\repos\podcastMaker\backend\output\claude_code_skills\transcript.vtt
+2026-02-23 18:30:41 ERROR podcast_maker GeminiAdapter.generate_json failed: stage=architect, error=[WinError 10053] An established connection was aborted by the software in your host machine
+2026-02-23 18:30:41 ERROR podcast_maker pipeline_failed task_id=29ff91ef-126e-4248-8455-8f78056b69ac error=[WinError 10053] An established connection was aborted by the software in your host machine
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\httpx\_transports\default.py", line 250, in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\httpcore\_sync\connection_pool.py", line 256, in handle_request
+    raise exc from None
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\httpcore\_sync\connection_pool.py", line 236, in handle_request
+    response = connection.handle_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\httpcore\_sync\connection.py", line 101, in handle_request
+    raise exc
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\httpcore\_sync\connection.py", line 78, in handle_request
+    stream = self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\httpcore\_sync\connection.py", line 156, in _connect
+    stream = stream.start_tls(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\httpcore\_backends\sync.py", line 154, in start_tls
+    with map_exceptions(exc_map):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [WinError 10053] An established connection was aborted by the software in your host machine
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\app\main.py", line 147, in run_podcast_pipeline
+    final_url: dict = orchestrator.process_topic(topic)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\podcast_maker\core\orchestrator.py", line 102, in process_topic
+    blueprint = self.architect.generate_blueprint(user_topic)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\podcast_maker\core\architect.py", line 19, in generate_blueprint
+    blueprint_data = self.llm_provider.generate_json(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\podcast_maker\services\gemini_adapter.py", line 165, in generate_json
+    response = self.client.models.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\google\genai\models.py", line 5227, in generate_content
+    response = self._generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\google\genai\models.py", line 4009, in _generate_content
+    response = self._api_client.request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\google\genai\_api_client.py", line 1386, in request
+    response = self._request(http_request, http_options, stream=False)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\google\genai\_api_client.py", line 1222, in _request
+    return self._retry(self._request_once, http_request, stream)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\tenacity\__init__.py", line 477, in __call__
+    do = self.iter(retry_state=retry_state)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\tenacity\__init__.py", line 378, in iter
+    result = action(retry_state)
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\tenacity\__init__.py", line 420, in exc_check
+    raise retry_exc.reraise()
+          ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\tenacity\__init__.py", line 187, in reraise
+    raise self.last_attempt.result()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\concurrent\futures\_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\tenacity\__init__.py", line 480, in __call__
+    result = fn(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\google\genai\_api_client.py", line 1192, in _request_once
+    response = self._httpx_client.request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\httpx\_client.py", line 825, in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\httpx\_client.py", line 914, in send
+    response = self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\httpx\_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\httpx\_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\httpx\_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\httpx\_transports\default.py", line 249, in handle_request
+    with map_httpcore_exceptions():
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [WinError 10053] An established connection was aborted by the software in your host machine

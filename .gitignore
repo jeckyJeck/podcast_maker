@@ -1,6 +1,30 @@
-/.env
-/myEnv
-/output
-/trash
-/podcast-creator-486719-2f6edbe22de3.json
-/__pycache__
+
+debug_files/
+
+# Python caches and artifacts
+__pycache__/
+*.py[cod]
+*.pyd
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.env
+.env.*
+.venv/
+venv/
+myEnv/
+
+# Generated outputs
+output/
+trash/
+
+# Common secrets
+*.pem
+*.key
+*.p12
+*.crt

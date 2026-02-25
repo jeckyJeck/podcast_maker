@@ -1,0 +1,8 @@
+# .dockerignormyEnv/
+.venv/
+.myEnv/
+__pycache__/
+*.pyc
+.git/
+.env
+env.yaml
