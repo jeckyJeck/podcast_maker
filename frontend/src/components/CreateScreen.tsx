@@ -82,7 +82,7 @@ const InlineHostPicker: React.FC = () => {
                         src={`/hosts/${host.id}/image.png`}
                         alt={host.name}
                         className="w-full h-full object-cover"
-                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                        onError={(e) => { e.currentTarget.style.display = 'none'; }}
                       />
                       <span className="text-gray-400 text-2xl font-bold">
                         {host.name.charAt(0)}
@@ -160,7 +160,7 @@ const SelectedHostsStrip: React.FC = () => {
                   src={`/hosts/${host.id}/image.png`}
                   alt={host.name}
                   className="w-full h-full object-cover"
-                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
                 />
                 <span className="absolute text-gray-400 text-sm font-bold">{host.name.charAt(0)}</span>
               </div>
@@ -280,8 +280,8 @@ export const CreateScreen: React.FC = () => {
       {/* ── Status display ────────────────────────────────────────────────── */}
       {showStatus && (
         <StatusDisplay
-          status={effectiveStatus!.status}
-          error={effectiveStatus!.error}
+          status={effectiveStatus?.status ?? 'failed'}
+          error={effectiveStatus?.error}
         />
       )}
 

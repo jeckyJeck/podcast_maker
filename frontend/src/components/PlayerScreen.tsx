@@ -6,8 +6,6 @@ import {
   FaBackward,
   FaForward,
   FaDownload,
-  FaHistory,
-  FaTimes,
   FaTachometerAlt,
 } from 'react-icons/fa';
 import { usePodcast } from '../context/PodcastContext';
@@ -23,10 +21,6 @@ const formatTime = (seconds: number): string => {
   const m = Math.floor(seconds / 60);
   const s = Math.floor(seconds % 60);
   return `${m}:${s.toString().padStart(2, '0')}`;
-};
-
-const formatDate = (iso: string): string => {
-  try { return new Date(iso).toLocaleString('en-US'); } catch { return iso; }
 };
 
 // ── ZIP Download ──────────────────────────────────────────────────────────────
@@ -77,69 +71,6 @@ const downloadZip = async (
   } finally {
     onDone();
   }
-};
-
-// ── History Drawer ────────────────────────────────────────────────────────────
-
-const HistoryDrawer: React.FC<{ open: boolean; onClose: () => void }> = ({ open, onClose }) => {
-  const { displayHistory, cloudLoading, handleRestoreFromHistory } = usePodcast();
-
-  return (
-    <>
-      {/* Backdrop */}
-      <div
-        className={`fixed inset-0 bg-black/40 z-30 transition-opacity duration-300 ${open ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-        onClick={onClose}
-      />
-      {/* Drawer */}
-      <div
-        className={`fixed top-0 right-0 h-full w-80 max-w-full bg-white dark:bg-gray-900 shadow-2xl z-40 flex flex-col transition-transform duration-300 ease-in-out ${
-          open ? 'translate-x-0' : 'translate-x-full'
-        }`}
-      >
-        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-base font-semibold text-gray-800 dark:text-white">
-            {cloudLoading ? 'Loading...' : 'Previous Podcasts'}
-          </h2>
-          <button
-            type="button"
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-700 dark:hover:white transition-colors p-1"
-          >
-            <FaTimes size={16} />
-          </button>
-        </div>
-
-        <div className="flex-1 overflow-y-auto p-3 space-y-2">
-          {displayHistory.length === 0 && (
-            <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-8">
-              No podcasts in history
-            </p>
-          )}
-          {displayHistory.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => { handleRestoreFromHistory(item); onClose(); }}
-              className="w-full text-left p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-            >
-              <p className="font-medium text-gray-900 dark:text-white text-sm line-clamp-2">
-                {item.topic || 'No topic'}
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                {formatDate(item.updatedAt)}
-              </p>
-              {item.currentTime > 0 && (
-                <p className="text-xs text-blue-500 mt-0.5">
-                  Resume from {formatTime(item.currentTime)}
-                </p>
-              )}
-            </button>
-          ))}
-        </div>
-      </div>
-    </>
-  );
 };
 
 // ── Player Controls ───────────────────────────────────────────────────────────
@@ -277,7 +208,7 @@ const PlayerControls: React.FC = () => {
 // ── Main PlayerScreen ─────────────────────────────────────────────────────────
 
 export const PlayerScreen: React.FC = () => {
-  const { topic, resolvedFiles, currentTime, seekTo, podcastReady, goToCreate, historyOpen, setHistoryOpen } = usePodcast();
+  const { topic, resolvedFiles, currentTime, seekTo, podcastReady, goToCreate, setHistoryOpen } = usePodcast();
 
   return (
     <div className="max-w-2xl mx-auto w-full flex flex-col flex-1 min-h-0">

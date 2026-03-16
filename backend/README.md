@@ -14,14 +14,21 @@ The backend of Podcast Maker is a FastAPI-based service responsible for orchestr
 - **Background Processing**: Handles long-running agent tasks (Research -> Script -> Audio).
 - **Rate Limiting**: Integrated using `slowapi`.
 
-## 📂 Internal Structure
+## 📂 Project Structure
 
-- `app/`:
-    - `main.py`: Application entry point and configuration.
-    - `dependencies.py`: FastAPI dependencies (limiter, auth).
-    - `routers/`: API endpoints for podcasts, hosts, and users.
-- `podcast_maker/`: The logic engine for the podcast generation pipeline.
-- `prompts/`: Markdown templates for AI agent system instructions.
+```
+backend/
+├── app/
+│   ├── main.py             # Application entry point & middleware
+│   ├── dependencies.py     # FastAPI dependencies (auth, rate limiting)
+│   └── routers/            # API endpoints (podcasts, hosts, users)
+├── podcast_maker/          # Core logic engine
+│   ├── core/               # AI Agent implementations (Architect, Researcher, etc.)
+│   └── services/           # External service adapters (GCS, TTS, Gemini)
+├── prompts/                # System instructions for AI roles (Markdown files)
+├── Dockerfile              # Docker container configuration
+└── requirements.txt        # Python dependencies
+```
 
 ## 🛠️ Setup & Installation
 

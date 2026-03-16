@@ -7,6 +7,30 @@ interface TranscriptViewerProps {
   onSeek?: (timeInSeconds: number) => void;
 }
 
+const isTranscriptSegment = (value: unknown): value is TranscriptSegment => {
+  if (!value || typeof value !== 'object') return false;
+
+  const candidate = value as Record<string, unknown>;
+  return (
+    typeof candidate.startMs === 'number' &&
+    typeof candidate.endMs === 'number' &&
+    typeof candidate.speaker === 'string' &&
+    typeof candidate.text === 'string'
+  );
+};
+
+const parseTranscriptSegments = (value: unknown): TranscriptSegment[] => {
+  if (!Array.isArray(value)) {
+    throw new Error('Transcript payload is not an array');
+  }
+
+  if (!value.every(isTranscriptSegment)) {
+    throw new Error('Transcript payload has invalid segment structure');
+  }
+
+  return value;
+};
+
 export default function TranscriptViewer({ transcriptUrl, currentTime, onSeek }: TranscriptViewerProps) {
   const [segments, setSegments] = useState<TranscriptSegment[]>([]);
   const [loading, setLoading] = useState(true);
@@ -23,7 +47,8 @@ export default function TranscriptViewer({ transcriptUrl, currentTime, onSeek }:
         if (!response.ok) {
           throw new Error('Failed to fetch transcript');
         }
-        const data: TranscriptSegment[] = await response.json();
+        const payload: unknown = await response.json();
+        const data = parseTranscriptSegments(payload);
         setSegments(data);
         setError(null);
       } catch (err) {

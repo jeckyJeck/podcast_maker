@@ -22,16 +22,26 @@ The frontend of Podcast Maker is a React-based web application that allows users
 - **Vite**: Modern, ultra-fast build tool.
 - **Tailwind CSS**: Utility-first styling.
 - **Axios**: HTTP client for API requests.
-- **Supabase**: Used for client-side authentication and real-time listeners.
-- **JSZip**: For bundling multiple generated assets into a single ZIP for the user.
+- **Supabase**: Integrated for authentication and database management.
+- **JSZip**: Bundling multiple generated assets into a single ZIP for the user.
 
-## 📂 Architecture
+## 📂 Project Structure
 
-- `src/components/`: Modular UI components (Screens, Player, Transcript Viewer).
-- `src/context/`: Global state management for Authentication and Podcast status.
-- `src/hooks/`: Custom hooks for polling status and managing audio playback.
-- `src/services/`: API abstractions for interaction with the FastAPI backend.
-- `src/types/`: TypeScript interfaces and types for API responses and podcast metadata.
+```
+frontend/
+├── src/
+│   ├── components/         # UI Components (AudioPlayer, StatusDisplay, etc.)
+│   ├── context/            # Authentication & Podcast Global State
+│   ├── hooks/              # Custom logic for status polling & audio control
+│   ├── services/           # Backend API integration (Axios client)
+│   ├── types/              # TypeScript definitions & interfaces
+│   ├── App.tsx             # Main application layout
+│   └── main.tsx            # React bootstrap file
+├── index.html              # Entry HTML file
+├── package.json            # Frontend dependencies & scripts
+├── tailwind.config.js      # Styling configuration
+└── vite.config.ts          # Vite build configuration
+```
 
 ## ⚡ Setup & Development
 
@@ -67,84 +77,9 @@ The frontend of Podcast Maker is a React-based web application that allows users
 ---
 
 ## 📸 Component Highlights
-- **`CreateScreen.tsx`**: Main entry point for starting new podcast generations.
-- **`StatusDisplay.tsx`**: Visual feedback for the multi-step AI process.
-- **`PlayerScreen.tsx`**: Integrated player and management dashboard.
+- **`CreateScreen.tsx`**: Entry point for initiating podcast generation.
+- **`StatusDisplay.tsx`**: Live feedback for the multi-step AI orchestration.
+- **`PlayerScreen.tsx`**: Dedicated player and asset management dashboard.
 - **`TranscriptViewer.tsx`**: High-performance text-syncing component.
 
 > **Note to user**: You can provide screenshots of the dynamic status tracker and the transcript viewer to be added here.
-
-## מבנה הפרויקט
-
-```
-frontend/
-├── src/
-│   ├── components/           # קומפוננטות React
-│   │   ├── AudioPlayer.tsx      # נגן אודיו מתקדם
-│   │   ├── FileDownloader.tsx   # ניהול הורדות
-│   │   ├── StatusDisplay.tsx    # תצוגת סטטוס
-│   │   └── PodcastGenerator.tsx # קומפוננטה ראשית
-│   ├── hooks/                # Custom hooks
-│   │   └── usePodcastStatus.ts  # Hook לניהול polling
-│   ├── services/             # שירותי API
-│   │   └── api.ts               # HTTP client
-│   ├── types/                # TypeScript types
-│   │   └── podcast.ts           # ממשקים ו-types
-│   ├── App.tsx               # קומפוננטת שורש
-│   ├── main.tsx             # נקודת כניסה
-│   └── index.css            # סגנונות גלובליים
-├── index.html               # HTML ראשי (RTL)
-├── package.json
-├── tsconfig.json
-├── vite.config.ts
-└── tailwind.config.js
-```
-
-## טכנולוגיות
-
-- **React 18** - ספריית UI
-- **TypeScript** - Type safety
-- **Vite** - Build tool מהיר
-- **Tailwind CSS** - Framework לעיצוב
-- **Axios** - HTTP client
-- **React Icons** - אייקונים
-
-## פיתוח עתידי
-
-האפליקציה תוכננה להרחבה עתידית:
-
-- תמיכה באימות משתמשים
-- היסטוריית פודקאסטים
-- עריכת תסריט לפני ייצור
-- אפשרויות התאמה אישית (קולות, סגנון)
-- שיתוף פודקאסטים
-- ניהול פודקאסטים אישי
-
-## פתרון בעיות
-
-### שגיאת CORS
-
-אם אתה מקבל שגיאת CORS, וודא ש:
-1. השרת Backend רץ על `http://localhost:8000`
-2. ה-CORS middleware מוגדר נכון ב-`backend/app/main.py`
-3. הכתובת ב-`.env` תואמת לכתובת השרת
-
-### הפודקאסט לא מתחיל להיות מעובד
-
-1. בדוק שהשרת Backend רץ
-2. פתח את ה-Console בדפדפן וחפש שגיאות
-3. בדוק שיש חיבור לאינטרנט (נדרש עבור Google Cloud Services)
-
-### הורדת קבצים לא עובדת
-
-1. בדוק שה-signed URLs תקפים (תוקף: שעה)
-2. נסה להוריד כל קובץ בנפרד
-3. בדוק שהדפדפן לא חוסם הורדות
-
-## רישיון
-
-MIT
-
----
-
-נוצר עם ❤️ על ידי Podcast Maker

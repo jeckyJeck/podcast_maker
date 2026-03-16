@@ -33,6 +33,56 @@ const FORMAT_MAX_HOSTS: Record<PodcastFormat, number> = {
 const isValidHostSelection = (v: unknown): v is string[] =>
   Array.isArray(v) && v.length >= 1 && v.length <= 2;
 
+const isObjectRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null;
+
+const isPodcastFiles = (value: unknown): value is PodcastFiles => {
+  if (!isObjectRecord(value)) return false;
+
+  const requiredStringKeys: Array<keyof PodcastFiles> = [
+    'blueprint',
+    'research',
+    'outline',
+    'script',
+    'audio',
+  ];
+
+  for (const key of requiredStringKeys) {
+    if (typeof value[key] !== 'string') return false;
+  }
+
+  if (value.transcript !== undefined && typeof value.transcript !== 'string') return false;
+  if (value.transcript_vtt !== undefined && typeof value.transcript_vtt !== 'string') return false;
+
+  return true;
+};
+
+const isTaskStatus = (value: unknown): value is PodcastTaskStatus['status'] =>
+  value === 'processing' || value === 'completed' || value === 'failed';
+
+const isPodcastTaskStatus = (value: unknown): value is PodcastTaskStatus => {
+  if (!isObjectRecord(value)) return false;
+
+  if (!isTaskStatus(value.status)) return false;
+  if (value.url !== null && !isPodcastFiles(value.url)) return false;
+  if (value.error !== undefined && typeof value.error !== 'string') return false;
+
+  return true;
+};
+
+const resolvePodcastFiles = (
+  statusFiles: PodcastFiles,
+  cachedFiles: Partial<PodcastFiles>,
+): PodcastFiles => ({
+  blueprint: cachedFiles.blueprint ?? statusFiles.blueprint,
+  research: cachedFiles.research ?? statusFiles.research,
+  outline: cachedFiles.outline ?? statusFiles.outline,
+  script: cachedFiles.script ?? statusFiles.script,
+  audio: cachedFiles.audio ?? statusFiles.audio,
+  transcript: cachedFiles.transcript ?? statusFiles.transcript,
+  transcript_vtt: cachedFiles.transcript_vtt ?? statusFiles.transcript_vtt,
+});
+
 export interface PodcastHistoryItem {
   id: string;
   topic: string;
@@ -57,16 +107,22 @@ const loadSession = (): PersistedSession | null => {
   try {
     const raw = localStorage.getItem(PODCAST_SESSION_KEY);
     if (!raw) return null;
-    const p = JSON.parse(raw) as PersistedSession;
+
+    const parsed: unknown = JSON.parse(raw);
+    if (!isObjectRecord(parsed)) return null;
+
     return {
-      topic: typeof p.topic === 'string' ? p.topic : '',
-      taskId: typeof p.taskId === 'string' ? p.taskId : null,
-      selectedFormat: p.selectedFormat === 'solo' ? 'solo' : 'dialogue',
-      selectedHostIds: isValidHostSelection(p.selectedHostIds)
-        ? p.selectedHostIds
+      topic: typeof parsed.topic === 'string' ? parsed.topic : '',
+      taskId: typeof parsed.taskId === 'string' ? parsed.taskId : null,
+      selectedFormat: parsed.selectedFormat === 'solo' ? 'solo' : 'dialogue',
+      selectedHostIds: isValidHostSelection(parsed.selectedHostIds)
+        ? parsed.selectedHostIds
         : ['sarah_curious', 'mike_expert'],
-      currentTime: typeof p.currentTime === 'number' && p.currentTime >= 0 ? p.currentTime : 0,
-      status: p.status ?? null,
+      currentTime:
+        typeof parsed.currentTime === 'number' && parsed.currentTime >= 0
+          ? parsed.currentTime
+          : 0,
+      status: isPodcastTaskStatus(parsed.status) ? parsed.status : null,
     };
   } catch {
     return null;
@@ -87,10 +143,14 @@ const loadHistory = (): PodcastHistoryItem[] => {
   try {
     const raw = localStorage.getItem(PODCAST_HISTORY_KEY);
     if (!raw) return [];
-    const arr = JSON.parse(raw) as Partial<PodcastHistoryItem>[];
+
+    const arr: unknown = JSON.parse(raw);
     if (!Array.isArray(arr)) return [];
+
     return arr
       .map((item): PodcastHistoryItem | null => {
+        if (!isObjectRecord(item)) return null;
+
         if (
           typeof item.id !== 'string' ||
           typeof item.topic !== 'string' ||
@@ -98,8 +158,10 @@ const loadHistory = (): PodcastHistoryItem[] => {
           !isValidHostSelection(item.selectedHostIds) ||
           typeof item.currentTime !== 'number' ||
           typeof item.updatedAt !== 'string' ||
-          !item.status?.url
+          !isPodcastTaskStatus(item.status) ||
+          !item.status.url
         ) return null;
+
         return {
           id: item.id,
           topic: item.topic,
@@ -415,7 +477,7 @@ export const PodcastProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const resolvedFiles = useMemo<PodcastFiles | null>(() => {
     if (!effectiveStatus?.url) return null;
-    return { ...effectiveStatus.url, ...localFileUrls } as PodcastFiles;
+    return resolvePodcastFiles(effectiveStatus.url, localFileUrls);
   }, [effectiveStatus, localFileUrls]);
 
   useEffect(() => {
