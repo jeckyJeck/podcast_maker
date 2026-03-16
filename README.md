@@ -1,103 +1,80 @@
 # 🎙️ Podcast Maker
 
-מערכת אוטומטית מלאה ליצירת פודקאסטים באיכות גבוהה מכל נושא שתבחר.
+An automated end-to-end system for creating high-quality podcasts from any topic using Generative AI. 
 
-## 🌟 תכונות
+Podcast Maker transforms a simple topic into a fully produced podcast episode, complete with deep research, a structured outline, a professional script, and high-quality audio with multiple AI hosts.
 
-### Backend (FastAPI)
-- 🤖 **יצירה אוטומטית מלאה** - מחקר, תסריט ויצירת אודיו באמצעות AI
-- 🧠 **Google Generative AI** - יצירת תוכן חכם ונתוני מחקר עמוקים
-- ☁️ **Google Cloud Storage** - אחסון בענן עם signed URLs
-- 🎤 **Google Text-to-Speech** - המרת טקסט לדיבור טבעי באיכות גבוהה
-- 🎙️ **בחירת Hosts** - בחר מהמנחים הזמינים או תשתמש בברירת המחדל
-- 🔄 **מיקרוסרוויסים** - Architect, Researcher, Outliner, Scriptwriter
-- 📊 **מעקב סטטוס בזמן אמת** - עדכוני תהליך העיבוד אנטי-ממציא
+---
 
-### Frontend (React + TypeScript)
-- 📝 **ממשק אינטואיטיבי** - הכנסת נושא וברירת hosts פשוטה וברורה
-- 🎤 **בחירת מנחים** - בחר מהמנחים הזמינים עם פרופילים מלאים
-- 📋 **מציג תמלול** - צפה בתמלול מלא עם סנכרון זמן על האודיו
-- 🔄 **רענון אוטומטי** - מעקב סטטוס בזמן אמת כל שנייה
-- 🎧 **נגן אודיו מתקדם**:
-  - מהירות השמעה משתנה (0.5x-2x)
-  - סרגל התקדמות עם דילוג חופשי
-  - בקרת עוצמת קול ספציפית
-  - תצוגת זמן מלאה וכרונומטר
-  - השהיה וחזרה
-- 💾 **הורדת קבצים מלאה**:
-  - Blueprint (JSON) - תוכן מובנה
-  - Research (Markdown) - מידע מחקרי
-  - Outline (JSON) - מבנה הפרק
-  - Script (Text) - הטקסט המלא של הפודקאסט
-  - Audio (MP3) - האודיו של הפודקאסט
-  - Transcript (VTT) - תמלול סטנדרטי
-- 📱 **עיצוב רספונסיבי** - תמיכה מלאה במובייל וטאבלט
-- 🌙 **מצב כהה** - תמיכה אוטומטית עם Tailwind CSS
+## 🚀 Overview
 
-## 🚀 התחלה מהירה
+Podcast Maker leverages the power of Large Language Models (LLMs) and Text-to-Speech (TTS) technologies to automate the entire podcast production pipeline:
 
-### דרישות מקדימות
-- Python 3.8+
+1.  **Researcher**: Performs deep research on the chosen topic.
+2.  **Architect**: Defines the episode's "blueprint" and style.
+3.  **Outliner**: Structures the content into a coherent flow.
+4.  **Scriptwriter**: Crafts a natural-sounding dialogue between two hosts.
+5.  **Audio Producer**: Generates high-quality audio and synchronized transcripts.
+
+## 🛠️ Tech Stack
+
+### Backend
+- **Framework**: [FastAPI](https://fastapi.tiangolo.com/) (Python 3.12+)
+- **AI/LLM**: [Google Gemini (Generative AI)](https://ai.google.dev/)
+- **TTS**: [Google Cloud Text-to-Speech](https://cloud.google.com/text-to-speech)
+- **Storage**: [Google Cloud Storage](https://cloud.google.com/storage)
+- **Database/Auth**: [Supabase](https://supabase.com/)
+- **DevOps**: Docker, Google Cloud Run
+
+### Frontend
+- **Framework**: [React](https://reactjs.org/) + [TypeScript](https://www.typescriptlang.org/)
+- **Build Tool**: [Vite](https://vitejs.dev/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Icons**: [React Icons](https://react-icons.github.io/react-icons/)
+
+---
+
+## 📂 Project Structure
+
+- `backend/`: FastAPI application, AI agent logic, and cloud integrations.
+- `frontend/`: React dashboard for creating, managing, and listening to podcasts.
+- `podcast_maker/`: Core library containing the orchestration logic for the AI agents.
+- `prompts/`: System prompts for the different AI roles (Researcher, Architect, etc.).
+
+---
+
+## ⚡ Quick Start
+
+### Prerequisites
+- Python 3.10+
 - Node.js 18+
-- חשבון Google Cloud עם הרשאות:
-  - Google Cloud Storage (gsutil)
-  - Google Text-to-Speech
-  - Google Generative AI (Gemini)
+- Google Cloud Project with enabled APIs (Generative AI, TTS, Storage).
+- Supabase account.
 
-### הקמה
+### Installation
 
-1. **Clone הפרויקט**:
-```bash
-git clone <repository-url>
-cd podcastMaker
-```
+1.  **Clone the repository**:
+    ```bash
+    git clone https://github.com/your-repo/podcastMaker.git
+    cd podcastMaker
+    ```
 
-2. **הגדר Backend**:
-```bash
-cd backend
-pip install -r requirements.txt
+2.  **Setup Backend**:
+    Follow the instructions in [backend/README.md](backend/README.md).
 
-# צור קובץ .env עם:
-BUCKET_NAME=your-gcs-bucket-name
-GOOGLE_APPLICATION_CREDENTIALS=path/to/credentials.json
-```
+3.  **Setup Frontend**:
+    Follow the instructions in [frontend/README.md](frontend/README.md).
 
-### משתנים סביבתיים (Environment Variables)
+---
 
-| משתנה | תיאור | דוגמה |
-|--------|--------|--------|
-| `BUCKET_NAME` | שם ה-bucket ב-Google Cloud Storage | `my-podcast-bucket` |
-| `GOOGLE_APPLICATION_CREDENTIALS` | נתיב לקובץ JSON של Google Cloud | `/app/creds.json` |
+## 📸 Screenshots
+*(Placeholders for future images)*
+> **Note to user**: You can provide screenshots of the Create Screen, Podcast Library, and Audio Player to be included here.
 
-3. **הגדר Frontend**:
-```bash
-cd ../frontend
-npm install
-```
+---
 
-### הרצה
-
-**אפשרות 1: באמצעות סקריפטים**
-```powershell
-# בטרמינל אחד:
-.\start-backend.ps1
-
-# בטרמינל שני:
-.\start-frontend.ps1
-```
-
-**אפשרות 2: ידני**
-```bash
-# Terminal 1 - Backend
-cd backend
-uvicorn app.main:app --reload --port 8000
-
-# Terminal 2 - Frontend
-cd frontend
-npm run dev
-```
-
-האתר יהיה זמין ב: **http://localhost:5173**
+## 📄 License
+This project is licensed under the MIT License.
 
 ## 🐳 Docker Deployment (Production)
 
@@ -378,7 +355,13 @@ self.llm_provider = OpenAIAdapter(api_key=os.getenv("OPENAI_API_KEY"))
 
 ### שינוי Prompts
 כדי להשפיע על איכות התוכן, שנה את ה-prompts ב:
-- [backend/prompts/](backend/prompts/) - researcher.md, architect.md, outliner.md, scriptwriter.md
+- [backend/prompts/](backend/prompts/) - `researcher.md` (משותף לכל הפורמטים)
+- [backend/prompts/architect/](backend/prompts/architect/), [backend/prompts/outliner/](backend/prompts/outliner/), [backend/prompts/scriptwriter/](backend/prompts/scriptwriter/) - פרומפטים לפי פורמט
+
+חוק טעינה נוכחי:
+- `format=dialogue` → משתמש בקבצי `duo-long`
+- `format=solo` → משתמש בקבצי `solo-short` / `5min_solo`
+- אם חסר קובץ לפורמט המבוקש, המערכת עושה fallback אוטומטי ל-`dialogue`
 
 ### DebugLogging
 לוגים מלאים זמינים בטרמינל של Backend. כדי לשנות רמת logging:

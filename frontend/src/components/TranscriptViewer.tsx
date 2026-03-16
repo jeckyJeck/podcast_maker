@@ -72,42 +72,41 @@ export default function TranscriptViewer({ transcriptUrl, currentTime, onSeek }:
   };
 
   const getSpeakerColor = (speaker: string): string => {
-    return speaker === 'HOST_1' ? 'text-blue-600' : 'text-purple-600';
+    return speaker === 'HOST_1' ? 'text-blue-600 dark:text-blue-400' : 'text-purple-600 dark:text-purple-400';
   };
 
   const getSpeakerBgColor = (speaker: string): string => {
-    return speaker === 'HOST_1' ? 'bg-blue-50' : 'bg-purple-50';
+    return speaker === 'HOST_1' ? 'bg-blue-50/50 dark:bg-blue-900/20' : 'bg-purple-50/50 dark:bg-purple-900/20';
   };
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center p-8" dir="ltr">
+      <div className="flex items-center justify-center p-8 h-full" dir="ltr">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-        <span className="ml-3 text-gray-600">Loading transcript...</span>
+        <span className="ml-3 text-gray-500 text-sm">Loading transcript...</span>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="p-4 bg-red-50 border border-red-200 rounded-lg" dir="ltr">
-        <p className="text-red-600">Error loading transcript: {error}</p>
+      <div className="p-8 flex items-center justify-center h-full" dir="ltr">
+        <p className="text-red-500 text-sm">Error loading transcript</p>
       </div>
     );
   }
 
   if (segments.length === 0) {
     return (
-      <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg" dir="ltr">
-        <p className="text-gray-600">No transcript available</p>
+      <div className="p-8 flex items-center justify-center h-full" dir="ltr">
+        <p className="text-gray-400 text-sm italic">No transcript available</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 max-h-[600px] overflow-y-auto" dir="ltr">
-      <h3 className="text-lg font-semibold mb-4 text-gray-800">Transcript</h3>
-      <div className="space-y-2">
+    <div className="bg-transparent h-[300px] overflow-y-auto scroll-smooth custom-scrollbar" dir="ltr">
+      <div className="p-6 space-y-1">
         {segments.map((segment, index) => {
           const isActive = index === activeIndex;
           return (
@@ -115,23 +114,21 @@ export default function TranscriptViewer({ transcriptUrl, currentTime, onSeek }:
               key={index}
               ref={isActive ? activeSegmentRef : null}
               onClick={() => handleSegmentClick(segment)}
-              className={`p-3 rounded-lg transition-all duration-200 cursor-pointer ${
+              className={`p-4 rounded-2xl transition-all duration-500 cursor-pointer border-l-4 ${
                 isActive
-                  ? `${getSpeakerBgColor(segment.speaker)} shadow-md ring-2 ring-offset-2 ${
-                      segment.speaker === 'HOST_1' ? 'ring-blue-500' : 'ring-purple-500'
-                    }`
-                  : 'hover:bg-gray-50'
+                  ? `${getSpeakerBgColor(segment.speaker)} border-blue-500 dark:border-blue-400 opacity-100`
+                  : 'hover:bg-gray-50 dark:hover:bg-gray-800/50 border-transparent opacity-60 hover:opacity-100'
               }`}
             >
-              <div className="flex items-start gap-3">
-                <span className="text-xs text-gray-500 font-mono min-w-[45px]">
+              <div className="flex items-start gap-4">
+                <span className={`text-[10px] font-mono mt-1 opacity-50 min-w-[40px] ${isActive ? 'text-blue-600 dark:text-blue-400 opacity-100' : 'text-gray-500'}`}>
                   {formatTime(segment.startMs)}
                 </span>
                 <div className="flex-1">
-                  <span className={`font-semibold text-sm ${getSpeakerColor(segment.speaker)}`}>
-                    {segment.speaker}:
+                  <span className={`text-[11px] font-bold uppercase tracking-wider ${getSpeakerColor(segment.speaker)}`}>
+                    {segment.speaker}
                   </span>
-                  <p className={`text-gray-700 mt-1 ${isActive ? 'font-medium' : ''}`}>
+                  <p className={`text-gray-800 dark:text-gray-200 mt-1 leading-relaxed text-base transition-all duration-300 ${isActive ? 'font-medium' : 'font-normal'}`}>
                     {segment.text}
                   </p>
                 </div>

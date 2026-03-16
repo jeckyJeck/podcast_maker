@@ -28,12 +28,7 @@ export interface CreatePodcastResponse {
   message: string;
 }
 
-export interface FileInfo {
-  name: string;
-  url: string;
-  type: 'audio' | 'json' | 'markdown' | 'text';
-  displayName: string;
-}
+export type PodcastFormat = 'dialogue' | 'solo';
 
 export interface HostProfile {
   id: string;
@@ -46,4 +41,24 @@ export interface HostProfile {
 
 export interface AvailableHostsResponse {
   hosts: HostProfile[];
+}
+
+export interface UserPreferencesResponse {
+  preferred_hosts: string[];
+}
+
+export interface UserPodcastRecord {
+  id: string;
+  task_id: string;
+  topic: string;
+  host_ids: string[];
+  status: TaskStatus;
+  url: PodcastFiles | null;
+  error?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface UserPodcastsResponse {
+  podcasts: UserPodcastRecord[];
 }

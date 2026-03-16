@@ -8,13 +8,13 @@ interface StatusDisplayProps {
 }
 
 const STATUS_MESSAGES = [
-  'מתחיל לעבוד על הפודקאסט...',
-  'יוצר מבנה פודקאסט (Blueprint)...',
-  'חוקר את הנושא...',
-  'יוצר קווי מתאר מפורטים...',
-  'כותב תסריט...',
-  'ממיר טקסט לדיבור...',
-  'משלים עיבוד...',
+  'Starting work on the podcast...',
+  'Creating podcast blueprint...',
+  'Researching the topic...',
+  'Creating detailed outlines...',
+  'Writing the script...',
+  'Converting text to speech...',
+  'Finalizing processing...',
 ];
 
 export const StatusDisplay: React.FC<StatusDisplayProps> = ({ status, error }) => {
@@ -35,10 +35,10 @@ export const StatusDisplay: React.FC<StatusDisplayProps> = ({ status, error }) =
       <div className="bg-green-50 dark:bg-green-900 border-2 border-green-500 rounded-lg p-6 text-center">
         <FaCheckCircle className="text-green-500 dark:text-green-300 mx-auto mb-3" size={48} />
         <h3 className="text-xl font-semibold text-green-800 dark:text-green-200 mb-2">
-          הפודקאסט מוכן! 🎉
+          Podcast Ready! 🎉
         </h3>
         <p className="text-green-700 dark:text-green-300">
-          הפודקאסט שלך נוצר בהצלחה וזמין להשמעה והורדה
+          Your podcast has been created successfully and is available for playback.
         </p>
       </div>
     );
@@ -49,10 +49,10 @@ export const StatusDisplay: React.FC<StatusDisplayProps> = ({ status, error }) =
       <div className="bg-red-50 dark:bg-red-900 border-2 border-red-500 rounded-lg p-6 text-center">
         <FaExclamationCircle className="text-red-500 dark:text-red-300 mx-auto mb-3" size={48} />
         <h3 className="text-xl font-semibold text-red-800 dark:text-red-200 mb-2">
-          שגיאה ביצירת הפודקאסט
+          Error Creating Podcast
         </h3>
         <p className="text-red-700 dark:text-red-300">
-          {error || 'אירעה שגיאה לא צפויה. אנא נסה שוב.'}
+          {error || 'An unexpected error occurred. Please try again.'}
         </p>
       </div>
     );
@@ -63,7 +63,7 @@ export const StatusDisplay: React.FC<StatusDisplayProps> = ({ status, error }) =
     <div className="bg-blue-50 dark:bg-blue-900 border-2 border-blue-500 rounded-lg p-6 text-center">
       <FaSpinner className="text-blue-500 dark:text-blue-300 mx-auto mb-3 animate-spin" size={48} />
       <h3 className="text-xl font-semibold text-blue-800 dark:text-blue-200 mb-2">
-        מעבד את הפודקאסט...
+        Processing Podcast...
       </h3>
       <p className="text-blue-700 dark:text-blue-300 mb-4">
         {STATUS_MESSAGES[messageIndex]}
@@ -72,7 +72,7 @@ export const StatusDisplay: React.FC<StatusDisplayProps> = ({ status, error }) =
         <div className="bg-blue-500 dark:bg-blue-400 h-full animate-pulse" style={{ width: '60%' }} />
       </div>
       <p className="text-sm text-blue-600 dark:text-blue-400 mt-3">
-        זה עשוי לקחת מספר דקות, אנא המתן...
+        This may take a few minutes, please wait...
       </p>
     </div>
   );

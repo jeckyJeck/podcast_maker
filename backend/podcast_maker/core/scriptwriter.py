@@ -43,7 +43,7 @@ class ScriptWriter:
             )
             
             current_script += llm_response.text + "\n"
-            current_script += "\n--- End of Scene ---\n\n"
+            current_script += f"\n--- End of Scene {scene_num} ---\n\n"
 
             # Accumulate token usage
             prompt_tokens += llm_response.prompt_tokens

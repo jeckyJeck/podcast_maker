@@ -1,82 +1,78 @@
-# Podcast Maker Frontend
+# 🌐 Podcast Maker Frontend
 
-פרונט-אנד לאפליקציית Podcast Maker - ממשק וובי לייצור פודקאסטים אוטומטי.
+The frontend of Podcast Maker is a React-based web application that allows users to create podcasts by simply typing a topic. It provides a real-time status tracker, an interactive audio player, and an integrated transcript viewer.
 
-## תכונות
+## ✨ Features
 
-- 📝 **הכנסת נושא פשוטה** - תיבת טקסט אינטואיטיבית להזנת נושא הפודקאסט
-- 🔄 **מעקב בזמן אמת** - רענון סטטוס כל שנייה עם הודעות עדכון דינמיות
-- 🎧 **נגן אודיו מתקדם** - השמעה ישירה עם בקרות מלאות:
-  - שליטה במהירות השמעה (0.5x - 2x)
-  - סרגל התקדמות עם אפשרות דילוג
-  - בקרת עוצמת קול
-  - תצוגת זמן נוכחי ומשך כולל
-- 💾 **הורדת קבצים** - הורדה של כל 5 הקבצים שנוצרו:
-  - `blueprint.json` - מבנה הפודקאסט
-  - `research.md` - המחקר שנערך
-  - `outline.json` - קווי המתאר
-  - `script.txt` - התסריט המלא
-  - `podcast_audio.mp3` - קובץ האודיו
-- 📱 **עיצוב רספונסיבי** - ממשק מותאם לכל גודלי מסך
-- 🌙 **תמיכה במצב כהה** - ממשק אוטומטית מתאים למצב מערכת
+- **Topic Input & Host Selection**: Easily specify the topic and choose between different AI host personalities (male/female, varied accents).
+- **Real-Time Status Tracking**: Follow the AI's progress through Research, Outlining, Scriptwriting, and Audio Synthesis with detailed live status messages.
+- **Advanced Audio Player**: 
+    - Smooth Seekbar with time markers.
+    - Play/Pause, Rewind/Fast-Forward (15s).
+    - Playback Speed control (0.5x, 1x, 1.5x, 2x).
+    - Volume control.
+- **Synchronous Transcript Viewer**: Displays the text of the podcast, highlighting the current word as it is spoken. Supports .VTT format.
+- **Asset Download Manager**: One-click download for all generated assets including Audio, Script, Research paper, and Blueprint JSON.
+- **Responsive UI**: Optimized for mobile and desktop using **Tailwind CSS**.
+- **Dark Mode**: Integrated with modern design aesthetics.
 
-## הקמת הפרויקט
+## 🛠️ Tech Stack
 
-### דרישות מקדימות
+- **React & TypeScript**: Strong typing and component-based architecture.
+- **Vite**: Modern, ultra-fast build tool.
+- **Tailwind CSS**: Utility-first styling.
+- **Axios**: HTTP client for API requests.
+- **Supabase**: Used for client-side authentication and real-time listeners.
+- **JSZip**: For bundling multiple generated assets into a single ZIP for the user.
 
-- Node.js (גרסה 18 ומעלה)
-- npm או yarn
+## 📂 Architecture
 
-### התקנה
+- `src/components/`: Modular UI components (Screens, Player, Transcript Viewer).
+- `src/context/`: Global state management for Authentication and Podcast status.
+- `src/hooks/`: Custom hooks for polling status and managing audio playback.
+- `src/services/`: API abstractions for interaction with the FastAPI backend.
+- `src/types/`: TypeScript interfaces and types for API responses and podcast metadata.
 
-```bash
-cd frontend
-npm install
-```
+## ⚡ Setup & Development
 
-### הגדרת משתני סביבה
+### Prerequisites
+- Node.js 18+
+- Active backend service running.
 
-ערוך את הקובץ `.env` ובדוק שכתובת ה-API נכונה:
+### Installation
 
-```
-VITE_API_URL=http://localhost:8000
-```
+1.  **Navigate to the frontend directory**:
+    ```bash
+    cd frontend
+    ```
 
-לסביבת ייצור, עדכן את הכתובת לשרת הייצור שלך.
+2.  **Install dependencies**:
+    ```bash
+    npm install
+    ```
 
-## הרצה
+3.  **Setup Environment Variables**:
+    Create a `frontend/.env` file:
+    ```env
+    VITE_API_BASE_URL=http://localhost:8000
+    VITE_SUPABASE_URL=your-supabase-url
+    VITE_SUPABASE_ANON_KEY=your-supabase-key
+    ```
 
-### מצב פיתוח
+4.  **Start the development server**:
+    ```bash
+    npm run dev
+    ```
 
-```bash
-npm run dev
-```
+---
 
-האתר יהיה זמין בכתובת: http://localhost:5173
+## 📸 Component Highlights
+- **`CreateScreen.tsx`**: Main entry point for starting new podcast generations.
+- **`StatusDisplay.tsx`**: Visual feedback for the multi-step AI process.
+- **`PlayerScreen.tsx`**: Integrated player and management dashboard.
+- **`TranscriptViewer.tsx`**: High-performance text-syncing component.
 
-### בניית גרסת ייצור
-
-```bash
-npm run build
-```
-
-הקבצים ייבנו בתיקייה `dist/`
-
-### תצוגה מקדימה של גרסת ייצור
-
-```bash
-npm run preview
-```
-
-## שימוש בפרונט-אנד
-
-1. **הזן נושא** - הכנס את נושא הפודקאסט שתרצה ליצור
-2. **לחץ "צור פודקאסט"** - השרת יתחיל לעבוד על הפודקאסט
-3. **המתן** - עקוב אחרי הסטטוס שמתעדכן כל שנייה
-4. **האזן והורד** - כשהפודקאסט מוכן:
-   - האזן ישירות דרך נגן האודיו
-   - שלוט במהירות השמעה לפי העדפתך
-   - הורד את כל הקבצים שנוצרו
+> **Note to user**: You can provide screenshots of the dynamic status tracker and the transcript viewer to be added here.
 
 ## מבנה הפרויקט
 

@@ -363,31 +363,3 @@ if __name__ == "__main__":
             out.write(response.audio_content)
         print(f"Saved: {output_file}")
 
-    # # Step 3: Prepare the synthesis input
-    # input_text = texttospeech.SynthesisInput(text="This is a simple test of the Google Text-to-Speech API. We will generate audio from this text and save it as an MP3 file.")
-
-    # # Step 4: Configure the voice fallback
-    # # Note: The 'name' here acts as a default, but the SSML tags will override it
-    # voice = texttospeech.VoiceSelectionParams(
-    #     language_code="en-US",
-    #     name="en-US-Chirp3-HD-Puck",
-    # )
-    # # Step 5: Audio configuration (MP3 is standard)
-    # audio_config = texttospeech.AudioConfig(
-    #     audio_encoding=texttospeech.AudioEncoding.MP3,
-    #     effects_profile_id=['telephony-class-application'] # Optional: improves clarity for phone-like audio
-    # )
-
-    # # Step 6: Send the request
-    # response = client.synthesize_speech(
-    #     input=input_text, 
-    #     voice=voice, 
-    #     audio_config=audio_config
-    # )
-
-    # # Step 7: Write the output to a file
-    # output_file = "cs_conversation.mp3"
-    # with open(output_file, "wb") as out:
-    #     out.write(response.audio_content)
-    # print(f'Success! Audio saved to {output_file}')
-

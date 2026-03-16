@@ -1258,3 +1258,1387 @@ Traceback (most recent call last):
   File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
     raise mapped_exc(message) from exc
 httpx.ConnectError: [WinError 10053] An established connection was aborted by the software in your host machine
+2026-03-14 23:50:18 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:50:18 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:50:24 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=5618
+2026-03-14 23:50:24 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=5615
+2026-03-14 23:50:24 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:50:25 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=909
+2026-03-14 23:50:25 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:50:25 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:50:26 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:50:26 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:50:26 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=829
+2026-03-14 23:50:26 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=829
+2026-03-14 23:50:26 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=826
+2026-03-14 23:50:26 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:50:26 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:50:28 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:50:28 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:50:28 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=1648
+2026-03-14 23:50:28 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=1649
+2026-03-14 23:50:29 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=3274
+2026-03-14 23:50:29 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=806
+2026-03-14 23:50:29 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:50:30 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:50:30 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:50:30 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=1636
+2026-03-14 23:50:30 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:50:30 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=2447
+2026-03-14 23:50:31 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=739
+2026-03-14 23:50:31 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:50:31 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=738
+2026-03-14 23:50:33 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=1627
+2026-03-14 23:50:33 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:50:33 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:50:33 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=2465
+2026-03-14 23:50:33 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=65
+2026-03-14 23:50:34 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=840
+2026-03-14 23:50:47 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:50:47 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=846
+2026-03-14 23:50:58 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:51:00 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=1480
+2026-03-14 23:51:17 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:51:18 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=1002
+2026-03-14 23:51:56 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:51:57 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=1097
+2026-03-14 23:51:57 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:51:58 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:51:58 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=769
+2026-03-14 23:51:58 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=712
+2026-03-14 23:52:00 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:52:00 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:52:00 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:52:02 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=1885
+2026-03-14 23:52:02 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=2039
+2026-03-14 23:52:03 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:52:03 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:52:03 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=3198
+2026-03-14 23:52:04 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:52:04 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=842
+2026-03-14 23:52:04 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=839
+2026-03-14 23:52:04 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:52:05 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:52:05 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:52:05 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=1527
+2026-03-14 23:52:06 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=1708
+2026-03-14 23:52:06 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=2467
+2026-03-14 23:52:06 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=1710
+2026-03-14 23:52:06 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:52:07 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:52:07 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:52:07 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=735
+2026-03-14 23:52:08 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=774
+2026-03-14 23:52:08 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=774
+2026-03-14 23:52:08 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:52:08 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:52:08 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:52:08 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=720
+2026-03-14 23:52:09 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=750
+2026-03-14 23:52:09 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:52:09 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=1479
+2026-03-14 23:52:10 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=713
+2026-03-14 23:52:22 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:52:23 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:52:23 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=792
+2026-03-14 23:52:24 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=717
+2026-03-14 23:52:24 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:52:25 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=815
+2026-03-14 23:52:26 INFO podcast_maker api_request method=POST path=/create-podcast/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:52:27 INFO podcast_maker api_response method=POST path=/create-podcast/ status=401 duration_ms=865
+2026-03-14 23:55:13 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:55:14 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=1011
+2026-03-14 23:55:14 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:55:14 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:55:15 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=724
+2026-03-14 23:55:15 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=725
+2026-03-14 23:55:15 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:55:15 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:55:16 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=693
+2026-03-14 23:55:16 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:55:17 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=1356
+2026-03-14 23:55:17 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=2053
+2026-03-14 23:55:17 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:55:18 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=715
+2026-03-14 23:56:32 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:32 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:37 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:37 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:37 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=4822
+2026-03-14 23:56:37 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=4820
+2026-03-14 23:56:37 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:38 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:38 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:38 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:38 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=723
+2026-03-14 23:56:39 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:39 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=811
+2026-03-14 23:56:39 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=811
+2026-03-14 23:56:39 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:39 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:40 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:40 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=755
+2026-03-14 23:56:40 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:40 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:40 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:41 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:41 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=1591
+2026-03-14 23:56:41 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=1589
+2026-03-14 23:56:41 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:41 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:41 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=2350
+2026-03-14 23:56:42 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:42 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:42 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=682
+2026-03-14 23:56:43 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:43 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:43 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:43 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=1464
+2026-03-14 23:56:43 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:43 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:43 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=721
+2026-03-14 23:56:44 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:44 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=2914
+2026-03-14 23:56:44 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:44 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=786
+2026-03-14 23:56:45 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:45 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:46 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:46 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=1535
+2026-03-14 23:56:46 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:46 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:46 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=790
+2026-03-14 23:56:46 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:46 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=3002
+2026-03-14 23:56:46 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=683
+2026-03-14 23:56:46 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:47 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:48 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:48 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:48 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=1495
+2026-03-14 23:56:48 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:48 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=2896
+2026-03-14 23:56:48 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=722
+2026-03-14 23:56:48 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:49 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:49 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=714
+2026-03-14 23:56:49 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:49 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:50 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:50 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:50 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=794
+2026-03-14 23:56:51 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:52 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:52 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=1544
+2026-03-14 23:56:52 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:52 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:53 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:53 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=3351
+2026-03-14 23:56:53 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:53 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=1033
+2026-03-14 23:56:54 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:54 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:54 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=1596
+2026-03-14 23:56:54 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:54 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:56:54 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=2631
+2026-03-14 23:56:55 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:56 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:56:56 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=1638
+2026-03-14 23:56:56 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=1637
+2026-03-14 23:57:41 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:57:42 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:57:42 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:57:42 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=856
+2026-03-14 23:57:42 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:57:43 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:57:43 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=714
+2026-03-14 23:57:43 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:57:43 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=714
+2026-03-14 23:57:43 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:57:43 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:57:43 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=735
+2026-03-14 23:57:43 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:57:44 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:57:45 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:57:45 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=2349
+2026-03-14 23:57:45 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=1608
+2026-03-14 23:57:50 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:57:52 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:57:52 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=1661
+2026-03-14 23:58:00 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:01 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:01 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=858
+2026-03-14 23:58:01 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:01 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:01 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:01 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=814
+2026-03-14 23:58:02 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:02 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:03 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:03 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=1426
+2026-03-14 23:58:03 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:04 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:04 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=2089
+2026-03-14 23:58:04 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=656
+2026-03-14 23:58:04 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:04 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:04 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:04 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:05 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:05 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=1587
+2026-03-14 23:58:05 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=1584
+2026-03-14 23:58:05 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=1580
+2026-03-14 23:58:05 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:05 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:06 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:06 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:06 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:07 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:07 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=1730
+2026-03-14 23:58:07 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=1773
+2026-03-14 23:58:07 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=1001
+2026-03-14 23:58:07 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:08 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:08 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:09 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:09 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:09 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:09 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=2657
+2026-03-14 23:58:09 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=1664
+2026-03-14 23:58:09 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:09 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=1629
+2026-03-14 23:58:10 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=895
+2026-03-14 23:58:10 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:10 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:10 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:10 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=681
+2026-03-14 23:58:11 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:11 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:11 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:11 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=2282
+2026-03-14 23:58:12 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:12 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=1425
+2026-03-14 23:58:12 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=699
+2026-03-14 23:58:12 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:12 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:13 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:13 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=2028
+2026-03-14 23:58:13 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:13 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:13 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=654
+2026-03-14 23:58:14 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:14 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=767
+2026-03-14 23:58:14 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:15 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:15 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:15 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:15 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=1584
+2026-03-14 23:58:16 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:16 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=3005
+2026-03-14 23:58:16 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=654
+2026-03-14 23:58:16 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:17 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:17 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=778
+2026-03-14 23:58:17 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:17 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:17 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:17 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:17 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=720
+2026-03-14 23:58:18 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:19 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:19 INFO podcast_maker api_response method=GET path=/me/podcasts status=401 duration_ms=1629
+2026-03-14 23:58:19 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:19 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:20 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:20 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=3174
+2026-03-14 23:58:20 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=820
+2026-03-14 23:58:21 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:21 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=1644
+2026-03-14 23:58:21 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:21 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-14 23:58:21 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:22 WARNING podcast_maker auth_failed reason=supabase_validation_exception error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-14 23:58:22 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=1527
+2026-03-14 23:58:22 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=1546
+2026-03-15 00:12:21 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 00:12:21 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 00:12:24 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 06:58:16 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 06:58:16 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 06:58:20 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=24358783
+2026-03-15 06:58:22 WARNING podcast_maker auth_failed reason=supabase_validation_exception error=invalid JWT: unable to parse or verify signature, token has invalid claims: token is expired
+2026-03-15 06:58:22 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=6737
+2026-03-15 06:58:23 WARNING podcast_maker auth_failed reason=supabase_validation_exception error=invalid JWT: unable to parse or verify signature, token has invalid claims: token is expired
+2026-03-15 06:58:23 INFO podcast_maker api_response method=PUT path=/me/preferences status=401 duration_ms=7074
+2026-03-15 06:58:24 INFO podcast_maker api_request method=GET path=/ client=10.0.0.138 origin=None
+2026-03-15 06:58:24 INFO podcast_maker api_response method=GET path=/ status=404 duration_ms=2
+2026-03-15 08:03:36 INFO podcast_maker api_request method=GET path=/ client=10.0.0.138 origin=None
+2026-03-15 08:03:36 INFO podcast_maker api_response method=GET path=/ status=404 duration_ms=1
+2026-03-15 08:06:43 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:06:43 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:06:45 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:06:45 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:06:46 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:06:46 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=3599
+2026-03-15 08:06:46 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=3598
+2026-03-15 08:06:46 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:06:46 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:06:47 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:06:47 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:06:47 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=1002
+2026-03-15 08:06:47 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1002
+2026-03-15 08:06:47 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:06:48 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:06:48 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:06:49 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:06:49 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=1328
+2026-03-15 08:06:49 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:06:50 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1028
+2026-03-15 08:06:50 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:06:50 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:06:50 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=4
+2026-03-15 08:06:50 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:06:50 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:06:51 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1035
+2026-03-15 08:06:51 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:06:52 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:06:52 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:06:53 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:06:53 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:06:54 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:06:54 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:06:55 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:06:55 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:06:56 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:06:56 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:06:57 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:06:57 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:06:58 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:08:07 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:08:07 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:08:08 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:08:10 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:08:10 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=2862
+2026-03-15 08:08:10 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:08:11 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:08:11 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:11:43 WARNING podcast_maker supabase_client_initialized auth_mode=anon_key writes_may_fail_due_to_rls=true
+2026-03-15 08:12:58 WARNING podcast_maker supabase_client_initialized auth_mode=anon_key writes_may_fail_due_to_rls=true
+2026-03-15 08:15:39 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:15:39 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:15:42 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:15:43 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:15:43 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=4312
+2026-03-15 08:15:43 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:15:44 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:15:44 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:15:45 INFO podcast_maker api_response method=PUT path=/me/preferences status=503 duration_ms=1489
+2026-03-15 08:15:47 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:15:47 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:15:48 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:15:48 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:15:49 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1073
+2026-03-15 08:15:49 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:15:49 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:15:50 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'new row violates row-level security policy for table "profiles"', 'code': '42501', 'hint': None, 'details': None}
+2026-03-15 08:15:50 INFO podcast_maker api_response method=PUT path=/me/preferences status=503 duration_ms=1392
+2026-03-15 08:18:25 INFO podcast_maker supabase_client_initialized auth_mode=service_role
+2026-03-15 08:18:38 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:18:41 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:18:41 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=2820
+2026-03-15 08:18:42 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1076
+2026-03-15 08:18:42 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:18:42 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:18:44 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:18:44 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=2134
+2026-03-15 08:18:44 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=2132
+2026-03-15 08:18:44 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=9
+2026-03-15 08:18:44 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:18:45 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:18:45 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1155
+2026-03-15 08:18:45 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:18:45 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:18:45 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=6
+2026-03-15 08:18:47 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'null value in column "user_name" of relation "profiles" violates not-null constraint', 'code': '23502', 'hint': None, 'details': 'Failing row contains (null, {"preferred_hosts": ["sarah_curious", "mike_expert"]}, 5dc60e91-7e9d-4151-8821-2caa1b4dcef9).'}
+2026-03-15 08:18:47 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=2277
+2026-03-15 08:18:47 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:18:47 INFO podcast_maker api_response method=PUT path=/me/preferences status=502 duration_ms=2297
+2026-03-15 08:18:47 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:18:47 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=7
+2026-03-15 08:18:48 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:18:48 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=977
+2026-03-15 08:18:49 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:18:49 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=981
+2026-03-15 08:18:49 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=7
+2026-03-15 08:18:49 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:18:50 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'null value in column "user_name" of relation "profiles" violates not-null constraint', 'code': '23502', 'hint': None, 'details': 'Failing row contains (null, {"preferred_hosts": ["sarah_curious", "mike_expert"]}, 5dc60e91-7e9d-4151-8821-2caa1b4dcef9).'}
+2026-03-15 08:18:51 INFO podcast_maker api_response method=PUT path=/me/preferences status=502 duration_ms=1284
+2026-03-15 08:18:51 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:18:52 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=955
+2026-03-15 08:18:52 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:18:52 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'null value in column "user_name" of relation "profiles" violates not-null constraint', 'code': '23502', 'hint': None, 'details': 'Failing row contains (null, {"preferred_hosts": ["sarah_curious", "mike_expert"]}, 5dc60e91-7e9d-4151-8821-2caa1b4dcef9).'}
+2026-03-15 08:18:53 INFO podcast_maker api_response method=PUT path=/me/preferences status=502 duration_ms=1299
+2026-03-15 08:18:53 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:18:54 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1016
+2026-03-15 08:18:54 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:18:55 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'null value in column "user_name" of relation "profiles" violates not-null constraint', 'code': '23502', 'hint': None, 'details': 'Failing row contains (null, {"preferred_hosts": ["sarah_curious", "mike_expert"]}, 5dc60e91-7e9d-4151-8821-2caa1b4dcef9).'}
+2026-03-15 08:18:55 INFO podcast_maker api_response method=PUT path=/me/preferences status=502 duration_ms=1338
+2026-03-15 08:18:55 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:18:56 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'null value in column "user_name" of relation "profiles" violates not-null constraint', 'code': '23502', 'hint': None, 'details': 'Failing row contains (null, {"preferred_hosts": ["sarah_curious", "mike_expert"]}, 5dc60e91-7e9d-4151-8821-2caa1b4dcef9).'}
+2026-03-15 08:18:57 INFO podcast_maker api_response method=PUT path=/me/preferences status=502 duration_ms=1438
+2026-03-15 08:18:57 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:18:58 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'null value in column "user_name" of relation "profiles" violates not-null constraint', 'code': '23502', 'hint': None, 'details': 'Failing row contains (null, {"preferred_hosts": ["sarah_curious", "mike_expert"]}, 5dc60e91-7e9d-4151-8821-2caa1b4dcef9).'}
+2026-03-15 08:18:58 INFO podcast_maker api_response method=PUT path=/me/preferences status=502 duration_ms=1337
+2026-03-15 08:18:58 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:18:59 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'null value in column "user_name" of relation "profiles" violates not-null constraint', 'code': '23502', 'hint': None, 'details': 'Failing row contains (null, {"preferred_hosts": ["sarah_curious", "mike_expert"]}, 5dc60e91-7e9d-4151-8821-2caa1b4dcef9).'}
+2026-03-15 08:18:59 INFO podcast_maker api_response method=PUT path=/me/preferences status=502 duration_ms=1301
+2026-03-15 08:18:59 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:19:00 WARNING podcast_maker profiles_ensure_failed user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9 error={'message': 'null value in column "user_name" of relation "profiles" violates not-null constraint', 'code': '23502', 'hint': None, 'details': 'Failing row contains (null, {"preferred_hosts": ["sarah_curious", "mike_expert"]}, 5dc60e91-7e9d-4151-8821-2caa1b4dcef9).'}
+2026-03-15 08:19:01 INFO podcast_maker api_response method=PUT path=/me/preferences status=502 duration_ms=1271
+2026-03-15 08:19:53 INFO podcast_maker supabase_client_initialized auth_mode=service_role
+2026-03-15 08:20:11 INFO podcast_maker supabase_client_initialized auth_mode=service_role
+2026-03-15 08:21:14 INFO podcast_maker supabase_client_initialized auth_mode=service_role
+2026-03-15 08:21:41 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:21:43 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:21:44 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=3695
+2026-03-15 08:21:45 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1527
+2026-03-15 08:21:45 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:21:45 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:21:45 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:21:47 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=2179
+2026-03-15 08:21:47 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=2174
+2026-03-15 08:21:47 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=2226
+2026-03-15 08:21:47 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:21:47 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:21:48 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:21:48 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1047
+2026-03-15 08:21:49 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=1303
+2026-03-15 08:21:49 INFO podcast_maker api_response method=PUT path=/me/preferences status=200 duration_ms=2362
+2026-03-15 08:21:49 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:21:50 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:21:50 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:21:50 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=991
+2026-03-15 08:21:51 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=1022
+2026-03-15 08:21:51 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1024
+2026-03-15 08:21:51 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:21:52 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:21:52 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:21:52 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=979
+2026-03-15 08:21:52 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:21:52 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=13
+2026-03-15 08:21:55 INFO podcast_maker api_response method=PUT path=/me/preferences status=200 duration_ms=2606
+2026-03-15 08:21:55 INFO podcast_maker api_response method=PUT path=/me/preferences status=200 duration_ms=2596
+2026-03-15 08:21:55 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:21:56 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=960
+2026-03-15 08:21:56 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:21:57 INFO podcast_maker api_response method=PUT path=/me/preferences status=200 duration_ms=1295
+2026-03-15 08:21:57 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:21:58 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:21:58 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=980
+2026-03-15 08:22:00 INFO podcast_maker api_response method=PUT path=/me/preferences status=200 duration_ms=1315
+2026-03-15 08:22:00 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:22:00 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:22:02 INFO podcast_maker api_response method=PUT path=/me/preferences status=200 duration_ms=2593
+2026-03-15 08:22:02 INFO podcast_maker api_response method=PUT path=/me/preferences status=200 duration_ms=2594
+2026-03-15 08:22:02 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:22:04 INFO podcast_maker api_response method=PUT path=/me/preferences status=200 duration_ms=1275
+2026-03-15 08:26:22 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:26:22 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:26:24 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:26:30 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=7110
+2026-03-15 08:26:30 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=7169
+2026-03-15 08:26:30 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:26:30 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:26:37 WARNING podcast_maker auth_failed reason=supabase_validation_exception error=timed out
+2026-03-15 08:26:37 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=7221
+2026-03-15 08:26:37 INFO podcast_maker api_response method=GET path=/me/preferences status=401 duration_ms=7221
+2026-03-15 08:26:37 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:26:37 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:26:39 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=1649
+2026-03-15 08:26:39 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1650
+2026-03-15 08:26:39 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:26:39 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:26:39 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=3
+2026-03-15 08:26:40 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1066
+2026-03-15 08:27:23 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:27:25 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1276
+2026-03-15 08:27:25 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:27:26 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1063
+2026-03-15 08:27:34 INFO podcast_maker api_request method=POST path=/create-podcast/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:27:35 INFO podcast_maker create_podcast task_id=2da2c42b-4a8e-4b7b-bc6b-e4404aee88f8 topic=FastAPI host_ids=['mike_expert'] format=solo user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9
+2026-03-15 08:27:35 INFO podcast_maker api_response method=POST path=/create-podcast/ status=200 duration_ms=759
+2026-03-15 08:27:35 INFO podcast_maker api_request method=GET path=/status/2da2c42b-4a8e-4b7b-bc6b-e4404aee88f8 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:27:35 INFO podcast_maker api_response method=GET path=/status/2da2c42b-4a8e-4b7b-bc6b-e4404aee88f8 status=200 duration_ms=677
+2026-03-15 08:27:36 INFO podcast_maker GeminiAdapter.generate_json called: stage=architect, model=gemini-2.5-flash, temperature=0.7
+2026-03-15 08:27:40 INFO podcast_maker api_request method=GET path=/status/2da2c42b-4a8e-4b7b-bc6b-e4404aee88f8 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:27:40 INFO podcast_maker api_response method=GET path=/status/2da2c42b-4a8e-4b7b-bc6b-e4404aee88f8 status=200 duration_ms=685
+2026-03-15 08:27:45 INFO podcast_maker api_request method=GET path=/status/2da2c42b-4a8e-4b7b-bc6b-e4404aee88f8 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:27:45 INFO podcast_maker api_response method=GET path=/status/2da2c42b-4a8e-4b7b-bc6b-e4404aee88f8 status=200 duration_ms=676
+2026-03-15 08:27:50 INFO podcast_maker api_request method=GET path=/status/2da2c42b-4a8e-4b7b-bc6b-e4404aee88f8 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:27:50 INFO podcast_maker api_response method=GET path=/status/2da2c42b-4a8e-4b7b-bc6b-e4404aee88f8 status=200 duration_ms=671
+2026-03-15 08:27:50 INFO podcast_maker GeminiAdapter.generate_json usage: stage=architect, prompt_tokens=1866, response_tokens=1645, total_tokens=4995
+2026-03-15 08:27:50 INFO podcast_maker GeminiAdapter.generate_json success: stage=architect
+2026-03-15 08:27:53 ERROR podcast_maker pipeline_failed task_id=2da2c42b-4a8e-4b7b-bc6b-e4404aee88f8 error={'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\storage3\_sync\file_api.py", line 80, in _request
+    response.raise_for_status()
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\httpx\_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '400 Bad Request' for url 'https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/2da2c42b-4a8e-4b7b-bc6b-e4404aee88f8/FastAPI/blueprint.json'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\app\routers\podcasts.py", line 112, in _run_podcast_pipeline
+    final_url: dict = orchestrator.process_topic()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\podcast_maker\core\orchestrator.py", line 109, in process_topic
+    file_urls["blueprint"] = self.storage_provider.save_file(str(blueprint_file), self._build_storage_path(folder_name, "blueprint.json"))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\podcast_maker\services\supabase_storage_provider.py", line 22, in save_file
+    self.client.storage.from_(self.bucket_name).upload(
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\storage3\_sync\file_api.py", line 592, in upload
+    return self._upload_or_update("POST", path_parts, file, file_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\storage3\_sync\file_api.py", line 564, in _upload_or_update
+    response = self._request(
+               ^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\repos\podcastMaker\backend\myEnv\Lib\site-packages\storage3\_sync\file_api.py", line 84, in _request
+    raise StorageApiError(
+storage3.exceptions.StorageApiError: {'statusCode': 404, 'error': Bucket not found, 'message': Bucket not found}
+2026-03-15 08:27:55 INFO podcast_maker api_request method=GET path=/status/2da2c42b-4a8e-4b7b-bc6b-e4404aee88f8 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:27:55 INFO podcast_maker api_response method=GET path=/status/2da2c42b-4a8e-4b7b-bc6b-e4404aee88f8 status=200 duration_ms=681
+2026-03-15 08:32:08 INFO podcast_maker api_request method=GET path=/status/2da2c42b-4a8e-4b7b-bc6b-e4404aee88f8 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:32:10 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:32:11 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:32:11 INFO podcast_maker api_response method=GET path=/status/2da2c42b-4a8e-4b7b-bc6b-e4404aee88f8 status=200 duration_ms=2216
+2026-03-15 08:32:11 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:32:11 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1082
+2026-03-15 08:32:12 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=1047
+2026-03-15 08:32:12 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1045
+2026-03-15 08:32:13 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:32:14 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:32:15 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=2198
+2026-03-15 08:32:15 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1151
+2026-03-15 08:37:46 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:37:48 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:37:49 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=2717
+2026-03-15 08:37:49 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1173
+2026-03-15 08:42:39 INFO podcast_maker supabase_client_initialized auth_mode=service_role
+2026-03-15 08:43:17 INFO podcast_maker supabase_client_initialized auth_mode=service_role
+2026-03-15 08:48:04 INFO podcast_maker supabase_client_initialized auth_mode=service_role
+2026-03-15 08:50:10 INFO podcast_maker supabase_client_initialized auth_mode=service_role
+2026-03-15 08:51:52 INFO podcast_maker supabase_client_initialized auth_mode=service_role
+2026-03-15 08:51:59 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:52:02 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:52:03 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=3906
+2026-03-15 08:52:03 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1079
+2026-03-15 08:52:14 INFO podcast_maker api_request method=POST path=/create-podcast/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:52:15 INFO podcast_maker create_podcast task_id=38dcd2e2-d441-4358-965b-b66dfafc2083 topic=FastAPI host_ids=['mike_expert'] format=solo user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9
+2026-03-15 08:52:15 INFO podcast_maker api_response method=POST path=/create-podcast/ status=200 duration_ms=729
+2026-03-15 08:52:15 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:52:16 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=667
+2026-03-15 08:52:17 INFO podcast_maker GeminiAdapter.generate_json called: stage=architect, model=gemini-2.5-flash, temperature=0.7
+2026-03-15 08:52:20 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:52:21 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=647
+2026-03-15 08:52:25 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:52:26 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=677
+2026-03-15 08:52:30 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:52:31 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=642
+2026-03-15 08:52:35 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:52:36 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=664
+2026-03-15 08:52:38 INFO podcast_maker GeminiAdapter.generate_json usage: stage=architect, prompt_tokens=1866, response_tokens=1762, total_tokens=6678
+2026-03-15 08:52:38 INFO podcast_maker GeminiAdapter.generate_json success: stage=architect
+2026-03-15 08:52:40 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:52:41 INFO podcast_maker agent_done agent=architect url=https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/38dcd2e2-d441-4358-965b-b66dfafc2083/FastAPI/blueprint.json
+2026-03-15 08:52:41 INFO podcast_maker GeminiAdapter.generate_text called: stage=researcher, model=gemini-2.5-flash, temperature=0.7
+2026-03-15 08:52:41 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=697
+2026-03-15 08:52:45 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:52:46 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=683
+2026-03-15 08:52:50 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:52:51 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=695
+2026-03-15 08:52:55 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:52:55 INFO podcast_maker GeminiAdapter.generate_text success: stage=researcher, prompt_tokens=2921, response_tokens=1752, total_tokens=9647
+2026-03-15 08:52:55 INFO podcast_maker GeminiAdapter.generate_text called: stage=researcher, model=gemini-2.5-flash, temperature=0.7
+2026-03-15 08:52:56 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=659
+2026-03-15 08:53:00 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:53:01 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=694
+2026-03-15 08:53:05 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:53:06 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=720
+2026-03-15 08:53:10 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:53:11 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=649
+2026-03-15 08:53:15 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:53:16 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=666
+2026-03-15 08:53:20 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:53:21 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=697
+2026-03-15 08:53:25 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:53:26 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=665
+2026-03-15 08:53:30 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:53:31 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=647
+2026-03-15 08:53:35 INFO podcast_maker GeminiAdapter.generate_text success: stage=researcher, prompt_tokens=3141, response_tokens=7587, total_tokens=15487
+2026-03-15 08:53:35 INFO podcast_maker GeminiAdapter.generate_text called: stage=researcher, model=gemini-2.5-flash, temperature=0.7
+2026-03-15 08:53:35 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:53:36 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=696
+2026-03-15 08:53:40 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:53:41 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=682
+2026-03-15 08:53:45 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:53:46 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=674
+2026-03-15 08:53:50 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:53:51 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=722
+2026-03-15 08:53:55 INFO podcast_maker GeminiAdapter.generate_text success: stage=researcher, prompt_tokens=2940, response_tokens=2308, total_tokens=12089
+2026-03-15 08:53:55 INFO podcast_maker Researcher total usage: prompt_tokens=9002, response_tokens=11647, total_tokens=37223
+2026-03-15 08:53:55 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:53:56 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=669
+2026-03-15 08:53:56 INFO podcast_maker agent_done agent=researcher url=https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/38dcd2e2-d441-4358-965b-b66dfafc2083/FastAPI/research.md
+2026-03-15 08:53:56 INFO podcast_maker GeminiAdapter.generate_json called: stage=outliner, model=gemini-2.5-flash, temperature=0.7
+2026-03-15 08:54:00 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:54:01 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=666
+2026-03-15 08:54:05 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:54:06 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=700
+2026-03-15 08:54:10 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:54:11 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=653
+2026-03-15 08:54:15 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:54:16 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=661
+2026-03-15 08:54:20 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:54:20 INFO podcast_maker GeminiAdapter.generate_json usage: stage=outliner, prompt_tokens=17844, response_tokens=2117, total_tokens=23587
+2026-03-15 08:54:20 INFO podcast_maker GeminiAdapter.generate_json success: stage=outliner
+2026-03-15 08:54:21 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=698
+2026-03-15 08:54:21 INFO podcast_maker agent_done agent=outliner url=https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/38dcd2e2-d441-4358-965b-b66dfafc2083/FastAPI/outline.json
+2026-03-15 08:54:21 INFO podcast_maker GeminiAdapter.generate_text called: stage=scriptwriter, model=gemini-2.5-flash, temperature=0.8
+2026-03-15 08:54:25 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:54:26 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=663
+2026-03-15 08:54:30 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:54:31 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=656
+2026-03-15 08:54:35 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:54:36 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=658
+2026-03-15 08:54:40 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:54:41 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=670
+2026-03-15 08:54:44 INFO podcast_maker GeminiAdapter.generate_text success: stage=scriptwriter, prompt_tokens=4324, response_tokens=272, total_tokens=9621
+2026-03-15 08:54:44 INFO podcast_maker GeminiAdapter.generate_text called: stage=scriptwriter, model=gemini-2.5-flash, temperature=0.8
+2026-03-15 08:54:45 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:54:46 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=731
+2026-03-15 08:54:50 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:54:51 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=733
+2026-03-15 08:54:55 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:54:56 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=683
+2026-03-15 08:55:00 INFO podcast_maker GeminiAdapter.generate_text success: stage=scriptwriter, prompt_tokens=4603, response_tokens=531, total_tokens=8056
+2026-03-15 08:55:00 INFO podcast_maker GeminiAdapter.generate_text called: stage=scriptwriter, model=gemini-2.5-flash, temperature=0.8
+2026-03-15 08:55:00 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:55:01 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=695
+2026-03-15 08:55:05 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:55:06 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=674
+2026-03-15 08:55:09 INFO podcast_maker GeminiAdapter.generate_text success: stage=scriptwriter, prompt_tokens=5141, response_tokens=685, total_tokens=7073
+2026-03-15 08:55:09 INFO podcast_maker GeminiAdapter.generate_text called: stage=scriptwriter, model=gemini-2.5-flash, temperature=0.8
+2026-03-15 08:55:10 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:55:11 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=679
+2026-03-15 08:55:15 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:55:16 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=751
+2026-03-15 08:55:20 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:55:21 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=685
+2026-03-15 08:55:24 INFO podcast_maker GeminiAdapter.generate_text success: stage=scriptwriter, prompt_tokens=5833, response_tokens=751, total_tokens=9394
+2026-03-15 08:55:24 INFO podcast_maker ScriptWriter total usage: prompt_tokens=19901, response_tokens=2239, total_tokens=34144
+2026-03-15 08:55:25 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:55:26 INFO podcast_maker agent_done agent=scriptwriter url=https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/38dcd2e2-d441-4358-965b-b66dfafc2083/FastAPI/script.txt
+2026-03-15 08:55:26 INFO podcast_maker Starting text-to-speech generation with timestamps...
+2026-03-15 08:55:26 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=714
+2026-03-15 08:55:30 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:55:31 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=849
+2026-03-15 08:55:35 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:55:36 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=674
+2026-03-15 08:55:40 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:55:41 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=697
+2026-03-15 08:55:45 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:55:46 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=674
+2026-03-15 08:55:50 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:55:51 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=709
+2026-03-15 08:55:55 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:55:56 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=660
+2026-03-15 08:56:00 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:56:01 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=653
+2026-03-15 08:56:05 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:56:06 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=651
+2026-03-15 08:56:10 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:56:11 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=720
+2026-03-15 08:56:15 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:56:16 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=642
+2026-03-15 08:56:20 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:56:21 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=658
+2026-03-15 08:56:25 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:56:26 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=754
+2026-03-15 08:56:30 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:56:31 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=656
+2026-03-15 08:56:35 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:56:36 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=664
+2026-03-15 08:56:40 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:56:41 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=699
+2026-03-15 08:56:45 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:56:46 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=655
+2026-03-15 08:56:50 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:56:51 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=663
+2026-03-15 08:56:55 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:56:56 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=660
+2026-03-15 08:57:00 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:57:01 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=657
+2026-03-15 08:57:04 INFO podcast_maker Done generating audio with timestamps. Total characters: 6190, Segments: 118
+2026-03-15 08:57:05 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:57:06 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=669
+2026-03-15 08:57:10 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:57:11 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=702
+2026-03-15 08:57:11 INFO podcast_maker transcript_done format=json url=https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/38dcd2e2-d441-4358-965b-b66dfafc2083/FastAPI/transcript.json
+2026-03-15 08:57:12 INFO podcast_maker transcript_done format=vtt url=https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/38dcd2e2-d441-4358-965b-b66dfafc2083/FastAPI/transcript.vtt
+2026-03-15 08:57:12 INFO podcast_maker pipeline_completed task_id=38dcd2e2-d441-4358-965b-b66dfafc2083 urls={'blueprint': 'https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/38dcd2e2-d441-4358-965b-b66dfafc2083/FastAPI/blueprint.json', 'research': 'https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/38dcd2e2-d441-4358-965b-b66dfafc2083/FastAPI/research.md', 'outline': 'https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/38dcd2e2-d441-4358-965b-b66dfafc2083/FastAPI/outline.json', 'script': 'https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/38dcd2e2-d441-4358-965b-b66dfafc2083/FastAPI/script.txt', 'audio': 'https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/38dcd2e2-d441-4358-965b-b66dfafc2083/FastAPI/podcast_audio.mp3', 'transcript': 'https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/38dcd2e2-d441-4358-965b-b66dfafc2083/FastAPI/transcript.json', 'transcript_vtt': 'https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/38dcd2e2-d441-4358-965b-b66dfafc2083/FastAPI/transcript.vtt'}
+2026-03-15 08:57:15 INFO podcast_maker api_request method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:57:16 INFO podcast_maker api_response method=GET path=/status/38dcd2e2-d441-4358-965b-b66dfafc2083 status=200 duration_ms=655
+2026-03-15 08:57:16 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 08:57:17 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1028
+2026-03-15 09:04:54 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:04:56 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:04:57 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=2681
+2026-03-15 09:04:57 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1057
+2026-03-15 09:05:25 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:05:26 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1383
+2026-03-15 09:05:26 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:05:27 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1125
+2026-03-15 09:25:22 INFO podcast_maker supabase_client_initialized auth_mode=service_role
+2026-03-15 09:25:45 INFO podcast_maker supabase_client_initialized auth_mode=service_role
+2026-03-15 09:26:28 INFO podcast_maker supabase_client_initialized auth_mode=service_role
+2026-03-15 09:27:33 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:27:37 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:27:38 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=4345
+2026-03-15 09:27:38 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1025
+2026-03-15 09:28:05 INFO podcast_maker api_request method=POST path=/create-podcast/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:28:06 INFO podcast_maker create_podcast task_id=7baa97c7-261c-4de5-be11-b28761caee8e topic=FastAPI host_ids=['alex_skeptic'] format=solo user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9
+2026-03-15 09:28:06 INFO podcast_maker api_response method=POST path=/create-podcast/ status=200 duration_ms=778
+2026-03-15 09:28:06 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:28:07 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=683
+2026-03-15 09:28:08 INFO podcast_maker GeminiAdapter.generate_json called: stage=architect, model=gemini-2.5-flash, temperature=0.7
+2026-03-15 09:28:11 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:28:12 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=694
+2026-03-15 09:28:16 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:28:17 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=668
+2026-03-15 09:28:20 INFO podcast_maker GeminiAdapter.generate_json usage: stage=architect, prompt_tokens=1866, response_tokens=1570, total_tokens=4779
+2026-03-15 09:28:20 INFO podcast_maker GeminiAdapter.generate_json success: stage=architect
+2026-03-15 09:28:21 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:28:22 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=660
+2026-03-15 09:28:23 INFO podcast_maker agent_done agent=architect url=https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/7baa97c7-261c-4de5-be11-b28761caee8e/FastAPI/blueprint.json
+2026-03-15 09:28:23 INFO podcast_maker GeminiAdapter.generate_text called: stage=researcher, model=gemini-2.5-flash, temperature=0.7
+2026-03-15 09:28:26 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:28:27 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=1216
+2026-03-15 09:28:31 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:28:32 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=668
+2026-03-15 09:28:36 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:28:37 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=1188
+2026-03-15 09:28:41 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:28:42 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=793
+2026-03-15 09:28:44 INFO podcast_maker GeminiAdapter.generate_text success: stage=researcher, prompt_tokens=2839, response_tokens=3126, total_tokens=11528
+2026-03-15 09:28:44 INFO podcast_maker GeminiAdapter.generate_text called: stage=researcher, model=gemini-2.5-flash, temperature=0.7
+2026-03-15 09:28:46 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:28:47 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=667
+2026-03-15 09:28:51 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:28:52 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=662
+2026-03-15 09:28:56 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:28:57 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=665
+2026-03-15 09:29:01 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:29:02 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=660
+2026-03-15 09:29:06 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:29:07 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=682
+2026-03-15 09:29:11 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:29:12 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=665
+2026-03-15 09:29:16 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:29:17 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=658
+2026-03-15 09:29:21 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:29:22 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=667
+2026-03-15 09:29:26 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:29:27 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=661
+2026-03-15 09:29:31 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:29:32 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=667
+2026-03-15 09:29:36 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:29:37 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=655
+2026-03-15 09:29:41 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:29:42 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=663
+2026-03-15 09:29:46 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:29:47 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=689
+2026-03-15 09:29:51 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:29:52 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=656
+2026-03-15 09:29:56 INFO podcast_maker GeminiAdapter.generate_text success: stage=researcher, prompt_tokens=3052, response_tokens=2891, total_tokens=31898
+2026-03-15 09:29:56 INFO podcast_maker GeminiAdapter.generate_text called: stage=researcher, model=gemini-2.5-flash, temperature=0.7
+2026-03-15 09:29:56 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:29:57 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=670
+2026-03-15 09:30:01 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:30:02 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=681
+2026-03-15 09:30:06 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:30:07 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=813
+2026-03-15 09:30:11 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:30:12 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=687
+2026-03-15 09:30:16 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:30:17 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=720
+2026-03-15 09:30:21 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:30:22 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=683
+2026-03-15 09:30:23 INFO podcast_maker GeminiAdapter.generate_text success: stage=researcher, prompt_tokens=2858, response_tokens=1810, total_tokens=13540
+2026-03-15 09:30:23 INFO podcast_maker Researcher total usage: prompt_tokens=8749, response_tokens=7827, total_tokens=56966
+2026-03-15 09:30:25 INFO podcast_maker agent_done agent=researcher url=https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/7baa97c7-261c-4de5-be11-b28761caee8e/FastAPI/research.md
+2026-03-15 09:30:25 INFO podcast_maker GeminiAdapter.generate_json called: stage=outliner, model=gemini-2.5-flash, temperature=0.7
+2026-03-15 09:30:26 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:30:27 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=670
+2026-03-15 09:30:31 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:30:32 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=753
+2026-03-15 09:30:36 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:30:37 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=680
+2026-03-15 09:30:41 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:30:42 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=708
+2026-03-15 09:30:46 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:30:47 INFO podcast_maker GeminiAdapter.generate_json usage: stage=outliner, prompt_tokens=13508, response_tokens=2154, total_tokens=18389
+2026-03-15 09:30:47 INFO podcast_maker GeminiAdapter.generate_json success: stage=outliner
+2026-03-15 09:30:47 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=708
+2026-03-15 09:30:47 INFO podcast_maker agent_done agent=outliner url=https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/7baa97c7-261c-4de5-be11-b28761caee8e/FastAPI/outline.json
+2026-03-15 09:30:47 INFO podcast_maker GeminiAdapter.generate_text called: stage=scriptwriter, model=gemini-2.5-flash, temperature=0.8
+2026-03-15 09:30:51 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:30:52 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=686
+2026-03-15 09:30:56 INFO podcast_maker GeminiAdapter.generate_text success: stage=scriptwriter, prompt_tokens=13889, response_tokens=373, total_tokens=15413
+2026-03-15 09:30:56 INFO podcast_maker GeminiAdapter.generate_text called: stage=scriptwriter, model=gemini-2.5-flash, temperature=0.8
+2026-03-15 09:30:56 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:30:57 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=682
+2026-03-15 09:31:01 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:31:02 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=681
+2026-03-15 09:31:03 INFO podcast_maker GeminiAdapter.generate_text success: stage=scriptwriter, prompt_tokens=14271, response_tokens=614, total_tokens=15745
+2026-03-15 09:31:03 INFO podcast_maker GeminiAdapter.generate_text called: stage=scriptwriter, model=gemini-2.5-flash, temperature=0.8
+2026-03-15 09:31:06 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:31:07 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=699
+2026-03-15 09:31:11 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:31:12 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=684
+2026-03-15 09:31:16 INFO podcast_maker GeminiAdapter.generate_text success: stage=scriptwriter, prompt_tokens=14894, response_tokens=713, total_tokens=17236
+2026-03-15 09:31:16 INFO podcast_maker GeminiAdapter.generate_text called: stage=scriptwriter, model=gemini-2.5-flash, temperature=0.8
+2026-03-15 09:31:16 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:31:17 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=706
+2026-03-15 09:31:21 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:31:22 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=678
+2026-03-15 09:31:26 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:31:27 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=687
+2026-03-15 09:31:31 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:31:32 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=697
+2026-03-15 09:31:36 INFO podcast_maker GeminiAdapter.generate_text success: stage=scriptwriter, prompt_tokens=15616, response_tokens=240, total_tokens=17838
+2026-03-15 09:31:36 INFO podcast_maker ScriptWriter total usage: prompt_tokens=58670, response_tokens=1940, total_tokens=66232
+2026-03-15 09:31:36 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:31:37 INFO podcast_maker agent_done agent=scriptwriter url=https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/7baa97c7-261c-4de5-be11-b28761caee8e/FastAPI/script.txt
+2026-03-15 09:31:37 INFO podcast_maker Starting text-to-speech generation with timestamps...
+2026-03-15 09:31:37 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=815
+2026-03-15 09:31:41 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:31:42 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=664
+2026-03-15 09:31:46 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:31:47 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=728
+2026-03-15 09:31:51 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:31:52 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=670
+2026-03-15 09:31:56 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:31:57 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=665
+2026-03-15 09:32:01 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:32:02 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=667
+2026-03-15 09:32:06 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:32:07 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=672
+2026-03-15 09:32:11 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:32:12 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=668
+2026-03-15 09:32:16 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:32:17 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=667
+2026-03-15 09:32:21 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:32:22 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=721
+2026-03-15 09:32:26 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:32:27 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=661
+2026-03-15 09:32:31 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:32:32 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=690
+2026-03-15 09:32:36 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:32:37 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=751
+2026-03-15 09:32:41 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:32:42 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=670
+2026-03-15 09:32:46 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:32:47 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=711
+2026-03-15 09:32:51 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:32:52 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=650
+2026-03-15 09:32:53 INFO podcast_maker Done generating audio with timestamps. Total characters: 5802, Segments: 89
+2026-03-15 09:32:56 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:32:57 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=654
+2026-03-15 09:33:01 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:33:02 INFO podcast_maker transcript_done format=json url=https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/7baa97c7-261c-4de5-be11-b28761caee8e/FastAPI/transcript.json
+2026-03-15 09:33:02 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=657
+2026-03-15 09:33:02 INFO podcast_maker transcript_done format=vtt url=https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/7baa97c7-261c-4de5-be11-b28761caee8e/FastAPI/transcript.vtt
+2026-03-15 09:33:02 INFO podcast_maker pipeline_completed task_id=7baa97c7-261c-4de5-be11-b28761caee8e urls={'blueprint': 'https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/7baa97c7-261c-4de5-be11-b28761caee8e/FastAPI/blueprint.json', 'research': 'https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/7baa97c7-261c-4de5-be11-b28761caee8e/FastAPI/research.md', 'outline': 'https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/7baa97c7-261c-4de5-be11-b28761caee8e/FastAPI/outline.json', 'script': 'https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/7baa97c7-261c-4de5-be11-b28761caee8e/FastAPI/script.txt', 'audio': 'https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/7baa97c7-261c-4de5-be11-b28761caee8e/FastAPI/podcast_audio.mp3', 'transcript': 'https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/7baa97c7-261c-4de5-be11-b28761caee8e/FastAPI/transcript.json', 'transcript_vtt': 'https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/7baa97c7-261c-4de5-be11-b28761caee8e/FastAPI/transcript.vtt'}
+2026-03-15 09:33:06 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:33:07 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=671
+2026-03-15 09:33:07 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:33:08 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=995
+2026-03-15 09:50:20 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:50:22 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:50:23 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=3434
+2026-03-15 09:50:23 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1168
+2026-03-15 09:50:29 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:50:29 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=4
+2026-03-15 09:50:29 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:50:30 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=804
+2026-03-15 09:50:30 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:50:30 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:50:30 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:50:32 INFO podcast_maker api_request method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:50:33 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=2778
+2026-03-15 09:50:33 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=2778
+2026-03-15 09:50:33 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=2779
+2026-03-15 09:50:33 INFO podcast_maker api_response method=GET path=/status/7baa97c7-261c-4de5-be11-b28761caee8e status=200 duration_ms=695
+2026-03-15 09:50:33 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:50:33 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:50:34 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:50:35 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=2069
+2026-03-15 09:50:35 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=2068
+2026-03-15 09:50:35 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1040
+2026-03-15 09:50:35 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:50:36 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:50:36 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:50:37 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=2072
+2026-03-15 09:50:37 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1037
+2026-03-15 09:50:37 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=1037
+2026-03-15 09:50:37 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:50:38 INFO podcast_maker api_request method=GET path=/status/2 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:50:38 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1020
+2026-03-15 09:50:39 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:50:40 INFO podcast_maker api_response method=GET path=/status/2 status=404 duration_ms=1681
+2026-03-15 09:50:40 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1009
+2026-03-15 09:50:40 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:50:41 INFO podcast_maker api_request method=GET path=/status/1 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:50:41 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1000
+2026-03-15 09:50:42 INFO podcast_maker api_response method=GET path=/status/1 status=404 duration_ms=692
+2026-03-15 09:50:42 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:50:43 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=984
+2026-03-15 09:50:43 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:50:44 INFO podcast_maker api_request method=GET path=/status/2 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:50:44 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1733
+2026-03-15 09:50:44 INFO podcast_maker api_response method=GET path=/status/2 status=404 duration_ms=745
+2026-03-15 09:50:47 INFO podcast_maker api_request method=GET path=/status/1 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 09:50:47 INFO podcast_maker api_response method=GET path=/status/1 status=404 duration_ms=635
+2026-03-15 10:15:22 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:15:23 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:15:24 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=2501
+2026-03-15 10:15:24 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1127
+2026-03-15 10:15:56 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:15:58 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1297
+2026-03-15 10:15:58 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:15:59 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1292
+2026-03-15 10:17:13 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:17:14 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:17:14 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1688
+2026-03-15 10:17:16 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1122
+2026-03-15 10:18:00 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:18:02 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1257
+2026-03-15 10:18:02 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:18:03 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1088
+2026-03-15 10:18:35 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:18:36 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:18:36 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1149
+2026-03-15 10:18:38 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1029
+2026-03-15 10:20:18 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:20:20 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:20:20 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1387
+2026-03-15 10:20:21 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1058
+2026-03-15 10:44:41 INFO podcast_maker api_request method=GET path=/ client=10.0.0.138 origin=None
+2026-03-15 10:44:41 INFO podcast_maker api_response method=GET path=/ status=404 duration_ms=2
+2026-03-15 10:48:30 INFO podcast_maker api_request method=GET path=/status/1 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:48:33 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:48:33 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:48:33 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:48:33 INFO podcast_maker api_response method=GET path=/status/1 status=404 duration_ms=2209
+2026-03-15 10:48:35 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=2037
+2026-03-15 10:48:35 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=2114
+2026-03-15 10:48:35 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=2228
+2026-03-15 10:48:35 INFO podcast_maker api_request method=GET path=/status/1 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:48:35 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:48:35 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:48:35 INFO podcast_maker api_response method=GET path=/status/1 status=404 duration_ms=666
+2026-03-15 10:48:36 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:48:38 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=2095
+2026-03-15 10:48:38 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=2143
+2026-03-15 10:48:38 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1208
+2026-03-15 10:48:38 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:48:39 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1100
+2026-03-15 10:48:39 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:48:40 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:48:40 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1134
+2026-03-15 10:48:41 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1014
+2026-03-15 10:48:41 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:48:42 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=997
+2026-03-15 10:55:53 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:55:54 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:55:55 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=2547
+2026-03-15 10:55:55 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1072
+2026-03-15 10:55:55 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:55:55 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:55:57 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:55:57 INFO podcast_maker api_request method=GET path=/status/1 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:55:57 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=2041
+2026-03-15 10:55:57 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=2032
+2026-03-15 10:55:58 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=670
+2026-03-15 10:55:58 INFO podcast_maker api_response method=GET path=/status/1 status=404 duration_ms=669
+2026-03-15 10:55:58 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:55:58 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:56:00 INFO podcast_maker api_request method=GET path=/status/1 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:56:00 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:56:00 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=2017
+2026-03-15 10:56:00 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=2022
+2026-03-15 10:56:01 INFO podcast_maker api_response method=GET path=/status/1 status=404 duration_ms=666
+2026-03-15 10:56:01 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=671
+2026-03-15 10:56:01 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:56:01 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:56:03 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=2097
+2026-03-15 10:56:03 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=2100
+2026-03-15 10:56:03 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:56:03 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:56:05 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1944
+2026-03-15 10:56:05 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1944
+2026-03-15 10:56:05 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:56:05 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:56:05 INFO podcast_maker api_request method=GET path=/status/1 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:56:06 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:56:07 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=2587
+2026-03-15 10:56:07 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=2588
+2026-03-15 10:56:07 INFO podcast_maker api_response method=GET path=/status/1 status=404 duration_ms=2587
+2026-03-15 10:56:07 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=975
+2026-03-15 10:56:07 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:56:08 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:56:08 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:56:08 INFO podcast_maker api_request method=GET path=/status/1 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:56:08 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=970
+2026-03-15 10:56:10 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=1613
+2026-03-15 10:56:10 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1626
+2026-03-15 10:56:10 INFO podcast_maker api_response method=GET path=/status/1 status=404 duration_ms=1650
+2026-03-15 10:56:10 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:56:11 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:56:11 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=998
+2026-03-15 10:56:12 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1284
+2026-03-15 10:56:12 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:56:13 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:56:13 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1001
+2026-03-15 10:56:14 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1099
+2026-03-15 10:56:14 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:56:15 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:56:15 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1005
+2026-03-15 10:56:16 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=968
+2026-03-15 10:56:32 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:56:34 INFO podcast_maker api_response method=PUT path=/me/preferences status=200 duration_ms=1631
+2026-03-15 10:56:37 INFO podcast_maker api_request method=PUT path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:56:38 INFO podcast_maker api_response method=PUT path=/me/preferences status=200 duration_ms=1299
+2026-03-15 10:57:05 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:57:06 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1086
+2026-03-15 10:57:06 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:57:07 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=972
+2026-03-15 10:57:27 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:57:28 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:57:28 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1122
+2026-03-15 10:57:29 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=978
+2026-03-15 10:58:53 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:58:54 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 10:58:54 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1424
+2026-03-15 10:58:55 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1081
+2026-03-15 11:00:26 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:00:28 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:00:29 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=2504
+2026-03-15 11:00:29 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1054
+2026-03-15 11:00:36 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:00:37 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1128
+2026-03-15 11:00:37 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:00:38 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1053
+2026-03-15 11:01:49 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:01:50 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:01:50 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1305
+2026-03-15 11:01:51 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1093
+2026-03-15 11:03:06 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:03:08 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:03:09 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=2782
+2026-03-15 11:03:09 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1105
+2026-03-15 11:03:22 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:03:23 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:03:24 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=2205
+2026-03-15 11:03:24 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1071
+2026-03-15 11:04:30 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:04:32 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1654
+2026-03-15 11:04:32 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:04:33 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1071
+2026-03-15 11:05:55 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:05:57 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:05:58 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=2970
+2026-03-15 11:05:58 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1022
+2026-03-15 11:05:58 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:05:58 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:06:00 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:06:00 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=2055
+2026-03-15 11:06:00 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=2056
+2026-03-15 11:06:00 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=6
+2026-03-15 11:06:00 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:06:01 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:06:01 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:06:01 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1009
+2026-03-15 11:06:02 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1218
+2026-03-15 11:06:02 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=1219
+2026-03-15 11:06:02 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:06:03 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:06:03 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1037
+2026-03-15 11:06:04 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=996
+2026-03-15 11:06:04 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:06:05 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=991
+2026-03-15 11:06:05 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:06:06 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=990
+2026-03-15 11:06:13 INFO podcast_maker api_request method=GET path=/status/2 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:06:13 INFO podcast_maker api_response method=GET path=/status/2 status=404 duration_ms=779
+2026-03-15 11:06:13 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:06:14 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=983
+2026-03-15 11:06:25 INFO podcast_maker api_request method=GET path=/status/1 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:06:26 INFO podcast_maker api_response method=GET path=/status/1 status=404 duration_ms=1140
+2026-03-15 11:06:28 INFO podcast_maker api_request method=GET path=/status/2 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:06:29 INFO podcast_maker api_response method=GET path=/status/2 status=404 duration_ms=643
+2026-03-15 11:06:56 INFO podcast_maker api_request method=GET path=/status/2 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:06:57 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:06:57 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:06:58 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:06:58 INFO podcast_maker api_response method=GET path=/status/2 status=404 duration_ms=2427
+2026-03-15 11:06:59 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=2092
+2026-03-15 11:06:59 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=2096
+2026-03-15 11:06:59 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1002
+2026-03-15 11:06:59 INFO podcast_maker api_request method=GET path=/status/2 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:07:00 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:07:00 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:07:01 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:07:01 INFO podcast_maker api_response method=GET path=/status/2 status=404 duration_ms=1654
+2026-03-15 11:07:02 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1967
+2026-03-15 11:07:02 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=1969
+2026-03-15 11:07:02 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=985
+2026-03-15 11:07:02 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:07:03 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:07:04 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1960
+2026-03-15 11:07:04 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=977
+2026-03-15 11:07:04 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:07:05 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:07:06 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1979
+2026-03-15 11:07:06 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=995
+2026-03-15 11:07:37 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:07:38 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:07:38 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1149
+2026-03-15 11:07:39 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=980
+2026-03-15 11:07:46 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:07:47 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1398
+2026-03-15 11:07:47 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:07:49 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1186
+2026-03-15 11:07:49 INFO podcast_maker api_request method=GET path=/status/1 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:07:49 INFO podcast_maker api_response method=GET path=/status/1 status=404 duration_ms=701
+2026-03-15 11:09:09 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:09:10 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:09:10 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1093
+2026-03-15 11:09:11 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=983
+2026-03-15 11:09:43 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:09:43 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=8
+2026-03-15 11:09:43 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:09:44 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1246
+2026-03-15 11:09:44 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:09:44 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:09:44 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:09:46 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1957
+2026-03-15 11:09:46 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1956
+2026-03-15 11:09:46 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=1960
+2026-03-15 11:09:46 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:09:47 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1006
+2026-03-15 11:10:37 INFO podcast_maker api_request method=POST path=/create-podcast/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:10:38 INFO podcast_maker create_podcast task_id=ff2e140d-ea3e-4d01-9215-2614c6567ac3 topic=7 layers internet model host_ids=['mike_expert'] format=solo user_id=5dc60e91-7e9d-4151-8821-2caa1b4dcef9
+2026-03-15 11:10:38 INFO podcast_maker api_response method=POST path=/create-podcast/ status=200 duration_ms=890
+2026-03-15 11:10:38 INFO podcast_maker api_request method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:10:39 INFO podcast_maker api_response method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 status=200 duration_ms=678
+2026-03-15 11:10:41 INFO podcast_maker GeminiAdapter.generate_json called: stage=architect, model=gemini-2.5-flash, temperature=0.7
+2026-03-15 11:10:43 INFO podcast_maker api_request method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:10:44 INFO podcast_maker api_response method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 status=200 duration_ms=665
+2026-03-15 11:10:49 INFO podcast_maker api_request method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:10:50 INFO podcast_maker api_response method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 status=200 duration_ms=745
+2026-03-15 11:10:54 INFO podcast_maker api_request method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:10:55 INFO podcast_maker api_response method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 status=200 duration_ms=693
+2026-03-15 11:10:59 INFO podcast_maker GeminiAdapter.generate_json usage: stage=architect, prompt_tokens=1868, response_tokens=1825, total_tokens=5720
+2026-03-15 11:10:59 INFO podcast_maker GeminiAdapter.generate_json success: stage=architect
+2026-03-15 11:10:59 INFO podcast_maker api_request method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:11:00 INFO podcast_maker api_response method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 status=200 duration_ms=661
+2026-03-15 11:11:00 INFO podcast_maker agent_done agent=architect url=https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/ff2e140d-ea3e-4d01-9215-2614c6567ac3/7_layers_internet_model/blueprint.json
+2026-03-15 11:11:00 INFO podcast_maker GeminiAdapter.generate_text called: stage=researcher, model=gemini-2.5-flash, temperature=0.7
+2026-03-15 11:11:04 INFO podcast_maker api_request method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:11:05 INFO podcast_maker api_response method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 status=200 duration_ms=645
+2026-03-15 11:11:09 INFO podcast_maker api_request method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:11:10 INFO podcast_maker api_response method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 status=200 duration_ms=667
+2026-03-15 11:11:13 INFO podcast_maker api_request method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:11:14 INFO podcast_maker api_response method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 status=200 duration_ms=673
+2026-03-15 11:11:14 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:11:14 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:11:15 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:11:16 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=2091
+2026-03-15 11:11:16 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=2121
+2026-03-15 11:11:16 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1178
+2026-03-15 11:11:20 INFO podcast_maker api_request method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:11:20 INFO podcast_maker GeminiAdapter.generate_text success: stage=researcher, prompt_tokens=2864, response_tokens=1742, total_tokens=10974
+2026-03-15 11:11:20 INFO podcast_maker GeminiAdapter.generate_text called: stage=researcher, model=gemini-2.5-flash, temperature=0.7
+2026-03-15 11:11:20 INFO podcast_maker api_response method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 status=200 duration_ms=667
+2026-03-15 11:11:24 INFO podcast_maker api_request method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:11:25 INFO podcast_maker api_response method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 status=200 duration_ms=668
+2026-03-15 11:11:29 INFO podcast_maker api_request method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:11:30 INFO podcast_maker api_response method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 status=200 duration_ms=670
+2026-03-15 11:11:34 INFO podcast_maker api_request method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:11:35 INFO podcast_maker api_response method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 status=200 duration_ms=661
+2026-03-15 11:11:39 INFO podcast_maker api_request method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:11:40 INFO podcast_maker api_response method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 status=200 duration_ms=662
+2026-03-15 11:11:40 INFO podcast_maker GeminiAdapter.generate_text success: stage=researcher, prompt_tokens=3162, response_tokens=2162, total_tokens=6951
+2026-03-15 11:11:40 INFO podcast_maker GeminiAdapter.generate_text called: stage=researcher, model=gemini-2.5-flash, temperature=0.7
+2026-03-15 11:11:44 INFO podcast_maker api_request method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:11:45 INFO podcast_maker api_response method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 status=200 duration_ms=665
+2026-03-15 11:11:49 INFO podcast_maker GeminiAdapter.generate_text success: stage=researcher, prompt_tokens=2922, response_tokens=792, total_tokens=4616
+2026-03-15 11:11:49 INFO podcast_maker Researcher total usage: prompt_tokens=8948, response_tokens=4696, total_tokens=22541
+2026-03-15 11:11:50 INFO podcast_maker agent_done agent=researcher url=https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/ff2e140d-ea3e-4d01-9215-2614c6567ac3/7_layers_internet_model/research.md
+2026-03-15 11:11:50 INFO podcast_maker GeminiAdapter.generate_json called: stage=outliner, model=gemini-2.5-flash, temperature=0.7
+2026-03-15 11:11:51 INFO podcast_maker api_request method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:11:52 INFO podcast_maker api_response method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 status=200 duration_ms=729
+2026-03-15 11:12:10 INFO podcast_maker GeminiAdapter.generate_json usage: stage=outliner, prompt_tokens=10806, response_tokens=2315, total_tokens=15231
+2026-03-15 11:12:10 INFO podcast_maker GeminiAdapter.generate_json success: stage=outliner
+2026-03-15 11:12:11 INFO podcast_maker agent_done agent=outliner url=https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/ff2e140d-ea3e-4d01-9215-2614c6567ac3/7_layers_internet_model/outline.json
+2026-03-15 11:12:11 INFO podcast_maker GeminiAdapter.generate_text called: stage=scriptwriter, model=gemini-2.5-flash, temperature=0.8
+2026-03-15 11:12:22 INFO podcast_maker GeminiAdapter.generate_text success: stage=scriptwriter, prompt_tokens=10987, response_tokens=377, total_tokens=13478
+2026-03-15 11:12:22 INFO podcast_maker GeminiAdapter.generate_text called: stage=scriptwriter, model=gemini-2.5-flash, temperature=0.8
+2026-03-15 11:12:31 INFO podcast_maker GeminiAdapter.generate_text success: stage=scriptwriter, prompt_tokens=11373, response_tokens=534, total_tokens=13018
+2026-03-15 11:12:31 INFO podcast_maker GeminiAdapter.generate_text called: stage=scriptwriter, model=gemini-2.5-flash, temperature=0.8
+2026-03-15 11:12:49 INFO podcast_maker GeminiAdapter.generate_text success: stage=scriptwriter, prompt_tokens=11916, response_tokens=739, total_tokens=13651
+2026-03-15 11:12:49 INFO podcast_maker GeminiAdapter.generate_text called: stage=scriptwriter, model=gemini-2.5-flash, temperature=0.8
+2026-03-15 11:12:51 INFO podcast_maker api_request method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:12:52 INFO podcast_maker api_response method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 status=200 duration_ms=792
+2026-03-15 11:13:00 INFO podcast_maker GeminiAdapter.generate_text success: stage=scriptwriter, prompt_tokens=12664, response_tokens=410, total_tokens=14463
+2026-03-15 11:13:00 INFO podcast_maker ScriptWriter total usage: prompt_tokens=46940, response_tokens=2060, total_tokens=54610
+2026-03-15 11:13:01 INFO podcast_maker agent_done agent=scriptwriter url=https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/ff2e140d-ea3e-4d01-9215-2614c6567ac3/7_layers_internet_model/script.txt
+2026-03-15 11:13:01 INFO podcast_maker Starting text-to-speech generation with timestamps...
+2026-03-15 11:13:51 INFO podcast_maker api_request method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:13:52 INFO podcast_maker api_response method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 status=200 duration_ms=975
+2026-03-15 11:14:23 INFO podcast_maker Done generating audio with timestamps. Total characters: 5940, Segments: 92
+2026-03-15 11:14:29 INFO podcast_maker transcript_done format=json url=https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/ff2e140d-ea3e-4d01-9215-2614c6567ac3/7_layers_internet_model/transcript.json
+2026-03-15 11:14:30 INFO podcast_maker transcript_done format=vtt url=https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/ff2e140d-ea3e-4d01-9215-2614c6567ac3/7_layers_internet_model/transcript.vtt
+2026-03-15 11:14:30 INFO podcast_maker pipeline_completed task_id=ff2e140d-ea3e-4d01-9215-2614c6567ac3 urls={'blueprint': 'https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/ff2e140d-ea3e-4d01-9215-2614c6567ac3/7_layers_internet_model/blueprint.json', 'research': 'https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/ff2e140d-ea3e-4d01-9215-2614c6567ac3/7_layers_internet_model/research.md', 'outline': 'https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/ff2e140d-ea3e-4d01-9215-2614c6567ac3/7_layers_internet_model/outline.json', 'script': 'https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/ff2e140d-ea3e-4d01-9215-2614c6567ac3/7_layers_internet_model/script.txt', 'audio': 'https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/ff2e140d-ea3e-4d01-9215-2614c6567ac3/7_layers_internet_model/podcast_audio.mp3', 'transcript': 'https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/ff2e140d-ea3e-4d01-9215-2614c6567ac3/7_layers_internet_model/transcript.json', 'transcript_vtt': 'https://mwwwmnkdfrfeoawgellb.supabase.co/storage/v1/object/public/podcasts/5dc60e91-7e9d-4151-8821-2caa1b4dcef9/ff2e140d-ea3e-4d01-9215-2614c6567ac3/7_layers_internet_model/transcript.vtt'}
+2026-03-15 11:14:51 INFO podcast_maker api_request method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:14:52 INFO podcast_maker api_response method=GET path=/status/ff2e140d-ea3e-4d01-9215-2614c6567ac3 status=200 duration_ms=803
+2026-03-15 11:14:52 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:14:53 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1066
+2026-03-15 11:16:09 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:16:10 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:16:10 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1228
+2026-03-15 11:16:11 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1070
+2026-03-15 11:16:11 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:16:11 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:16:13 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:16:13 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=2062
+2026-03-15 11:16:13 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=2061
+2026-03-15 11:16:13 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=9
+2026-03-15 11:16:13 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:16:14 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:16:14 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:16:14 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1059
+2026-03-15 11:16:15 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1015
+2026-03-15 11:16:15 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=1017
+2026-03-15 11:16:15 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:16:16 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:16:16 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=998
+2026-03-15 11:16:17 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1034
+2026-03-15 11:16:17 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:16:18 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1007
+2026-03-15 11:16:18 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:16:19 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1004
+2026-03-15 11:22:22 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:22:22 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=3
+2026-03-15 11:22:22 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:22:24 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1340
+2026-03-15 11:22:24 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:22:24 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:22:25 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:22:26 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=2107
+2026-03-15 11:22:26 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=2107
+2026-03-15 11:22:26 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1037
+2026-03-15 11:22:26 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:22:27 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:22:27 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1040
+2026-03-15 11:22:28 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1027
+2026-03-15 11:22:28 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:22:29 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1331
+2026-03-15 11:22:29 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:22:30 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1004
+2026-03-15 11:22:30 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:22:31 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1047
+2026-03-15 11:26:30 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:26:30 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:26:30 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=6
+2026-03-15 11:26:32 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:26:32 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1523
+2026-03-15 11:26:33 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1099
+2026-03-15 11:28:57 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:28:59 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 11:28:59 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1721
+2026-03-15 11:29:00 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1043
+2026-03-15 18:16:40 INFO podcast_maker api_request method=GET path=/ client=10.0.0.138 origin=None
+2026-03-15 18:16:40 INFO podcast_maker api_response method=GET path=/ status=404 duration_ms=2
+2026-03-15 18:29:31 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 18:29:31 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 18:29:32 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 18:29:33 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=2429
+2026-03-15 18:29:33 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=2431
+2026-03-15 18:29:33 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1017
+2026-03-15 18:29:33 INFO podcast_maker api_request method=GET path=/available-hosts/ client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 18:29:33 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 18:29:34 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 18:29:34 INFO podcast_maker api_response method=GET path=/available-hosts/ status=200 duration_ms=1025
+2026-03-15 18:29:35 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=2036
+2026-03-15 18:29:35 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1021
+2026-03-15 18:29:35 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 18:29:36 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 18:29:36 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=997
+2026-03-15 18:29:37 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=994
+2026-03-15 18:29:37 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 18:29:38 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=994
+2026-03-15 18:29:38 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 18:29:39 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=992
+2026-03-15 19:21:00 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 19:21:02 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 19:21:02 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=2446
+2026-03-15 19:21:03 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1125
+2026-03-15 19:25:08 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 19:25:09 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 19:25:09 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1660
+2026-03-15 19:25:10 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1085
+2026-03-15 19:25:19 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 19:25:21 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1608
+2026-03-15 19:25:21 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 19:25:22 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1159
+2026-03-15 21:04:22 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 21:04:24 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 21:04:24 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1523
+2026-03-15 21:04:25 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1107
+2026-03-15 21:05:36 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 21:05:38 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 21:05:38 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1864
+2026-03-15 21:05:39 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1179
+2026-03-15 21:06:23 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 21:06:25 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1465
+2026-03-15 21:06:25 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 21:06:26 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1106
+2026-03-15 21:10:29 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 21:10:31 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 21:10:31 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1633
+2026-03-15 21:10:33 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=2602
+2026-03-15 21:37:34 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 21:37:36 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 21:37:36 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=2448
+2026-03-15 21:37:37 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1061
+2026-03-15 21:42:02 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 21:42:03 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1840
+2026-03-15 21:42:03 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 21:42:05 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1102
+2026-03-15 21:45:41 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 21:45:43 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 21:45:43 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1580
+2026-03-15 21:45:44 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=1071
+2026-03-15 21:58:10 INFO podcast_maker supabase_client_initialized auth_mode=service_role
+2026-03-15 21:58:25 INFO podcast_maker supabase_client_initialized auth_mode=service_role
+2026-03-15 22:00:51 INFO podcast_maker supabase_client_initialized auth_mode=service_role
+2026-03-15 22:01:11 INFO podcast_maker supabase_client_initialized auth_mode=service_role
+2026-03-15 22:09:56 INFO podcast_maker api_request method=GET path=/me/podcasts client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 22:10:00 INFO podcast_maker api_request method=GET path=/me/preferences client=127.0.0.1 origin=http://localhost:5173
+2026-03-15 22:10:00 INFO podcast_maker api_response method=GET path=/me/podcasts status=200 duration_ms=3611
+2026-03-15 22:10:01 INFO podcast_maker api_response method=GET path=/me/preferences status=200 duration_ms=1330
