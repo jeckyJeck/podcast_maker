@@ -21,12 +21,12 @@ function AppInner() {
 
   return (
     <div className="flex flex-col min-h-0 flex-1 relative">
-      <div className="flex-1 flex flex-col pt-2 pb-6">
+      <div className="flex-1 flex flex-col pt-1 sm:pt-2 pb-4 sm:pb-6">
         {screens[currentScreen]}
       </div>
 
       {/* Navigation Bar - Static Top/Bottom Grid */}
-      <div className="border-t border-gray-100 dark:border-gray-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm px-6 py-4 flex items-center justify-around gap-4 sticky bottom-0 z-20">
+      <div className="border-t border-gray-100 dark:border-gray-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-around gap-4 sticky bottom-0 z-20">
         <button
           type="button"
           onClick={goToCreate}
@@ -121,18 +121,18 @@ function App() {
     <PodcastProvider>
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
         {/* Header */}
-        <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-4 py-3">
-          <div className="max-w-2xl mx-auto flex items-center justify-between gap-4">
+        <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-3 sm:px-4 py-2 sm:py-3">
+          <div className="w-full sm:max-w-2xl sm:mx-auto flex items-center justify-between gap-2 sm:gap-4">
             <div className="flex items-center gap-2">
               <FaMicrophone className="text-blue-500" size={20} />
-              <span className="font-semibold text-gray-800 dark:text-white text-base">Podcast Maker</span>
+              <span className="font-semibold text-gray-800 dark:text-white text-sm sm:text-base">Podcast Maker</span>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <p className="text-sm text-gray-500 dark:text-gray-400 hidden sm:block">{user.email}</p>
               <button
                 type="button"
                 onClick={() => void signOut()}
-                className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors"
+                className="px-2.5 sm:px-3 py-1 sm:py-1.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors"
               >
                 Sign Out
               </button>
@@ -141,8 +141,8 @@ function App() {
         </header>
 
         {/* Main */}
-        <main className="flex-1 px-4 py-6 flex flex-col">
-          <div className="max-w-2xl mx-auto w-full flex flex-col flex-1">
+        <main className="flex-1 px-2 sm:px-4 py-3 sm:py-6 flex flex-col">
+          <div className="w-full sm:max-w-2xl sm:mx-auto flex flex-col flex-1">
             <AppInner />
           </div>
         </main>

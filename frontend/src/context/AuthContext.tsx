@@ -40,7 +40,12 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
       session,
       loading,
       signInWithGoogle: async () => {
-        await supabase.auth.signInWithOAuth({ provider: 'google' });
+        await supabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: {
+            redirectTo: window.location.origin,
+          },
+        });
       },
       signOut: async () => {
         await supabase.auth.signOut();

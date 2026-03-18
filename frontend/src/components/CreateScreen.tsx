@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaPlay } from 'react-icons/fa';
+import { FaWandMagicSparkles } from 'react-icons/fa6';
 import { usePodcast } from '../context/PodcastContext';
 import { StatusDisplay } from './StatusDisplay';
 import type { PodcastFormat } from '../types/podcast';
@@ -246,7 +247,7 @@ export const CreateScreen: React.FC = () => {
       {/* ── Topic input + submit ──────────────────────────────────────────── */}
       {showForm && (
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-5">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
             <input
               id="topic"
               value={topic}
@@ -260,9 +261,11 @@ export const CreateScreen: React.FC = () => {
               type="button"
               onClick={() => void handleSubmit()}
               disabled={isSubmitting || !topic.trim()}
-              className="px-4 py-2.5 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white font-medium rounded-lg transition-colors text-sm whitespace-nowrap"
+              aria-label={isSubmitting ? 'Generating podcast' : 'Generate podcast'}
+              title={isSubmitting ? 'Generating...' : 'Generate'}
+              className="px-4 py-2.5 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white font-medium rounded-lg transition-colors text-sm whitespace-nowrap flex items-center justify-center min-w-11"
             >
-              {isSubmitting ? 'Sending...' : 'Generate'}
+              <FaWandMagicSparkles aria-hidden="true" />
             </button>
           </div>
           {effectiveStatus?.status === 'failed' && (

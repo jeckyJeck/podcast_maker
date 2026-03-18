@@ -34,12 +34,11 @@ app.add_exception_handler(
 
 # ── CORS ───────────────────────────────────────────────────────────────────────
 ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://localhost:3000",
-    "http://127.0.0.1:5173",
-    "http://127.0.0.1:3000",
-    # TODO: add your production frontend URL here, e.g.:
-    # "https://your-frontend.web.app",
+    # "http://localhost:5173",
+    # "http://localhost:3000",
+    # "http://127.0.0.1:5173",
+    # "http://127.0.0.1:3000",
+    "https://podcast-maker-nine.vercel.app/",
 ]
 
 app.add_middleware(
