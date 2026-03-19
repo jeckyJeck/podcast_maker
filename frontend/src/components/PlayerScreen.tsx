@@ -208,7 +208,7 @@ const PlayerControls: React.FC = () => {
 // ── Main PlayerScreen ─────────────────────────────────────────────────────────
 
 export const PlayerScreen: React.FC = () => {
-  const { topic, resolvedFiles, currentTime, seekTo, podcastReady, goToCreate, setHistoryOpen } = usePodcast();
+  const { topic, resolvedFiles, currentTime, seekTo, podcastReady, goToCreate, goToHistory } = usePodcast();
 
   return (
     <div className="max-w-2xl mx-auto w-full flex flex-col flex-1 min-h-0">
@@ -243,10 +243,10 @@ export const PlayerScreen: React.FC = () => {
               </button>
               <button
                 type="button"
-                onClick={() => setHistoryOpen(true)}
+                onClick={goToHistory}
                 className="px-5 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl transition-all font-medium text-sm"
               >
-                History
+                Library
               </button>
             </div>
           </div>
