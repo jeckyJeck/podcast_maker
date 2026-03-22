@@ -28,3 +28,4 @@ trash/
 *.key
 *.p12
 *.crt
+android/keystore/

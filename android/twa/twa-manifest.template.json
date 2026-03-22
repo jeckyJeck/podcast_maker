@@ -1,0 +1,23 @@
+{
+  "packageId": "com.yakovkahanas.podcastmaker",
+  "host": "podcast-maker-nine.vercel.app",
+  "name": "Podcast Maker",
+  "launcherName": "Podcast Maker",
+  "display": "standalone",
+  "themeColor": "#2563eb",
+  "navigationColor": "#0f172a",
+  "backgroundColor": "#f8fafc",
+  "startUrl": "/",
+  "iconUrl": "https://podcast-maker-nine.vercel.app/icons/icon-512.svg",
+  "maskableIconUrl": "https://podcast-maker-nine.vercel.app/icons/icon-512.svg",
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "fullScopeUrl": "https://podcast-maker-nine.vercel.app/",
+  "webManifestUrl": "https://podcast-maker-nine.vercel.app/manifest.webmanifest",
+  "fallbackType": "customtabs",
+  "enableNotifications": false,
+  "features": {
+    "playBilling": false,
+    "locationDelegation": false
+  }
+}

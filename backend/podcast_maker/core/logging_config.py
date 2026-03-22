@@ -1,38 +1,41 @@
 import logging
-from logging.handlers import RotatingFileHandler
-from pathlib import Path
-
-from podcast_maker.core.paths import BACKEND_ROOT
+import sys
 
 
 _LOGGER_NAME = "podcast_maker"
 
 
+class _MaxLevelFilter(logging.Filter):
+    def __init__(self, max_level: int):
+        super().__init__()
+        self.max_level = max_level
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        return record.levelno <= self.max_level
+
+
 def get_logger() -> logging.Logger:
     logger = logging.getLogger(_LOGGER_NAME)
-    if logger.handlers:
-        return logger
+    # Ensure a single, deterministic handler setup across imports/reloads.
+    for handler in list(logger.handlers):
+        logger.removeHandler(handler)
 
     logger.setLevel(logging.INFO)
-
-    logs_dir = Path(BACKEND_ROOT) / "logs"
-    logs_dir.mkdir(parents=True, exist_ok=True)
-    log_file = logs_dir / "backend.log"
-
-    handler = RotatingFileHandler(
-        log_file,
-        maxBytes=5 * 1024 * 1024,
-        backupCount=5,
-        encoding="utf-8",
-        delay=True,
-    )
-    handler.setLevel(logging.INFO)
     formatter = logging.Formatter(
         fmt="%(asctime)s %(levelname)s %(name)s %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
     )
-    handler.setFormatter(formatter)
 
-    logger.addHandler(handler)
+    stdout_handler = logging.StreamHandler(sys.stdout)
+    stdout_handler.setLevel(logging.DEBUG)
+    stdout_handler.addFilter(_MaxLevelFilter(logging.INFO))
+    stdout_handler.setFormatter(formatter)
+
+    stderr_handler = logging.StreamHandler(sys.stderr)
+    stderr_handler.setLevel(logging.WARNING)
+    stderr_handler.setFormatter(formatter)
+
+    logger.addHandler(stdout_handler)
+    logger.addHandler(stderr_handler)
     logger.propagate = False
     return logger

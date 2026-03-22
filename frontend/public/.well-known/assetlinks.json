@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.yakovkahanas.podcastmaker",
+      "sha256_cert_fingerprints": [
+        "3F:E9:65:62:46:77:9B:A2:22:1E:F2:08:4B:6D:BA:7E:02:8D:B0:2F:2C:8D:4F:8A:D8:E8:59:F7:DB:86:A0:DC"
+      ]
+    }
+  }
+]

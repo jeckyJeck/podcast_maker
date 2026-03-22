@@ -74,6 +74,16 @@ frontend/
     npm run dev
     ```
 
+## PWA / Android TWA
+
+The frontend now includes the minimum PWA pieces needed for an Android Trusted Web Activity:
+
+- `public/manifest.webmanifest`
+- `public/sw.js`
+- `public/icons/`
+
+To wrap the same frontend as an Android app, use the templates in `../android/twa/` and point Bubblewrap to your deployed HTTPS site.
+
 ---
 
 ## 📸 Component Highlights
