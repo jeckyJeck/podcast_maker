@@ -1,10 +1,7 @@
 from pathlib import Path
 from typing import Optional
-from podcast_maker.core.logging_config import get_logger
 from podcast_maker.core.prompt_manager import PromptManager
 from podcast_maker.services.llm_provider import LLMProvider
-
-logger = get_logger()
 
 class ScriptWriter:
     def __init__(
@@ -24,10 +21,6 @@ class ScriptWriter:
 
         current_script = "--- This is Scene 1 - start with the opening ---\n\n"
 
-        prompt_tokens = 0
-        response_tokens = 0
-        total_tokens = 0
-
         for scene in outline.get("scenes", []):
             scene_num = scene.get("scene_number", "-1")
 
@@ -45,11 +38,4 @@ class ScriptWriter:
             current_script += llm_response.text + "\n"
             current_script += f"\n--- End of Scene {scene_num} ---\n\n"
 
-            # Accumulate token usage
-            prompt_tokens += llm_response.prompt_tokens
-            response_tokens += llm_response.response_tokens
-            total_tokens += llm_response.total_tokens
-
-        logger.info("ScriptWriter total usage: prompt_tokens=%d, response_tokens=%d, total_tokens=%d",
-                    prompt_tokens, response_tokens, total_tokens)
         return current_script.strip()

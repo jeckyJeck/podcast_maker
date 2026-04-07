@@ -6,6 +6,7 @@ interface for text and JSON generation.
 """
 
 import json
+import os
 from typing import Optional, Any
 from google import genai
 from google.genai import types
@@ -33,16 +34,28 @@ class GeminiAdapter(LLMProvider):
     - Hybrid error policy (fail-fast for critical, fallback for non-critical)
     """
     
-    def __init__(self, client: genai.Client, rate_limiter: Optional[RateLimiter] = None):
+    _instance: Optional["GeminiAdapter"] = None
+    _initialized = False
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+
+    def __init__(self):
         """
         Initialize Gemini adapter.
-        
-        Args:
-            client: Authenticated google.genai.Client instance
-            rate_limiter: Optional rate limiter for controlling API request frequency
         """
-        self.client = client
-        self.rate_limiter = rate_limiter
+        if self.__class__._initialized:
+            return
+
+        api_key = os.getenv("GOOGLE_API_KEY")
+        if not api_key:
+            raise ValueError("GOOGLE_API_KEY is missing. Set it in backend/.env")
+
+        self.client = genai.Client(api_key=api_key)
+        self.rate_limiter = RateLimiter(max_requests=20, period_seconds=86400)
+        self.__class__._initialized = True
         
     def generate_text(
         self,
@@ -84,9 +97,8 @@ class GeminiAdapter(LLMProvider):
         if tools:
             config.tools = tools
         
-        # Apply rate limiting if configured
-        if self.rate_limiter:
-            self.rate_limiter.acquire()
+        # Fixed limiter policy: 20 Gemini requests per day per process.
+        self.rate_limiter.acquire()
         
         try:
             response = self.client.models.generate_content(
@@ -157,9 +169,8 @@ class GeminiAdapter(LLMProvider):
             temperature=temperature
         )
         
-        # Apply rate limiting if configured
-        if self.rate_limiter:
-            self.rate_limiter.acquire()
+        # Fixed limiter policy: 20 Gemini requests per day per process.
+        self.rate_limiter.acquire()
         
         try:
             response = self.client.models.generate_content(

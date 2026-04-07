@@ -1,12 +1,6 @@
-from pathlib import Path
-from typing import Optional
 from google.genai import types
-from podcast_maker.core.logging_config import get_logger
-from podcast_maker.core.paths import PROMPTS_DIR
 from podcast_maker.core.prompt_manager import PromptManager
 from podcast_maker.services.llm_provider import LLMProvider
-
-logger = get_logger()
 
 class Researcher:
     def __init__(
@@ -28,9 +22,6 @@ class Researcher:
         )
         
         research_results = []
-        prompt_tokens = 0
-        response_tokens = 0
-        total_tokens = 0
         
         for segment in blueprint.get("segments", []):
             segment_name = segment.get("segment_name", "Unknown Segment")
@@ -51,19 +42,11 @@ class Researcher:
                 research_results.append(f"## {segment_name}\n\nNo research results returned.\n")
                 continue
             
-            # Accumulate token usage
-            prompt_tokens += llm_response.prompt_tokens
-            response_tokens += llm_response.response_tokens
-            total_tokens += llm_response.total_tokens
-            
-            # Store the markdown text directly
             research_results.append(llm_response.text)
             
             word_count = len(llm_response.text.split())
             print(f"    ✓ Research completed ({word_count} words)")
-        
-        logger.info("Researcher total usage: prompt_tokens=%d, response_tokens=%d, total_tokens=%d",
-                    prompt_tokens, response_tokens, total_tokens)
+
         return "\n".join(research_results)
     
     

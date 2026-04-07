@@ -5,21 +5,19 @@ from pathlib import Path
 from typing import Dict
 
 from dotenv import load_dotenv
-from google import genai
 
 from podcast_maker.core.architect import Architect
 from podcast_maker.core.outliner import Outliner
 from podcast_maker.core.paths import BACKEND_ROOT, OUTPUT_DIR
 from podcast_maker.core.prompt_manager import PromptManager, PodcastConfig
 from podcast_maker.core.researcher import Researcher
-from podcast_maker.core.rate_limiter import RateLimiter
 from podcast_maker.core.scriptwriter import ScriptWriter
 from podcast_maker.core.logging_config import get_logger
 from podcast_maker.core.hosts_config import get_host_profile
 from podcast_maker.services.GoogleTTS import GoogleTTS
+from podcast_maker.services.llm_provider_factory import build_llm_provider
 from podcast_maker.services.local_storage_provider import LocalStorageProvider
 from podcast_maker.services.storage_provider import StorageProvider
-from podcast_maker.services.gemini_adapter import GeminiAdapter
 from podcast_maker.services.transcript_formatter import (
     format_transcript_to_json, 
     format_transcript_to_vtt
@@ -33,8 +31,6 @@ logger = get_logger()
 FEMALE_VOICE_ID_GOOGLE = "en-US-Studio-O"
 MALE_VOICE_ID_GOOGLE = "en-US-Studio-Q"
 
-ITERATIVE_MODEL_RATE_LIMITER = RateLimiter(max_requests=4, period_seconds=60)
-
 class PodcastMakerOrchestrator:
     def __init__(
         self, 
@@ -46,9 +42,7 @@ class PodcastMakerOrchestrator:
         self.host_ids = podcast_config.normalized_host_ids
         self.podcast_config = podcast_config
         
-        # Create Gemini client and wrap it with adapter (with rate limiting)
-        client = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
-        self.llm_provider = GeminiAdapter(client, rate_limiter=ITERATIVE_MODEL_RATE_LIMITER)
+        self.llm_provider = build_llm_provider("gemini")
         
         prompt_manager = PromptManager(self.podcast_config)
         self.architect = Architect(self.llm_provider, prompt_manager)
