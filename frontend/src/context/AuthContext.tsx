@@ -15,6 +15,7 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const redirectTo = import.meta.env.VITE_AUTH_REDIRECT_URI || window.location.origin;
 
   useEffect(() => {
     const bootstrap = async () => {
@@ -43,7 +44,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
         await supabase.auth.signInWithOAuth({
           provider: 'google',
           options: {
-            redirectTo: window.location.origin,
+            redirectTo,
           },
         });
       },
@@ -51,7 +52,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
         await supabase.auth.signOut();
       },
     }),
-    [loading, session]
+    [loading, redirectTo, session]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -1,6 +1,7 @@
 
 debug_files/
-
+.vscode/
+.tmp_skills_inspect/
 # Python caches and artifacts
 __pycache__/
 *.py[cod]
@@ -28,4 +29,6 @@ trash/
 *.key
 *.p12
 *.crt
-android/keystore/
+*.jks
+*.keystore
+*.idsig
