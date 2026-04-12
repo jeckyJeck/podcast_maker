@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaPlay } from 'react-icons/fa';
 import { FaWandMagicSparkles } from 'react-icons/fa6';
+import { FORMAT_MAX_HOSTS } from '../config/podcast';
 import { usePodcast } from '../context/PodcastContext';
 import { StatusDisplay } from './StatusDisplay';
 import type { PodcastFormat } from '../types/podcast';
@@ -17,8 +18,6 @@ const FORMAT_OPTIONS: { value: PodcastFormat; title: string; description: string
     description: 'A single host presenting content as a continuous monologue.',
   },
 ];
-
-const FORMAT_MAX_HOSTS: Record<PodcastFormat, number> = { dialogue: 2, solo: 1 };
 
 // ── Inline host picker ────────────────────────────────────────────────────────
 

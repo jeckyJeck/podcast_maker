@@ -8,8 +8,14 @@ import React, {
   useState,
 } from 'react';
 import { podcastApi } from '../services/api';
+import { DEFAULT_HOST_IDS, FORMAT_MAX_HOSTS } from '../config/podcast';
 import { usePodcastStatus } from '../hooks/usePodcastStatus';
 import { cachePodcastFiles, getCachedPodcastBlobUrls } from '../services/localFileCache';
+import {
+  createPodcastTask,
+  CREATE_PODCAST_FAILURE_MESSAGE,
+  validateCreatePodcastInput,
+} from '../services/podcastSubmission';
 import { useAuth } from './AuthContext';
 import type {
   HostProfile,
@@ -24,11 +30,6 @@ import type {
 const PODCAST_SESSION_KEY = 'podcast-maker.session.v1';
 const PODCAST_HISTORY_KEY = 'podcast-maker.history.v1';
 const MAX_HISTORY = 5;
-
-const FORMAT_MAX_HOSTS: Record<PodcastFormat, number> = {
-  dialogue: 2,
-  solo: 1,
-};
 
 const isValidHostSelection = (v: unknown): v is string[] =>
   Array.isArray(v) && v.length >= 1 && v.length <= 2;
@@ -117,7 +118,7 @@ const loadSession = (): PersistedSession | null => {
       selectedFormat: parsed.selectedFormat === 'solo' ? 'solo' : 'dialogue',
       selectedHostIds: isValidHostSelection(parsed.selectedHostIds)
         ? parsed.selectedHostIds
-        : ['sarah_curious', 'mike_expert'],
+        : [...DEFAULT_HOST_IDS],
       currentTime:
         typeof parsed.currentTime === 'number' && parsed.currentTime >= 0
           ? parsed.currentTime
@@ -214,7 +215,7 @@ const mapCloudToHistory = (r: UserPodcastRecord): PodcastHistoryItem | null => {
     selectedFormat: 'dialogue',
     selectedHostIds: isValidHostSelection(r.host_ids)
       ? r.host_ids
-      : ['sarah_curious', 'mike_expert'],
+      : [...DEFAULT_HOST_IDS],
     currentTime: 0,
     status: { status: r.status, url: r.url, error: r.error },
     updatedAt: r.updated_at ?? r.created_at ?? new Date().toISOString(),
@@ -329,7 +330,7 @@ export const PodcastProvider: React.FC<{ children: React.ReactNode }> = ({ child
     persistedSession?.selectedFormat ?? 'dialogue',
   );
   const [selectedHostIds, setSelectedHostIds] = useState<string[]>(
-    persistedSession?.selectedHostIds ?? ['sarah_curious', 'mike_expert'],
+    persistedSession?.selectedHostIds ?? [...DEFAULT_HOST_IDS],
   );
   const [hosts, setHosts] = useState<HostProfile[]>([]);
   const [hostsLoading, setHostsLoading] = useState(true);
@@ -555,12 +556,9 @@ export const PodcastProvider: React.FC<{ children: React.ReactNode }> = ({ child
   // ── Submit / Reset / Restore ─────────────────────────────────────────────────
 
   const handleSubmit = useCallback(async () => {
-    if (!topic.trim()) { alert('אנא הכנס נושא לפודקאסט'); return; }
-    const maxHosts = FORMAT_MAX_HOSTS[selectedFormat];
-    if (selectedHostIds.length !== maxHosts) {
-      alert(selectedFormat === 'dialogue'
-        ? 'בפורמט שיחה צריך לבחור בדיוק 2 מארחים'
-        : 'בפורמט סולו צריך לבחור בדיוק מארח אחד');
+    const validation = validateCreatePodcastInput({ topic, selectedFormat, selectedHostIds });
+    if (!validation.isValid) {
+      alert(validation.message);
       return;
     }
     setIsSubmitting(true);
@@ -569,11 +567,11 @@ export const PodcastProvider: React.FC<{ children: React.ReactNode }> = ({ child
     for (const url of objectUrlsRef.current) URL.revokeObjectURL(url);
     objectUrlsRef.current = [];
     try {
-      const res = await podcastApi.createPodcast(topic.trim(), selectedHostIds, selectedFormat);
-      setTaskId(res.task_id);
+      const nextTaskId = await createPodcastTask({ topic, selectedFormat, selectedHostIds });
+      setTaskId(nextTaskId);
     } catch (err) {
       console.error(err);
-      alert('שגיאה ביצירת הפודקאסט. אנא נסה שוב.');
+      alert(CREATE_PODCAST_FAILURE_MESSAGE);
     } finally {
       setIsSubmitting(false);
     }
