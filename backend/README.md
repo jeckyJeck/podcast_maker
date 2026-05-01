@@ -14,6 +14,12 @@ The backend of Podcast Maker is a FastAPI-based service responsible for orchestr
 - **Background Processing**: Handles long-running agent tasks (Research -> Script -> Audio).
 - **Rate Limiting**: Integrated using `slowapi`.
 
+## Prompt Lab Scope
+
+The production backend no longer serves prompts lab endpoints.
+
+- Prompts lab traffic should target the isolated backend in `prompts_lab/lab_backend`.
+
 ## 📂 Project Structure
 
 ```

@@ -1,2 +1,5 @@
 dist/
 node_modules/
+lab_backend/prompts_test/fixtures/
+lab_backend/prompts_test/prompt_templates/
+lab_backend/prompts_test/runs/

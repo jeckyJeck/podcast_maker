@@ -2,18 +2,18 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 import json
-import os
 import tempfile
 import uuid
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal, Mapping
 
-from fastapi import APIRouter, BackgroundTasks, Depends, Header, HTTPException
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from pydantic import BaseModel, Field
 
-from app.dependencies import AuthContext, get_current_user
 from podcast_maker.core.hosts_config import AVAILABLE_HOSTS
+from podcast_maker.core.paths import BACKEND_ROOT
 from podcast_maker.core.prompt_manager import PodcastConfig
 from podcast_maker.services import prompt_template_store
 from prompts_test.prompt_resolver import InstrumentedOverridePromptManager
@@ -24,6 +24,7 @@ from prompts_test.stage_runner import PromptTestRunner, RunnerInputs
 router = APIRouter(prefix="/prompts-test-api", tags=["prompts-test-api"])
 
 TASKS: dict[str, dict] = {}
+LOCAL_USER_ID = "lab-local-user"
 ALLOWED_FILES = {
     "run_manifest.json",
     "blueprint.json",
@@ -85,7 +86,7 @@ class CompareRequest(BaseModel):
 
 
 class DefaultsRequest(BaseModel):
-    topic: str = "ford fulkerson"
+    topic: str
     format: Literal["dialogue", "solo"] | None = None
     host_ids: list[str] | None = None
     injected: InjectedInputPayload = Field(default_factory=InjectedInputPayload)
@@ -112,10 +113,23 @@ class PromptTemplateResponse(BaseModel):
     updated_at_utc: str
 
 
+@dataclass
+class AuthContext:
+    user_id: str
+    method: str = "disabled"
+
+
 def _sanitize_template_text(value: str, field_name: str) -> str:
     cleaned = value.strip()
     if not cleaned:
         raise HTTPException(status_code=400, detail=f"{field_name} cannot be empty")
+    return cleaned
+
+
+def _sanitize_topic_text(value: str) -> str:
+    cleaned = value.strip()
+    if not cleaned:
+        raise HTTPException(status_code=400, detail="topic is required")
     return cleaned
 
 
@@ -125,7 +139,7 @@ def _validate_template_id(template_id: str) -> str:
     return template_id
 
 
-def _to_template_response(row: dict) -> PromptTemplateResponse:
+def _to_template_response(row: Mapping[str, Any]) -> PromptTemplateResponse:
     return PromptTemplateResponse(
         id=str(row.get("id", "")),
         user_id=str(row.get("user_id", "")),
@@ -137,27 +151,17 @@ def _to_template_response(row: dict) -> PromptTemplateResponse:
     )
 
 
-def _is_local_auth_bypass_enabled() -> bool:
-    return os.getenv("PROMPTS_TEST_API_BYPASS_AUTH", "").strip().lower() in {"1", "true", "yes", "on"}
-
-
-async def get_prompts_test_auth(authorization: str | None = Header(default=None)) -> AuthContext:
-    """Auth dependency scoped to prompts_test API only.
-
-    - Default behavior: enforce regular Supabase JWT auth via get_current_user.
-    - Local-dev behavior: when PROMPTS_TEST_API_BYPASS_AUTH is truthy, bypass auth.
-    """
-    if _is_local_auth_bypass_enabled():
-        return AuthContext(user_id="local-dev", method="bypass")
-    return await get_current_user(authorization)
+async def get_prompts_test_auth() -> AuthContext:
+    """Return a fixed local auth context for the isolated prompts lab backend."""
+    return AuthContext(user_id=LOCAL_USER_ID)
 
 
 def _default_runs_root() -> Path:
-    return Path(__file__).resolve().parents[2] / "prompts_test" / "runs"
+    return BACKEND_ROOT / "prompts_test" / "runs"
 
 
 def _default_fixtures_root() -> Path:
-    return Path(__file__).resolve().parents[2] / "prompts_test" / "fixtures"
+    return BACKEND_ROOT / "prompts_test" / "fixtures"
 
 
 def _resolve_runs_root(runs_root: str | None) -> Path:
@@ -330,7 +334,6 @@ async def prompts_test_meta(_auth: AuthContext = Depends(get_prompts_test_auth))
         "formats": ["dialogue", "solo"],
         "stages": STAGE_ORDER,
         "default_host_ids": ["sarah_curious", "mike_expert"],
-        "default_topic": "ford fulkerson",
         "hosts": hosts,
         "default_runs_root": str(_default_runs_root()),
     }
@@ -452,6 +455,8 @@ async def prompts_test_create_run(
     _auth: AuthContext = Depends(get_prompts_test_auth),
 ):
     try:
+        payload.topic = _sanitize_topic_text(payload.topic)
+
         if payload.async_mode:
             task_id = str(uuid.uuid4())
             TASKS[task_id] = {"status": "running"}

@@ -23,8 +23,8 @@ class InstrumentedOverridePromptManager(PromptManager):
         self.resolved_prompts["architect"] = prompt
         return prompt
 
-    def get_researcher_prompt(self, segment: dict[str, Any]) -> str:
-        prompt = super().get_researcher_prompt(segment)
+    def get_researcher_prompt(self, direction: dict[str, Any], previous_research: str = "") -> str:
+        prompt = super().get_researcher_prompt(direction, previous_research)
         self.resolved_prompts["researcher"] = prompt
         return prompt
 

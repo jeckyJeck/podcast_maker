@@ -12,7 +12,7 @@ export interface MetaResponse {
   formats: Array<"dialogue" | "solo">;
   stages: StageName[];
   default_host_ids: string[];
-  default_topic: string;
+  default_topic?: string;
   hosts: HostOption[];
   default_runs_root: string;
 }

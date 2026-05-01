@@ -11,6 +11,38 @@ import type {
 
 const API_BASE = import.meta.env.VITE_PROMPTS_TEST_API_BASE ?? "";
 
+function summarizeApiError(responseText: string): string {
+  const MAX_LEN = 800;
+
+  try {
+    const parsed = JSON.parse(responseText) as { detail?: unknown; message?: unknown };
+    const detail = parsed.detail ?? parsed.message;
+    if (typeof detail === "string") {
+      return detail.length > MAX_LEN ? `${detail.slice(0, MAX_LEN)}... [truncated]` : detail;
+    }
+    if (Array.isArray(detail)) {
+      const joined = detail
+        .map((item) => {
+          if (typeof item === "string") return item;
+          if (item && typeof item === "object") {
+            const entry = item as { msg?: unknown; loc?: unknown[] };
+            const msg = typeof entry.msg === "string" ? entry.msg : JSON.stringify(item);
+            const loc = Array.isArray(entry.loc) ? entry.loc.join(".") : "";
+            return loc ? `${loc}: ${msg}` : msg;
+          }
+          return String(item);
+        })
+        .join(" | ");
+      return joined.length > MAX_LEN ? `${joined.slice(0, MAX_LEN)}... [truncated]` : joined;
+    }
+  } catch {
+    // Fall back to raw text handling.
+  }
+
+  if (!responseText.trim()) return "Unknown server error";
+  return responseText.length > MAX_LEN ? `${responseText.slice(0, MAX_LEN)}... [truncated]` : responseText;
+}
+
 async function apiFetch<T>(path: string, init?: RequestInit, token?: string): Promise<T> {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
@@ -25,7 +57,7 @@ async function apiFetch<T>(path: string, init?: RequestInit, token?: string): Pr
 
   if (!response.ok) {
     const text = await response.text();
-    throw new Error(`HTTP ${response.status}: ${text}`);
+    throw new Error(`HTTP ${response.status}: ${summarizeApiError(text)}`);
   }
 
   return (await response.json()) as T;

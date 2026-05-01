@@ -9,7 +9,7 @@ class Researcher:
         prompt_manager: PromptManager,
     ):
         self.llm_provider = llm_provider
-        self.model = "gemini-2.5-flash"
+        self.model = "gemma-4-31b-it"
         self.prompt_manager = prompt_manager
     
     def conduct_research(self, blueprint: dict) -> str:

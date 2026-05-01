@@ -20,9 +20,9 @@ It talks only to the isolated backend namespace `/prompts-test-api/*`.
 ## Run
 
 ```powershell
-cd backend
-$env:PROMPTS_TEST_API_BYPASS_AUTH="true"
-uvicorn app.main:app --reload --port 8080
+cd prompts_lab/lab_backend
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8081
 ```
 
 ```powershell
@@ -31,7 +31,7 @@ npm install
 npm run dev
 ```
 
-Vite runs on `http://localhost:5180` and proxies `/prompts-test-api` to `http://localhost:8080`.
+Vite runs on `http://localhost:5180` and proxies `/prompts-test-api` to `http://localhost:8081` by default.
 
 Optional: override backend origin
 
@@ -42,15 +42,7 @@ npm run dev
 
 ## Auth
 
-Default behavior uses the same Supabase JWT auth as the existing API.
-
-For local developer workflows only, you can bypass auth for `/prompts-test-api/*` by setting:
-
-```powershell
-$env:PROMPTS_TEST_API_BYPASS_AUTH="true"
-```
-
-This bypass is scoped to the prompts-test API router and does not change existing production routes.
+`prompts_lab/lab_backend` is dev-only and does not enforce user auth.
 
 ## Notes
 

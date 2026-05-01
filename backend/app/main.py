@@ -15,7 +15,7 @@ from slowapi.errors import RateLimitExceeded
 from podcast_maker.core.logging_config import get_logger
 from podcast_maker.core.paths import BACKEND_ROOT
 from app.dependencies import limiter
-from app.routers import hosts, podcasts, prompts_test_api, users
+from app.routers import hosts, podcasts, users
 
 load_dotenv(dotenv_path=BACKEND_ROOT / ".env")
 
@@ -77,4 +77,3 @@ async def logging_middleware(request: Request, call_next):
 app.include_router(podcasts.router)
 app.include_router(users.router)
 app.include_router(hosts.router)
-app.include_router(prompts_test_api.router)

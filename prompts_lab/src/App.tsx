@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import {
-  compareRuns,
   createPromptTemplate,
   deletePromptTemplate,
   getDefaults,
@@ -20,6 +19,10 @@ import type { MetaResponse, PromptTemplate, RunListItem, StageName } from "./typ
 
 const STAGES: StageName[] = ["architect", "researcher", "outliner", "scriptwriter"];
 
+const TABS = ["workspace", "comparison"] as const;
+
+type AppTab = (typeof TABS)[number];
+
 const STAGE_OUTPUT_FILES: Record<StageName, string[]> = {
   architect: ["blueprint.json", "blueprint.snapshot.json"],
   researcher: ["research.md", "research.snapshot.md"],
@@ -33,6 +36,26 @@ const STAGE_PROMPT_FILES: Record<StageName, string> = {
   outliner: "prompt_outliner.txt",
   scriptwriter: "prompt_scriptwriter.txt"
 };
+
+interface StageComparisonSnapshot {
+  prompt: string;
+  output: string;
+  promptFile: string | null;
+  outputFile: string | null;
+}
+
+interface RunComparisonSnapshot {
+  runId: string;
+  stages: Record<StageName, StageComparisonSnapshot>;
+}
+
+interface ComparisonViewData {
+  runA: RunComparisonSnapshot;
+  runB: RunComparisonSnapshot;
+  copyTextA: string;
+  copyTextB: string;
+  combinedText: string;
+}
 
 // ============================================================================
 // UTILITY FUNCTIONS
@@ -71,6 +94,86 @@ function parseJsonForSubmission(stage: string, text: string): { value: unknown |
   }
 }
 
+function formatStageTitle(stage: StageName) {
+  return stage.charAt(0).toUpperCase() + stage.slice(1);
+}
+
+function copyToClipboard(text: string) {
+  if (!text.trim()) return;
+  void navigator.clipboard.writeText(text);
+}
+
+function buildRunCopyText(snapshot: RunComparisonSnapshot) {
+  return STAGES.map((stage) => {
+    const stageData = snapshot.stages[stage];
+    const promptLabel = stageData.promptFile ? `${stageData.promptFile}` : "missing prompt file";
+    const outputLabel = stageData.outputFile ? `${stageData.outputFile}` : "missing output file";
+    return [
+      `## ${formatStageTitle(stage)} (${snapshot.runId})`,
+      `Prompt source: ${promptLabel}`,
+      stageData.prompt.trim() || "[No prompt]",
+      "",
+      `Output source: ${outputLabel}`,
+      stageData.output.trim() || "[No output]"
+    ].join("\n");
+  }).join("\n\n");
+}
+
+function buildCombinedComparisonText(runA: RunComparisonSnapshot, runB: RunComparisonSnapshot) {
+  return [
+    `Compare run A (${runA.runId}) with run B (${runB.runId}).`,
+    "",
+    ...STAGES.flatMap((stage) => {
+      const left = runA.stages[stage];
+      const right = runB.stages[stage];
+      return [
+        `## ${formatStageTitle(stage)}`,
+        `Prompt A`,
+        left.prompt.trim() || "[No prompt]",
+        "",
+        `Prompt B`,
+        right.prompt.trim() || "[No prompt]",
+        "",
+        `Output A`,
+        left.output.trim() || "[No output]",
+        "",
+        `Output B`,
+        right.output.trim() || "[No output]"
+      ];
+    })
+  ].join("\n");
+}
+
+async function loadRunComparisonSnapshot(runId: string, token: string): Promise<RunComparisonSnapshot> {
+  const details = await getRun(runId, token);
+  const stagePairs = await Promise.all(
+    STAGES.map(async (stage) => {
+      const promptFile = STAGE_PROMPT_FILES[stage];
+      const outputFile = STAGE_OUTPUT_FILES[stage].find((file) => details.files.includes(file)) ?? null;
+
+      const [prompt, output] = await Promise.all([
+        details.files.includes(promptFile) ? getRunFile(runId, promptFile, token) : Promise.resolve(""),
+        outputFile ? getRunFile(runId, outputFile, token) : Promise.resolve("")
+      ]);
+
+      return [
+        stage,
+        {
+          prompt,
+          output,
+          promptFile: details.files.includes(promptFile) ? promptFile : null,
+          outputFile
+        }
+      ] as const;
+    })
+  );
+
+  return {
+    runId,
+    stages: Object.fromEntries(stagePairs) as Record<StageName, StageComparisonSnapshot>
+  };
+}
+
 // ============================================================================
 // CUSTOM HOOKS
 // ============================================================================
@@ -79,10 +182,12 @@ interface AppState {
   token: string;
   meta: MetaResponse | null;
   runs: RunListItem[];
+  activeTab: AppTab;
   selectedRun: string;
   compareRunA: string;
   compareRunB: string;
   compareResult: string;
+  comparisonData: ComparisonViewData | null;
   topic: string;
   format: "dialogue" | "solo";
   hostIds: string[];
@@ -109,11 +214,13 @@ function useAppState() {
     token: localStorage.getItem("prompts_lab_token") ?? "",
     meta: null,
     runs: [],
+    activeTab: "workspace",
     selectedRun: "",
     compareRunA: "",
     compareRunB: "",
     compareResult: "",
-    topic: "SQL",
+    comparisonData: null,
+    topic: "",
     format: "dialogue",
     hostIds: ["sarah_curious", "mike_expert"],
     runFlags: {
@@ -175,15 +282,18 @@ function useApiOperations(state: AppState, updateState: (updates: Partial<AppSta
     updateState({ busy: true, error: "" });
     try {
       const [metaRes, runsRes] = await Promise.all([getMeta(state.token), getRuns(state.token)]);
+      const nextTopic = state.topic.trim() || metaRes.default_topic?.trim() || "";
       updateState({
         meta: metaRes,
         runs: runsRes,
-        topic: metaRes.default_topic,
+        topic: nextTopic,
         format: "dialogue",
         hostIds: metaRes.default_host_ids,
-        status: "Loaded defaults"
+        status: nextTopic ? "Loaded defaults" : "Loaded meta (topic required)"
       });
-      await loadDefaults(metaRes.default_topic, "dialogue", metaRes.default_host_ids);
+      if (nextTopic) {
+        await loadDefaults(nextTopic, "dialogue", metaRes.default_host_ids);
+      }
     } catch (e) {
       updateState({
         error: (e as Error).message,
@@ -208,11 +318,20 @@ function useApiOperations(state: AppState, updateState: (updates: Partial<AppSta
     newFormat = state.format,
     newHostIds = state.hostIds
   ) => {
+    const sanitizedTopic = newTopic.trim();
+    if (!sanitizedTopic) {
+      updateState({
+        error: "Topic is required before loading defaults.",
+        status: "Defaults blocked"
+      });
+      return;
+    }
+
     updateState({ busy: true, error: "" });
     try {
       const defaults = await getDefaults(
         {
-          topic: newTopic,
+          topic: sanitizedTopic,
           format: newFormat,
           host_ids: newHostIds,
           injected: {
@@ -281,6 +400,15 @@ function useApiOperations(state: AppState, updateState: (updates: Partial<AppSta
   };
 
   const runSelectedStages = async () => {
+    const sanitizedTopic = state.topic.trim();
+    if (!sanitizedTopic) {
+      updateState({
+        error: "Topic is required before running stages.",
+        status: "Run blocked"
+      });
+      return;
+    }
+
     const selectedStages = STAGES.filter((stage) => state.runFlags[stage]);
     if (selectedStages.length === 0) {
       updateState({ error: "Select at least one stage to run." });
@@ -326,7 +454,7 @@ function useApiOperations(state: AppState, updateState: (updates: Partial<AppSta
       if (ol) injected.outline_json = ol;
 
       const payload = {
-        topic: state.topic,
+        topic: sanitizedTopic,
         format: state.format,
         host_ids: state.hostIds,
         stages: selectedStages,
@@ -367,13 +495,18 @@ function useApiOperations(state: AppState, updateState: (updates: Partial<AppSta
 
     updateState({ busy: true, error: "" });
     try {
-      const result = await compareRuns(
-        { run_a: state.compareRunA, run_b: state.compareRunB, file_name: "research.md", max_lines: 400 },
-        state.token
-      );
+      const [runA, runB] = await Promise.all([
+        loadRunComparisonSnapshot(state.compareRunA, state.token),
+        loadRunComparisonSnapshot(state.compareRunB, state.token)
+      ]);
+      const copyTextA = buildRunCopyText(runA);
+      const copyTextB = buildRunCopyText(runB);
+      const combinedText = buildCombinedComparisonText(runA, runB);
       updateState({
-        compareResult: result.diff || "No diff output",
-        status: "Compare done"
+        comparisonData: { runA, runB, copyTextA, copyTextB, combinedText },
+        compareResult: combinedText,
+        activeTab: "comparison",
+        status: "Comparison ready"
       });
     } catch (e) {
       updateState({
@@ -754,8 +887,9 @@ function RunLoaderPanel({
 interface ComparePanelProps {
   compareRunA: string;
   compareRunB: string;
-  compareResult: string;
   runOptions: string[];
+  comparisonData: ComparisonViewData | null;
+  compareResult: string;
   onRunAChange: (runId: string) => void;
   onRunBChange: (runId: string) => void;
   onCompare: () => void;
@@ -765,6 +899,7 @@ interface ComparePanelProps {
 function ComparePanel({
   compareRunA,
   compareRunB,
+  comparisonData,
   compareResult,
   runOptions,
   onRunAChange,
@@ -773,16 +908,27 @@ function ComparePanel({
   busy
 }: ComparePanelProps) {
   return (
-    <section className="panel compare-panel">
-      <h2>Quick Compare</h2>
-      <div className="grid-3">
+    <section className="panel comparison-panel">
+      <header className="comparison-hero">
+        <div>
+          <h2>Comparison tab</h2>
+          <p>Compare two runs stage by stage, copy each side separately, or grab one combined block for judgment.</p>
+        </div>
+        <div className="actions left">
+          <button onClick={onCompare} disabled={busy || !compareRunA || !compareRunB}>Load comparison</button>
+          <button
+            onClick={() => copyToClipboard(compareResult)}
+            disabled={!compareResult.trim()}
+          >
+            Copy judge pack
+          </button>
+        </div>
+      </header>
+
+      <div className="grid-3 comparison-selectors">
         <label className="field">
           <span>Run A</span>
-          <select
-            value={compareRunA}
-            onChange={(event) => onRunAChange(event.target.value)}
-            disabled={busy}
-          >
+          <select value={compareRunA} onChange={(event) => onRunAChange(event.target.value)} disabled={busy}>
             <option value="">Select run...</option>
             {runOptions.map((runId) => (
               <option key={`a-${runId}`} value={runId}>{runId}</option>
@@ -791,22 +937,104 @@ function ComparePanel({
         </label>
         <label className="field">
           <span>Run B</span>
-          <select
-            value={compareRunB}
-            onChange={(event) => onRunBChange(event.target.value)}
-            disabled={busy}
-          >
+          <select value={compareRunB} onChange={(event) => onRunBChange(event.target.value)} disabled={busy}>
             <option value="">Select run...</option>
             {runOptions.map((runId) => (
               <option key={`b-${runId}`} value={runId}>{runId}</option>
             ))}
           </select>
         </label>
-        <div className="actions left">
-          <button onClick={onCompare} disabled={busy}>Compare research.md</button>
+        <div className="actions left comparison-summary-actions">
+          <button onClick={() => copyToClipboard(comparisonData?.copyTextA ?? "")} disabled={!comparisonData}>
+            Copy run A
+          </button>
+          <button onClick={() => copyToClipboard(comparisonData?.copyTextB ?? "")} disabled={!comparisonData}>
+            Copy run B
+          </button>
         </div>
       </div>
-      <textarea className="editor compare" value={compareResult} readOnly />
+
+      {comparisonData ? (
+        <div className="comparison-stack">
+          <section className="comparison-pack panel-inner">
+            <div className="comparison-pack-header">
+              <h3>Judge pack</h3>
+              <button onClick={() => copyToClipboard(comparisonData.combinedText)}>
+                Copy full pack
+              </button>
+            </div>
+            <textarea className="editor compare" value={comparisonData.combinedText} readOnly />
+          </section>
+
+          {STAGES.map((stage) => {
+            const left = comparisonData.runA.stages[stage];
+            const right = comparisonData.runB.stages[stage];
+            return (
+              <section className="comparison-stage panel-inner" key={stage}>
+                <div className="comparison-stage-header">
+                  <div>
+                    <h3>{formatStageTitle(stage)}</h3>
+                    <p>Prompts and outputs are shown separately for each run.</p>
+                  </div>
+                  <div className="actions left">
+                    <button onClick={() => copyToClipboard(left.prompt)}>Copy prompt A</button>
+                    <button onClick={() => copyToClipboard(right.prompt)}>Copy prompt B</button>
+                    <button onClick={() => copyToClipboard(left.output)}>Copy A</button>
+                    <button onClick={() => copyToClipboard(right.output)}>Copy B</button>
+                  </div>
+                </div>
+                <div className="comparison-subsection">
+                  <div className="comparison-subsection-header">
+                    <h4>Prompt</h4>
+                    <span>Editable source prompt for each run.</span>
+                  </div>
+                  <div className="comparison-columns">
+                    <article className="comparison-column">
+                      <div className="comparison-column-header">
+                        <span>Run A</span>
+                        <small>{left.promptFile ?? "Missing prompt file"}</small>
+                      </div>
+                      <textarea className="editor compare comparison-text" value={left.prompt} readOnly />
+                    </article>
+                    <article className="comparison-column">
+                      <div className="comparison-column-header">
+                        <span>Run B</span>
+                        <small>{right.promptFile ?? "Missing prompt file"}</small>
+                      </div>
+                      <textarea className="editor compare comparison-text" value={right.prompt} readOnly />
+                    </article>
+                  </div>
+                </div>
+
+                <div className="comparison-subsection">
+                  <div className="comparison-subsection-header">
+                    <h4>Output</h4>
+                    <span>Generated result for the same stage.</span>
+                  </div>
+                  <div className="comparison-columns">
+                    <article className="comparison-column">
+                      <div className="comparison-column-header">
+                        <span>Run A</span>
+                        <small>{left.outputFile ?? "Missing output file"}</small>
+                      </div>
+                      <textarea className="editor compare comparison-text" value={left.output} readOnly />
+                    </article>
+                    <article className="comparison-column">
+                      <div className="comparison-column-header">
+                        <span>Run B</span>
+                        <small>{right.outputFile ?? "Missing output file"}</small>
+                      </div>
+                      <textarea className="editor compare comparison-text" value={right.output} readOnly />
+                    </article>
+                  </div>
+                </div>
+              </section>
+            );
+          })}
+        </div>
+      ) : (
+        <p className="comparison-empty">Load two runs to see the stage-by-stage comparison.</p>
+      )}
     </section>
   );
 }
@@ -1011,81 +1239,101 @@ export default function App() {
   return (
     <div className="page">
       <header className="hero">
-        <h1>Prompts Lab</h1>
-        <p>Developer-only playground for podcast stages, prompts, and outputs.</p>
+        <div>
+          <h1>Prompts Lab</h1>
+          <p>Developer-only playground for podcast stages, prompts, outputs, and comparisons.</p>
+        </div>
+        <div className="hero-tabs" role="tablist" aria-label="Workspace tabs">
+          {TABS.map((tab) => (
+            <button
+              key={tab}
+              className={state.activeTab === tab ? "tab active" : "tab"}
+              onClick={() => updateState({ activeTab: tab })}
+              role="tab"
+              aria-selected={state.activeTab === tab}
+            >
+              {tab === "workspace" ? "Workspace" : "Comparison"}
+            </button>
+          ))}
+        </div>
       </header>
 
-      <TokenPanel
-        token={state.token}
-        onTokenChange={setTokenAndPersist}
-        onReloadMeta={() => void bootstrap()}
-        onLoadDefaults={() => void loadDefaults()}
-        onRunSelected={() => void runSelectedStages()}
-        busy={state.busy}
-      />
+      {state.activeTab === "workspace" ? (
+        <>
+          <TokenPanel
+            token={state.token}
+            onTokenChange={setTokenAndPersist}
+            onReloadMeta={() => void bootstrap()}
+            onLoadDefaults={() => void loadDefaults()}
+            onRunSelected={() => void runSelectedStages()}
+            busy={state.busy}
+          />
 
-      <ConfigPanel
-        format={state.format}
-        topic={state.topic}
-        hostIds={state.hostIds}
-        meta={state.meta}
-        onFormatChange={(format) => {
-          updateState({ format });
-          void loadDefaults(state.topic, format, state.hostIds);
-        }}
-        onTopicChange={(topic) => updateState({ topic })}
-        onHostsChange={(hostIds) => {
-          updateState({ hostIds });
-          void loadDefaults(state.topic, state.format, hostIds);
-        }}
-        busy={state.busy}
-      />
+          <ConfigPanel
+            format={state.format}
+            topic={state.topic}
+            hostIds={state.hostIds}
+            meta={state.meta}
+            onFormatChange={(format) => {
+              updateState({ format });
+              void loadDefaults(state.topic, format, state.hostIds);
+            }}
+            onTopicChange={(topic) => updateState({ topic })}
+            onHostsChange={(hostIds) => {
+              updateState({ hostIds });
+              void loadDefaults(state.topic, state.format, hostIds);
+            }}
+            busy={state.busy}
+          />
 
-      <RunLoaderPanel
-        selectedRun={state.selectedRun}
-        runOptions={runOptions}
-        onRunSelect={(runId) => updateState({ selectedRun: runId })}
-        onRefresh={() => void refreshRuns()}
-        onLoad={() => void loadRun(state.selectedRun)}
-        busy={state.busy}
-      />
+          <RunLoaderPanel
+            selectedRun={state.selectedRun}
+            runOptions={runOptions}
+            onRunSelect={(runId) => updateState({ selectedRun: runId })}
+            onRefresh={() => void refreshRuns()}
+            onLoad={() => void loadRun(state.selectedRun)}
+            busy={state.busy}
+          />
 
-      <ComparePanel
-        compareRunA={state.compareRunA}
-        compareRunB={state.compareRunB}
-        compareResult={state.compareResult}
-        runOptions={runOptions}
-        onRunAChange={(runId) => updateState({ compareRunA: runId })}
-        onRunBChange={(runId) => updateState({ compareRunB: runId })}
-        onCompare={() => void runCompare()}
-        busy={state.busy}
-      />
-
-      {STAGES.map((stage) => (
-        <StagePanel
-          key={stage}
-          stage={stage}
-          prompt={state.prompts[stage]}
-          output={state.outputs[stage]}
-          runFlag={state.runFlags[stage]}
-          onPromptChange={(value) =>
-            updateState({
-              prompts: { ...state.prompts, [stage]: value }
-            })
-          }
-          onOutputChange={(value) =>
-            updateState({
-              outputs: { ...state.outputs, [stage]: value }
-            })
-          }
-          onRunFlagChange={(checked) =>
-            updateState({
-              runFlags: { ...state.runFlags, [stage]: checked }
-            })
-          }
-          onOpenTemplatePicker={() => void openTemplatePicker(stage)}
+          {STAGES.map((stage) => (
+            <StagePanel
+              key={stage}
+              stage={stage}
+              prompt={state.prompts[stage]}
+              output={state.outputs[stage]}
+              runFlag={state.runFlags[stage]}
+              onPromptChange={(value) =>
+                updateState({
+                  prompts: { ...state.prompts, [stage]: value }
+                })
+              }
+              onOutputChange={(value) =>
+                updateState({
+                  outputs: { ...state.outputs, [stage]: value }
+                })
+              }
+              onRunFlagChange={(checked) =>
+                updateState({
+                  runFlags: { ...state.runFlags, [stage]: checked }
+                })
+              }
+              onOpenTemplatePicker={() => void openTemplatePicker(stage)}
+            />
+          ))}
+        </>
+      ) : (
+        <ComparePanel
+          compareRunA={state.compareRunA}
+          compareRunB={state.compareRunB}
+          comparisonData={state.comparisonData}
+          compareResult={state.compareResult}
+          runOptions={runOptions}
+          onRunAChange={(runId) => updateState({ compareRunA: runId })}
+          onRunBChange={(runId) => updateState({ compareRunB: runId })}
+          onCompare={() => void runCompare()}
+          busy={state.busy}
         />
-      ))}
+      )}
 
       <TemplatePickerModal
         isOpen={state.templatePicker.isOpen}

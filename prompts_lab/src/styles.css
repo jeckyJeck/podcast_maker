@@ -39,6 +39,29 @@ body {
   color: var(--ink-soft);
 }
 
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 16px;
+}
+
+.hero-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tab {
+  min-width: 120px;
+}
+
+.tab.active {
+  background: linear-gradient(120deg, #2a5f4d, #3c7a65);
+  border-color: #1f4a3d;
+  color: #fff;
+}
+
 .panel {
   margin-top: 16px;
   border: 1px solid var(--line);
@@ -133,6 +156,109 @@ button:disabled {
 
 .compare-panel h2 {
   margin-top: 0;
+}
+
+.comparison-panel h2,
+.comparison-panel h3 {
+  margin: 0;
+}
+
+.comparison-hero {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: end;
+  margin-bottom: 14px;
+}
+
+.comparison-hero p {
+  margin: 8px 0 0;
+  color: var(--ink-soft);
+}
+
+.comparison-selectors {
+  margin-bottom: 14px;
+}
+
+.comparison-summary-actions {
+  align-items: end;
+}
+
+.comparison-stack {
+  display: grid;
+  gap: 14px;
+}
+
+.panel-inner {
+  border: 1px solid color-mix(in srgb, var(--line) 70%, white);
+  border-radius: 14px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.comparison-pack-header,
+.comparison-stage-header,
+.comparison-column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 12px;
+}
+
+.comparison-pack-header {
+  margin-bottom: 10px;
+}
+
+.comparison-stage-header {
+  margin-bottom: 12px;
+}
+
+.comparison-stage-header p,
+.comparison-column-header small {
+  margin: 4px 0 0;
+  color: var(--ink-soft);
+}
+
+.comparison-subsection {
+  margin-top: 14px;
+}
+
+.comparison-subsection-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.comparison-subsection-header h4 {
+  margin: 0;
+  font-size: 0.96rem;
+}
+
+.comparison-subsection-header span {
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+}
+
+.comparison-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.comparison-column {
+  min-width: 0;
+}
+
+.comparison-text {
+  min-height: 260px;
+  resize: vertical;
+}
+
+.comparison-empty {
+  margin: 0;
+  color: var(--ink-soft);
 }
 
 .stage-header {
@@ -266,12 +392,28 @@ button:disabled {
   .editors {
     grid-template-columns: 1fr;
   }
+
+  .comparison-columns,
+  .hero,
+  .comparison-hero {
+    grid-template-columns: 1fr;
+    display: grid;
+    align-items: stretch;
+  }
 }
 
 @media (max-width: 840px) {
   .grid-2,
   .grid-3 {
     grid-template-columns: 1fr;
+  }
+
+  .hero-tabs {
+    width: 100%;
+  }
+
+  .tab {
+    flex: 1 1 0;
   }
 
   .actions {
