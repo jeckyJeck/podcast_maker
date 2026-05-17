@@ -1,5 +1,5 @@
-import React from 'react';
-import { FaHistory, FaPlay } from 'react-icons/fa';
+import React, { useEffect, useState } from 'react';
+import { FaClock, FaFolder, FaHistory, FaPlay } from 'react-icons/fa';
 import { usePodcast } from '../context/PodcastContext';
 
 const formatTime = (seconds: number): string => {
@@ -10,55 +10,126 @@ const formatTime = (seconds: number): string => {
 };
 
 const formatDate = (iso: string): string => {
-  try { return new Date(iso).toLocaleString('en-US'); } catch { return iso; }
+  try {
+    return new Date(iso).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+  } catch {
+    return iso;
+  }
+};
+
+const EpisodeProgress: React.FC<{ audioUrl?: string; currentTime: number }> = ({ audioUrl, currentTime }) => {
+  const [duration, setDuration] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!audioUrl) {
+      setDuration(null);
+      return;
+    }
+
+    const audio = new Audio();
+    const handleMetadata = () => {
+      setDuration(Number.isFinite(audio.duration) ? audio.duration : null);
+    };
+
+    audio.preload = 'metadata';
+    audio.addEventListener('loadedmetadata', handleMetadata);
+    audio.src = audioUrl;
+
+    return () => {
+      audio.removeEventListener('loadedmetadata', handleMetadata);
+      audio.src = '';
+    };
+  }, [audioUrl]);
+
+  const percent = duration && duration > 0
+    ? Math.min(100, Math.max(0, (currentTime / duration) * 100))
+    : currentTime > 0 ? 8 : 0;
+
+  return (
+    <>
+      <div className="flex min-w-0 items-center justify-between gap-3 text-xs font-bold uppercase tracking-[0.16em] text-[#dbe3ff]">
+        <span className="inline-flex min-w-0 items-center gap-2 truncate">
+          <FaClock size={12} className="shrink-0" />
+          {duration ? formatTime(duration) : 'Length unavailable'}
+        </span>
+        <span className="shrink-0 text-right">
+          {currentTime > 0
+            ? duration
+              ? `${Math.round(percent)}% listened`
+              : `${formatTime(currentTime)} listened`
+            : 'Not started'}
+        </span>
+      </div>
+      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/12">
+        <div
+          className="h-full rounded-full bg-gradient-to-r from-[#4D8EFF] to-[#571BC1]"
+          style={{ width: `${percent}%` }}
+        />
+      </div>
+    </>
+  );
 };
 
 export const HistoryScreen: React.FC = () => {
   const { displayHistory, cloudLoading, handleRestoreFromHistory } = usePodcast();
 
   return (
-    <div className="flex-1 flex flex-col p-4 max-w-2xl mx-auto w-full">
-      <div className="flex items-center gap-3 mb-6">
-        <FaHistory className="text-blue-500" size={24} />
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Your History</h2>
-      </div>
+    <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-8">
+      <section>
+        <div className="mb-3 flex items-center gap-3 text-xs font-extrabold uppercase tracking-[0.22em] text-[#b8c7ff]">
+          <FaHistory size={14} />
+          Archive
+        </div>
+        <h1 className="font-display text-5xl font-extrabold text-white">Your Library</h1>
+      </section>
 
       {cloudLoading ? (
-        <div className="flex justify-center items-center h-64 text-gray-400">
+        <div className="grid h-64 place-items-center text-[#8f93a3]">
           <div className="animate-pulse">Loading history...</div>
         </div>
       ) : displayHistory.length === 0 ? (
-        <div className="flex flex-col items-center justify-center h-64 text-gray-400 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm border-dashed">
-          <p className="font-medium text-lg">No podcasts found</p>
-          <p className="text-sm">Start by creating your first episode!</p>
+        <div className="grid min-h-72 place-items-center rounded-[2rem] border border-dashed border-white/12 bg-white/[0.045] p-8 text-center">
+          <div>
+            <div className="mx-auto mb-5 grid h-20 w-20 place-items-center rounded-[1.5rem] bg-white/[0.08] text-[#b8c7ff]">
+              <FaFolder size={34} />
+            </div>
+            <p className="font-display text-2xl font-extrabold text-white">No podcasts found</p>
+            <p className="mt-2 text-sm text-[#8f93a3]">Create your first episode to start building the archive.</p>
+          </div>
         </div>
       ) : (
-        <div className="grid gap-3">
-          {displayHistory.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => handleRestoreFromHistory(item)}
-              className="w-full text-left p-4 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl hover:shadow-md hover:border-blue-200 dark:hover:border-blue-900 transition-all flex items-center gap-4 group shadow-sm"
-            >
-              <div className="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors">
-                <FaPlay size={16} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-bold text-gray-900 dark:text-white truncate">
-                  {item.topic || 'Untitled Podcast'}
-                </p>
-                <div className="flex items-center gap-3 mt-1 text-xs text-gray-500 dark:text-gray-400">
-                  <span>{formatDate(item.updatedAt)}</span>
-                  {item.currentTime > 0 && (
-                    <span className="text-blue-500 font-medium">
-                      Resume from {formatTime(item.currentTime)}
-                    </span>
-                  )}
+        <div className="grid gap-5">
+          {displayHistory.map((item) => {
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => handleRestoreFromHistory(item)}
+                className="group w-full max-w-full overflow-hidden rounded-[2rem] border border-white/8 bg-white/[0.065] p-6 text-left shadow-[0_24px_80px_rgba(0,0,0,0.22)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#9bb8ff]/45 hover:bg-white/[0.085]"
+              >
+                <div className="mb-7 flex items-start gap-5">
+                  <div className="grid h-16 w-16 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-white to-[#a7aab8] text-[#0D0D0D] shadow-[0_10px_32px_rgba(255,255,255,0.08)]">
+                    <FaFolder size={26} />
+                  </div>
+                  <div className="min-w-0 flex-1 overflow-hidden">
+                    <h2 className="line-clamp-2 max-w-full break-words font-display text-2xl font-extrabold leading-tight text-white [overflow-wrap:anywhere]">
+                      {item.topic || 'Untitled Podcast'}
+                    </h2>
+                    <p className="mt-2 text-sm text-[#d8d9e0]">Updated: {formatDate(item.updatedAt)}</p>
+                  </div>
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-white/[0.06] text-[#b8c7ff] opacity-70 transition-all group-hover:bg-[#b8c7ff] group-hover:text-[#0D0D0D] group-hover:opacity-100">
+                    <FaPlay size={15} className="ml-0.5" />
+                  </span>
                 </div>
-              </div>
-            </button>
-          ))}
+
+                <EpisodeProgress audioUrl={item.status.url?.audio} currentTime={item.currentTime} />
+              </button>
+            );
+          })}
         </div>
       )}
     </div>

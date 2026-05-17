@@ -97,18 +97,18 @@ export default function TranscriptViewer({ transcriptUrl, currentTime, onSeek }:
   };
 
   const getSpeakerColor = (speaker: string): string => {
-    return speaker === 'HOST_1' ? 'text-blue-600 dark:text-blue-400' : 'text-purple-600 dark:text-purple-400';
+    return speaker === 'HOST_1' ? 'text-[#b8c7ff]' : 'text-[#c7a8ff]';
   };
 
   const getSpeakerBgColor = (speaker: string): string => {
-    return speaker === 'HOST_1' ? 'bg-blue-50/50 dark:bg-blue-900/20' : 'bg-purple-50/50 dark:bg-purple-900/20';
+    return speaker === 'HOST_1' ? 'bg-[#1a2030]' : 'bg-[#211a30]';
   };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8 h-full" dir="ltr">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-        <span className="ml-3 text-gray-500 text-sm">Loading transcript...</span>
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#4D8EFF]/30 border-t-[#b8c7ff]"></div>
+        <span className="ml-3 text-sm text-[#8f93a3]">Loading transcript...</span>
       </div>
     );
   }
@@ -116,7 +116,7 @@ export default function TranscriptViewer({ transcriptUrl, currentTime, onSeek }:
   if (error) {
     return (
       <div className="p-8 flex items-center justify-center h-full" dir="ltr">
-        <p className="text-red-500 text-sm">Error loading transcript</p>
+        <p className="text-sm text-red-300">Error loading transcript</p>
       </div>
     );
   }
@@ -124,14 +124,14 @@ export default function TranscriptViewer({ transcriptUrl, currentTime, onSeek }:
   if (segments.length === 0) {
     return (
       <div className="p-8 flex items-center justify-center h-full" dir="ltr">
-        <p className="text-gray-400 text-sm italic">No transcript available</p>
+        <p className="text-sm italic text-[#8f93a3]">No transcript available</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-transparent h-[300px] overflow-y-auto scroll-smooth custom-scrollbar" dir="ltr">
-      <div className="p-6 space-y-1">
+    <div className="h-[340px] overflow-y-auto scroll-smooth bg-transparent custom-scrollbar" dir="ltr">
+      <div className="space-y-5 p-5 sm:p-7">
         {segments.map((segment, index) => {
           const isActive = index === activeIndex;
           return (
@@ -139,21 +139,28 @@ export default function TranscriptViewer({ transcriptUrl, currentTime, onSeek }:
               key={index}
               ref={isActive ? activeSegmentRef : null}
               onClick={() => handleSegmentClick(segment)}
-              className={`p-4 rounded-2xl transition-all duration-500 cursor-pointer border-l-4 ${
+              className={`group cursor-pointer rounded-[1.5rem] border p-5 transition-all duration-500 ${
                 isActive
-                  ? `${getSpeakerBgColor(segment.speaker)} border-blue-500 dark:border-blue-400 opacity-100`
-                  : 'hover:bg-gray-50 dark:hover:bg-gray-800/50 border-transparent opacity-60 hover:opacity-100'
+                  ? `${getSpeakerBgColor(segment.speaker)} border-[#9bb8ff] opacity-100 shadow-[0_0_30px_rgba(77,142,255,0.18)]`
+                  : 'border-transparent bg-[#111318]/45 opacity-55 hover:border-white/10 hover:bg-white/[0.04] hover:opacity-100'
               }`}
             >
               <div className="flex items-start gap-4">
-                <span className={`text-[10px] font-mono mt-1 opacity-50 min-w-[40px] ${isActive ? 'text-blue-600 dark:text-blue-400 opacity-100' : 'text-gray-500'}`}>
+                <span className={`mt-1 min-w-[46px] font-mono text-sm font-bold tabular-nums ${isActive ? 'text-[#b8c7ff]' : 'text-[#777b87]'}`}>
                   {formatTime(segment.startMs)}
                 </span>
                 <div className="flex-1">
-                  <span className={`text-[11px] font-bold uppercase tracking-wider ${getSpeakerColor(segment.speaker)}`}>
-                    {segment.speaker}
-                  </span>
-                  <p className={`text-gray-800 dark:text-gray-200 mt-1 leading-relaxed text-base transition-all duration-300 ${isActive ? 'font-medium' : 'font-normal'}`}>
+                  <div className="mb-2 flex items-center justify-between gap-3">
+                    <span className={`text-[10px] font-extrabold uppercase tracking-[0.22em] ${getSpeakerColor(segment.speaker)}`}>
+                      {segment.speaker}
+                    </span>
+                    {isActive && (
+                      <span className="rounded-full bg-[#b8c7ff]/15 px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#dbe3ff]">
+                        Now Speaking
+                      </span>
+                    )}
+                  </div>
+                  <p className={`text-lg leading-8 transition-all duration-300 ${isActive ? 'font-semibold text-white' : 'font-normal text-[#a7aab8]'}`}>
                     {segment.text}
                   </p>
                 </div>

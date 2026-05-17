@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import JSZip from 'jszip';
 import {
-  FaPlay,
-  FaPause,
   FaBackward,
-  FaForward,
   FaDownload,
+  FaForward,
+  FaHeadphones,
+  FaPause,
+  FaPlay,
   FaTachometerAlt,
 } from 'react-icons/fa';
 import { usePodcast } from '../context/PodcastContext';
@@ -14,16 +15,12 @@ import type { PodcastFiles } from '../types/podcast';
 
 const PLAYBACK_SPEEDS = [0.5, 0.75, 1, 1.25, 1.5, 2];
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
 const formatTime = (seconds: number): string => {
   if (!Number.isFinite(seconds) || seconds < 0) return '0:00';
   const m = Math.floor(seconds / 60);
   const s = Math.floor(seconds % 60);
   return `${m}:${s.toString().padStart(2, '0')}`;
 };
-
-// ── ZIP Download ──────────────────────────────────────────────────────────────
 
 const FILE_META: { key: keyof PodcastFiles; filename: string }[] = [
   { key: 'audio',          filename: 'podcast.mp3' },
@@ -73,8 +70,6 @@ const downloadZip = async (
   }
 };
 
-// ── Player Controls ───────────────────────────────────────────────────────────
-
 const PlayerControls: React.FC = () => {
   const {
     topic, resolvedFiles,
@@ -98,53 +93,46 @@ const PlayerControls: React.FC = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 px-4 py-3 space-y-2" dir="ltr">
-      {/* Progress bar */}
-      <div className="flex items-center gap-2">
-        <span className="text-xs text-gray-500 dark:text-gray-400 w-10 text-right tabular-nums">
-          {formatTime(currentTime)}
-        </span>
-        <input
-          type="range"
-          min={0}
-          max={duration || 0}
-          value={currentTime}
-          step={0.5}
-          onChange={(e) => seekTo(parseFloat(e.target.value))}
-          className="flex-1 h-1.5 rounded-full appearance-none cursor-pointer accent-blue-500"
-          style={{
-            background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${progress * 100}%, #e5e7eb ${progress * 100}%, #e5e7eb 100%)`,
-          }}
-        />
-        <span className="text-xs text-gray-500 dark:text-gray-400 w-10 tabular-nums">
-          {formatTime(duration)}
-        </span>
+    <div className="rounded-[2rem] border border-white/10 bg-white/[0.065] p-5 shadow-[0_28px_90px_rgba(0,0,0,0.45)] backdrop-blur-xl" dir="ltr">
+      <input
+        type="range"
+        min={0}
+        max={duration || 0}
+        value={currentTime}
+        step={0.5}
+        onChange={(e) => seekTo(parseFloat(e.target.value))}
+        className="sonic-range w-full"
+        style={{
+          background: `linear-gradient(to right, #4D8EFF 0%, #571BC1 ${progress * 100}%, rgba(255,255,255,0.13) ${progress * 100}%, rgba(255,255,255,0.13) 100%)`,
+        }}
+      />
+      <div className="mt-3 flex items-center justify-between text-sm tabular-nums text-[#dbe3ff]">
+        <span>{formatTime(currentTime)}</span>
+        <span>{formatTime(duration)}</span>
       </div>
 
-      {/* Buttons row */}
-      <div className="flex items-center justify-between">
-
-        {/* Speed selector */}
+      <div className="mt-7 flex items-center justify-between gap-2 sm:gap-3">
         <div className="relative">
           <button
             type="button"
             onClick={() => setShowSpeed((v) => !v)}
-            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-sm font-medium"
+            className="player-icon-button"
+            title="Playback speed"
           >
-            <FaTachometerAlt size={13} />
-            <span>{playbackSpeed}x</span>
+            <FaTachometerAlt size={18} />
+            <span className="text-[10px] font-bold">{playbackSpeed}x</span>
           </button>
           {showSpeed && (
-            <div className="absolute bottom-full mb-2 left-0 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden z-10">
+            <div className="absolute bottom-full left-0 z-20 mb-3 overflow-hidden rounded-2xl border border-white/10 bg-[#191a20] p-1 shadow-2xl">
               {PLAYBACK_SPEEDS.map((s) => (
                 <button
                   key={s}
                   type="button"
                   onClick={() => { changeSpeed(s); setShowSpeed(false); }}
-                  className={`block w-full px-4 py-2 text-sm text-right hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                  className={`block w-full rounded-xl px-5 py-2 text-left text-sm transition-colors ${
                     s === playbackSpeed
-                      ? 'bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-300 font-medium'
-                      : 'text-gray-700 dark:text-gray-300'
+                      ? 'bg-[#4D8EFF] text-white'
+                      : 'text-[#dbe3ff] hover:bg-white/10'
                   }`}
                 >
                   {s}x
@@ -154,109 +142,119 @@ const PlayerControls: React.FC = () => {
           )}
         </div>
 
-        {/* Skip back */}
         <button
           type="button"
           onClick={() => skipBy(-15)}
-          className="flex flex-col items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-          title="15 שניות אחורה"
+          className="player-icon-button"
+          title="15 seconds back"
         >
           <FaBackward size={18} />
-          <span className="text-[9px] mt-0.5">15s</span>
+          <span className="text-[10px] font-bold">15</span>
         </button>
 
-        {/* Play / Pause */}
         <button
           type="button"
           onClick={togglePlay}
           disabled={!resolvedFiles?.audio}
-          className="w-12 h-12 rounded-full bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white flex items-center justify-center shadow-md transition-colors"
+          className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#4D8EFF] to-[#571BC1] text-white shadow-[0_0_46px_rgba(77,142,255,0.42)] transition-all hover:scale-105 disabled:cursor-not-allowed disabled:grayscale sm:h-20 sm:w-20"
         >
-          {isPlaying ? <FaPause size={18} /> : <FaPlay size={18} className="ml-0.5" />}
+          {isPlaying ? <FaPause size={26} /> : <FaPlay size={24} className="ml-1" />}
         </button>
 
-        {/* Skip forward */}
         <button
           type="button"
           onClick={() => skipBy(15)}
-          className="flex flex-col items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-          title="15 שניות קדימה"
+          className="player-icon-button"
+          title="15 seconds forward"
         >
           <FaForward size={18} />
-          <span className="text-[9px] mt-0.5">15s</span>
+          <span className="text-[10px] font-bold">15</span>
         </button>
 
-        {/* Download ZIP */}
         <button
           type="button"
           onClick={handleDownload}
           disabled={!resolvedFiles || downloading}
-          className="w-9 h-9 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-40 flex items-center justify-center transition-colors"
-          title="הורד כל הקבצים (ZIP)"
+          className="player-icon-button disabled:cursor-not-allowed disabled:opacity-40"
+          title="Download all files (ZIP)"
         >
           {downloading ? (
-            <span className="animate-spin inline-block w-4 h-4 border-2 border-gray-400 border-t-blue-500 rounded-full" />
+            <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
           ) : (
-            <FaDownload size={15} />
+            <FaDownload size={18} />
           )}
+          <span className="text-[10px] font-bold">ZIP</span>
         </button>
       </div>
     </div>
   );
 };
 
-// ── Main PlayerScreen ─────────────────────────────────────────────────────────
-
 export const PlayerScreen: React.FC = () => {
   const { topic, resolvedFiles, currentTime, seekTo, podcastReady, goToCreate, goToHistory } = usePodcast();
 
   return (
-    <div className="max-w-2xl mx-auto w-full flex flex-col flex-1 min-h-0">
-      {/* Top bar */}
-      <div className="flex items-start justify-between gap-3 mb-4 px-1">
-        <h2 className="text-lg font-bold text-gray-900 dark:text-white line-clamp-2 flex-1">
-          {topic || 'Podcast Player'}
-        </h2>
-      </div>
+    <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-7">
+      <section>
+        <div className="mb-5 flex items-center justify-between gap-4">
+          <h1 className="font-display text-4xl font-extrabold text-white">Live Transcript</h1>
+          <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.22em] text-[#b8c7ff]">
+            <span className="h-3 w-3 rounded-full bg-[#9bb8ff]" />
+            Syncing
+          </div>
+        </div>
 
-      {/* Transcript */}
-      <div className="flex-1 overflow-hidden rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900/50 mb-4 shadow-sm">
-        {podcastReady && resolvedFiles?.transcript ? (
-          <TranscriptViewer
-            transcriptUrl={resolvedFiles.transcript}
-            currentTime={currentTime}
-            onSeek={seekTo}
-          />
-        ) : (
-          <div className="flex flex-col items-center justify-center h-full min-h-[300px] text-gray-400 gap-4 px-8">
-            <div className="w-16 h-16 bg-gray-50 dark:bg-gray-800 rounded-full flex items-center justify-center mb-2">
-              <FaPlay className="text-gray-300 dark:text-gray-600" size={24} />
+        <div className="min-h-[340px] overflow-hidden rounded-[2rem] border border-white/8 bg-[#14171d]/85 shadow-[0_28px_90px_rgba(0,0,0,0.35)]">
+          {podcastReady && resolvedFiles?.transcript ? (
+            <TranscriptViewer
+              transcriptUrl={resolvedFiles.transcript}
+              currentTime={currentTime}
+              onSeek={seekTo}
+            />
+          ) : (
+            <div className="flex min-h-[340px] flex-col items-center justify-center gap-5 px-8 text-center text-[#8f93a3]">
+              <div className="grid h-20 w-20 place-items-center rounded-full bg-white/[0.05]">
+                <FaPlay className="text-[#b8c7ff]" size={24} />
+              </div>
+              <p className="max-w-sm text-sm font-medium leading-6">
+                No active podcast. Start by creating one or browse your library.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={goToCreate}
+                  className="rounded-full bg-white px-5 py-3 text-sm font-bold text-[#0D0D0D]"
+                >
+                  Create New
+                </button>
+                <button
+                  type="button"
+                  onClick={goToHistory}
+                  className="rounded-full border border-white/10 px-5 py-3 text-sm font-bold text-white"
+                >
+                  Library
+                </button>
+              </div>
             </div>
-            <p className="text-center text-sm font-medium">No active podcast. Start by creating one or browse your history.</p>
-            <div className="flex gap-3">
-              <button
-                type="button"
-                onClick={goToCreate}
-                className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-all shadow-sm font-medium text-sm"
-              >
-                Create New
-              </button>
-              <button
-                type="button"
-                onClick={goToHistory}
-                className="px-5 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl transition-all font-medium text-sm"
-              >
-                Library
-              </button>
+          )}
+        </div>
+      </section>
+
+      <section className="relative overflow-hidden rounded-[2rem] bg-[#101010] p-7 shadow-[0_28px_90px_rgba(0,0,0,0.45)]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_20%,rgba(77,142,255,0.3),transparent_34%),linear-gradient(180deg,transparent,rgba(0,0,0,0.72))]" />
+        <div className="relative z-10">
+          <div className="my-7 grid place-items-center">
+            <div className="grid h-40 w-40 place-items-center rounded-full border border-[#67f3ff]/25 bg-[radial-gradient(circle,#2f8a92,rgba(29,94,103,0.3)_55%,transparent_56%)] shadow-[0_0_65px_rgba(103,243,255,0.2)]">
+              <FaHeadphones size={82} className="text-[#9be8ef]/70" />
             </div>
           </div>
-        )}
-      </div>
+          <h2 className="font-display text-3xl font-extrabold leading-none text-white sm:text-4xl">
+            {topic || 'Podcast Player'}
+          </h2>
+        </div>
+      </section>
 
-      {/* Player controls */}
-      <div className="rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-lg bg-white dark:bg-gray-900">
-        <PlayerControls />
-      </div>
+      <PlayerControls />
     </div>
   );
 };

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { FaSpinner, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
+import React, { useEffect, useState } from 'react';
+import { FaCheckCircle, FaExclamationCircle, FaSpinner } from 'react-icons/fa';
 import type { TaskStatus } from '../types/podcast';
 
 interface StatusDisplayProps {
@@ -25,19 +25,17 @@ export const StatusDisplay: React.FC<StatusDisplayProps> = ({ status, error }) =
 
     const interval = setInterval(() => {
       setMessageIndex((prev) => (prev + 1) % STATUS_MESSAGES.length);
-    }, 3000); // Change message every 3 seconds
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [status]);
 
   if (status === 'completed') {
     return (
-      <div className="bg-green-50 dark:bg-green-900 border-2 border-green-500 rounded-lg p-6 text-center">
-        <FaCheckCircle className="text-green-500 dark:text-green-300 mx-auto mb-3" size={48} />
-        <h3 className="text-xl font-semibold text-green-800 dark:text-green-200 mb-2">
-          Podcast Ready! 🎉
-        </h3>
-        <p className="text-green-700 dark:text-green-300">
+      <div className="rounded-[1.75rem] border border-emerald-300/30 bg-emerald-400/10 p-7 text-center shadow-[0_0_50px_rgba(16,185,129,0.12)]">
+        <FaCheckCircle className="mx-auto mb-4 text-emerald-200" size={44} />
+        <h3 className="font-display text-2xl font-extrabold text-white">Podcast Ready</h3>
+        <p className="mt-2 text-sm text-emerald-100/80">
           Your podcast has been created successfully and is available for playback.
         </p>
       </div>
@@ -46,33 +44,28 @@ export const StatusDisplay: React.FC<StatusDisplayProps> = ({ status, error }) =
 
   if (status === 'failed') {
     return (
-      <div className="bg-red-50 dark:bg-red-900 border-2 border-red-500 rounded-lg p-6 text-center">
-        <FaExclamationCircle className="text-red-500 dark:text-red-300 mx-auto mb-3" size={48} />
-        <h3 className="text-xl font-semibold text-red-800 dark:text-red-200 mb-2">
-          Error Creating Podcast
-        </h3>
-        <p className="text-red-700 dark:text-red-300">
+      <div className="rounded-[1.75rem] border border-red-300/30 bg-red-500/10 p-7 text-center shadow-[0_0_50px_rgba(239,68,68,0.12)]">
+        <FaExclamationCircle className="mx-auto mb-4 text-red-200" size={44} />
+        <h3 className="font-display text-2xl font-extrabold text-white">Error Creating Podcast</h3>
+        <p className="mt-2 text-sm text-red-100/80">
           {error || 'An unexpected error occurred. Please try again.'}
         </p>
       </div>
     );
   }
 
-  // Processing status
   return (
-    <div className="bg-blue-50 dark:bg-blue-900 border-2 border-blue-500 rounded-lg p-6 text-center">
-      <FaSpinner className="text-blue-500 dark:text-blue-300 mx-auto mb-3 animate-spin" size={48} />
-      <h3 className="text-xl font-semibold text-blue-800 dark:text-blue-200 mb-2">
-        Processing Podcast...
-      </h3>
-      <p className="text-blue-700 dark:text-blue-300 mb-4">
+    <div className="rounded-[1.75rem] border border-[#9bb8ff]/35 bg-[#141821] p-7 text-center shadow-[0_0_60px_rgba(77,142,255,0.18)]">
+      <FaSpinner className="mx-auto mb-4 animate-spin text-[#b8c7ff]" size={44} />
+      <h3 className="font-display text-2xl font-extrabold text-white">Processing Podcast</h3>
+      <p className="mt-2 text-sm text-[#dbe3ff]">
         {STATUS_MESSAGES[messageIndex]}
       </p>
-      <div className="w-full bg-blue-200 dark:bg-blue-700 rounded-full h-2 overflow-hidden">
-        <div className="bg-blue-500 dark:bg-blue-400 h-full animate-pulse" style={{ width: '60%' }} />
+      <div className="mt-6 h-2 w-full overflow-hidden rounded-full bg-white/10">
+        <div className="h-full w-3/5 animate-pulse rounded-full bg-gradient-to-r from-[#4D8EFF] to-[#571BC1]" />
       </div>
-      <p className="text-sm text-blue-600 dark:text-blue-400 mt-3">
-        This may take a few minutes, please wait...
+      <p className="mt-4 text-xs font-bold uppercase tracking-[0.18em] text-[#8f93a3]">
+        Rendering may take a few minutes
       </p>
     </div>
   );

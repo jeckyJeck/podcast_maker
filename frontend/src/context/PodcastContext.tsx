@@ -299,15 +299,12 @@ export const PodcastProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const goToPlayer = useCallback(() => {
     setCurrentScreen('player');
-    setRestoredStatus(null);
   }, []);
   const goToCreate = useCallback(() => {
     setCurrentScreen('create');
-    setRestoredStatus(null);
   }, []);
   const goToHistory = useCallback(() => {
     setCurrentScreen('history');
-    setRestoredStatus(null);
   }, []);
 
   // Form
