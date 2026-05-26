@@ -1,4 +1,5 @@
 import type { PodcastFiles } from '../types/podcast';
+import { fetchWithRetry } from './http';
 
 const PODCAST_FILES_CACHE_NAME = 'podcast-maker-files-v1';
 
@@ -36,7 +37,7 @@ export const cachePodcastFiles = async (files: PodcastFiles): Promise<void> => {
           return;
         }
 
-        const response = await fetch(url);
+        const response = await fetchWithRetry(url);
         if (!response.ok) {
           return;
         }

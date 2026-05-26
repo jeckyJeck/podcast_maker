@@ -10,7 +10,6 @@ class ScriptWriter:
         prompt_manager: PromptManager,
     ):
         self.llm_provider = llm_provider
-        self.model = "gemma-4-31b-it"
         self.prompt_manager = prompt_manager
     
     def write_script(self, outline: dict, research: str, topic: str) -> str:
@@ -30,7 +29,6 @@ class ScriptWriter:
 
             llm_response = self.llm_provider.generate_text(
                 prompt=full_prompt,
-                model=self.model,
                 temperature=0.8,
                 metadata={"stage": "scriptwriter", "scene": scene_num, "topic": topic}
             )

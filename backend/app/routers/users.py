@@ -40,18 +40,24 @@ async def get_my_podcasts(auth_context: AuthContext = Depends(get_current_user))
     records = repository.get_user_podcasts(auth_context.user_id)
     response: List[Dict[str, Any]] = []
     for record in records:
-        urls = record.get("urls") if isinstance(record.get("urls"), dict) else None
+        urls = record.get("urls") if isinstance(record.get("urls"), dict) else {}
+        config = record.get("config") if isinstance(record.get("config"), dict) else {}
+        topic = config.get("topic") or record.get("title")
+        host_ids = config.get("host_ids") if isinstance(config.get("host_ids"), list) else []
         response.append(
             {
                 "id": str(record.get("id")),
-                "task_id": str(record.get("id")),
-                "topic": record.get("title"),
-                "host_ids": [],
-                "status": "completed",
-                "url": urls,
-                "error": None,
-                "created_at": None,
-                "updated_at": None,
+                "task_id": str(record.get("task_id") or record.get("id")),
+                "topic": topic,
+                "host_ids": [str(host_id) for host_id in host_ids],
+                "format": config.get("format") or "dialogue",
+                "config": config,
+                "status": record.get("status") or "completed",
+                "checkpoint": record.get("checkpoint") or "completed",
+                "url": urls or None,
+                "error": record.get("error"),
+                "created_at": record.get("created_at"),
+                "updated_at": record.get("updated_at"),
             }
         )
     return {"podcasts": response}

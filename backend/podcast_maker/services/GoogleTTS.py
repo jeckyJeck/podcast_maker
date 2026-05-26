@@ -8,6 +8,7 @@ import html
 from dotenv import load_dotenv
 from pydub import AudioSegment
 from podcast_maker.core.logging_config import get_logger
+from podcast_maker.services.retry import retry_network_call
 
 logger = get_logger()
 
@@ -182,8 +183,11 @@ class GoogleTTS:
         )
 
         # Perform the text-to-speech request
-        response = self.client.synthesize_speech(
-            input=synthesis_input, voice=voice, audio_config=audio_config
+        response = retry_network_call(
+            f"google_tts.synthesize_text.{voice_name}",
+            lambda: self.client.synthesize_speech(
+                input=synthesis_input, voice=voice, audio_config=audio_config
+            ),
         )
 
         # Convert the raw bytes from Google into a pydub AudioSegment
@@ -249,10 +253,13 @@ class GoogleTTS:
         )
 
         # Step 6: Send the request
-        response = self.client.synthesize_speech(
-            input=input_text, 
-            voice=voice, 
-            audio_config=audio_config
+        response = retry_network_call(
+            "google_tts.synthesize_ssml",
+            lambda: self.client.synthesize_speech(
+                input=input_text,
+                voice=voice,
+                audio_config=audio_config,
+            ),
         )
 
         return response.audio_content

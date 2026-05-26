@@ -26,7 +26,6 @@ from podcast_maker.services.llm_provider_factory import build_llm_provider
 from prompts_test.prompt_resolver import InstrumentedOverridePromptManager
 from prompts_test.run_manifest import RunManifest, StageRecord, utc_now_iso
 
-MODEL_NAME = "gemini-2.5-flash"
 DEFAULT_HOST_IDS = ["sarah_curious", "mike_expert"]
 
 
@@ -65,12 +64,12 @@ class PromptTestRunner:
         self.prompt_overrides = self._build_prompt_overrides()
         self.prompt_manager = InstrumentedOverridePromptManager(config, overrides=self.prompt_overrides)
 
-        llm_provider = build_llm_provider()
+        self.llm_provider = build_llm_provider()
 
-        self.architect = Architect(llm_provider, self.prompt_manager)
-        self.researcher = Researcher(llm_provider, self.prompt_manager)
-        self.outliner = Outliner(llm_provider, self.prompt_manager)
-        self.scriptwriter = ScriptWriter(llm_provider, self.prompt_manager)
+        self.architect = Architect(self.llm_provider, self.prompt_manager)
+        self.researcher = Researcher(self.llm_provider, self.prompt_manager)
+        self.outliner = Outliner(self.llm_provider, self.prompt_manager)
+        self.scriptwriter = ScriptWriter(self.llm_provider, self.prompt_manager)
 
     def run(self) -> Path:
         self.runs_root.mkdir(parents=True, exist_ok=True)
@@ -138,7 +137,7 @@ class PromptTestRunner:
             run_id=run_dir.name,
             topic=self.inputs.topic,
             stages=self.stages,
-            model=MODEL_NAME,
+            model=getattr(self.llm_provider, "model", "provider-default"),
             format=(self.inputs.podcast_format or "auto"),
             host_ids=self.host_ids,
             created_at_utc=utc_now_iso(),

@@ -12,6 +12,7 @@ import {
 import { usePodcast } from '../context/PodcastContext';
 import TranscriptViewer from './TranscriptViewer';
 import type { PodcastFiles } from '../types/podcast';
+import { fetchWithRetry } from '../services/http';
 
 const PLAYBACK_SPEEDS = [0.5, 0.75, 1, 1.25, 1.5, 2];
 
@@ -48,7 +49,10 @@ const downloadZip = async (
       FILE_META.map(async ({ key, filename }) => {
         const url = files[key];
         if (!url) return;
-        const res = await fetch(url);
+        const res = await fetchWithRetry(url);
+        if (!res.ok) {
+          throw new Error(`Failed to download ${filename}`);
+        }
         const blob = await res.blob();
         folder.file(filename, blob);
       }),

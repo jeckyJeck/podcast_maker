@@ -1,7 +1,10 @@
 import os
-
 from podcast_maker.services.storage_provider import StorageProvider
 from podcast_maker.services.supabase.supabase_client import get_supabase_client
+from podcast_maker.core.logging_config import get_logger
+from podcast_maker.services.retry import retry_network_call
+
+logger = get_logger()
 
 
 class SupabaseStorageProvider(StorageProvider):
@@ -26,14 +29,26 @@ class SupabaseStorageProvider(StorageProvider):
         return value
 
     def save_file(self, local_path: str, file_name: str) -> str:
+        """Save file with retry logic and exponential backoff.
+        
+        Args:
+            local_path: Path to local file
+            file_name: Target path in storage
+            
+        Returns:
+            Public URL of uploaded file
+        """
         storage_path = self._build_storage_path(file_name)
-        with open(local_path, "rb") as file_stream:
-            self.client.storage.from_(self.bucket_name).upload(
-                storage_path,
-                file_stream,
-                {
-                    "upsert": "true",
-                },
-            )
+        def upload() -> None:
+            with open(local_path, "rb") as file_stream:
+                self.client.storage.from_(self.bucket_name).upload(
+                    storage_path,
+                    file_stream,
+                    {
+                        "upsert": "true",
+                    },
+                )
 
+        retry_network_call(f"supabase.storage.upload.{file_name}", upload)
+        logger.info(f"File uploaded successfully file={file_name}")
         return self.client.storage.from_(self.bucket_name).get_public_url(storage_path)

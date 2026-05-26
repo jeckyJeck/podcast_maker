@@ -25,6 +25,13 @@
 | `title` | `text` | podcast topic/title |
 | `urls` | `jsonb` | output artifact URLs |
 | `user_id` | `uuid` | FK to `auth.users.id` |
+| `task_id` | `text` | stable creation task/storage identifier |
+| `status` | `text` | `queued`, `processing`, `failed`, or `completed` |
+| `checkpoint` | `text` | last completed pipeline checkpoint |
+| `config` | `jsonb` | normalized create-podcast payload |
+| `error` | `text` | latest failure message, if any |
+| `created_at` | `timestamptz` | creation timestamp |
+| `updated_at` | `timestamptz` | update timestamp |
 
 `urls` example:
 
@@ -32,6 +39,16 @@
 {
   "audio": "https://...",
   "transcript": "https://..."
+}
+```
+
+`config` example:
+
+```json
+{
+  "topic": "History of packet switching",
+  "host_ids": ["sarah_curious", "mike_expert"],
+  "format": "dialogue"
 }
 ```
 
@@ -53,6 +70,11 @@ erDiagram
         text title
         jsonb urls
         uuid user_id FK
+        text task_id
+        text status
+        text checkpoint
+        jsonb config
+        text error
     }
 ```
 

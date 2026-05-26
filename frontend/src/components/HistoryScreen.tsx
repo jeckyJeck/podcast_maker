@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FaClock, FaFolder, FaHistory, FaPlay } from 'react-icons/fa';
+import { FaClock, FaExclamationCircle, FaFolder, FaHistory, FaPlay, FaRedo, FaSpinner } from 'react-icons/fa';
 import { usePodcast } from '../context/PodcastContext';
 
 const formatTime = (seconds: number): string => {
@@ -75,7 +75,7 @@ const EpisodeProgress: React.FC<{ audioUrl?: string; currentTime: number }> = ({
 };
 
 export const HistoryScreen: React.FC = () => {
-  const { displayHistory, cloudLoading, handleRestoreFromHistory } = usePodcast();
+  const { displayHistory, cloudLoading, handleRestoreFromHistory, handleRetryPodcast } = usePodcast();
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-8">
@@ -104,30 +104,73 @@ export const HistoryScreen: React.FC = () => {
       ) : (
         <div className="grid gap-5">
           {displayHistory.map((item) => {
+            const isCompleted = item.status.status === 'completed' && Boolean(item.status.url?.audio);
+            const isFailed = item.status.status === 'failed';
+            const isWorking = item.status.status === 'queued' || item.status.status === 'processing';
+            const canRetry = Boolean(item.canRetry || isFailed);
+            const statusLabel = isCompleted
+              ? 'Ready to play'
+              : canRetry && !isFailed
+                ? 'Creation needs attention'
+                : isFailed
+                ? `Failed${item.status.checkpoint ? ` at ${item.status.checkpoint}` : ''}`
+                : `Creating${item.status.checkpoint ? `: ${item.status.checkpoint}` : ''}`;
+
             return (
-              <button
+              <div
                 key={item.id}
-                type="button"
-                onClick={() => handleRestoreFromHistory(item)}
-                className="group w-full max-w-full overflow-hidden rounded-[2rem] border border-white/8 bg-white/[0.065] p-6 text-left shadow-[0_24px_80px_rgba(0,0,0,0.22)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#9bb8ff]/45 hover:bg-white/[0.085]"
+                onClick={() => {
+                  if (isCompleted) handleRestoreFromHistory(item);
+                }}
+                className={`group w-full max-w-full overflow-hidden rounded-[2rem] border border-white/8 bg-white/[0.065] p-6 text-left shadow-[0_24px_80px_rgba(0,0,0,0.22)] transition-all duration-300 ${
+                  isCompleted
+                    ? 'cursor-pointer hover:-translate-y-0.5 hover:border-[#9bb8ff]/45 hover:bg-white/[0.085]'
+                    : 'cursor-default'
+                }`}
               >
                 <div className="mb-7 flex items-start gap-5">
                   <div className="grid h-16 w-16 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-white to-[#a7aab8] text-[#0D0D0D] shadow-[0_10px_32px_rgba(255,255,255,0.08)]">
-                    <FaFolder size={26} />
+                    {canRetry ? <FaExclamationCircle size={26} /> : isWorking ? <FaSpinner className="animate-spin" size={24} /> : <FaFolder size={26} />}
                   </div>
                   <div className="min-w-0 flex-1 overflow-hidden">
                     <h2 className="line-clamp-2 max-w-full break-words font-display text-2xl font-extrabold leading-tight text-white [overflow-wrap:anywhere]">
                       {item.topic || 'Untitled Podcast'}
                     </h2>
                     <p className="mt-2 text-sm text-[#d8d9e0]">Updated: {formatDate(item.updatedAt)}</p>
+                    <p className={`mt-2 text-sm font-bold ${canRetry ? 'text-red-200' : 'text-[#b8c7ff]'}`}>
+                      {statusLabel}
+                    </p>
+                    {canRetry && (item.recoveryReason || item.status.error) ? (
+                      <p className="mt-2 line-clamp-2 text-sm text-red-100/75">{item.recoveryReason || item.status.error}</p>
+                    ) : null}
                   </div>
-                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-white/[0.06] text-[#b8c7ff] opacity-70 transition-all group-hover:bg-[#b8c7ff] group-hover:text-[#0D0D0D] group-hover:opacity-100">
-                    <FaPlay size={15} className="ml-0.5" />
-                  </span>
+                  {canRetry ? (
+                    <button
+                      type="button"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        void handleRetryPodcast(item);
+                      }}
+                      className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-red-200 text-[#2b0707] transition-all hover:bg-white"
+                      title="Retry podcast creation"
+                    >
+                      <FaRedo size={15} />
+                    </button>
+                  ) : (
+                    <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-white/[0.06] text-[#b8c7ff] opacity-70 transition-all group-hover:bg-[#b8c7ff] group-hover:text-[#0D0D0D] group-hover:opacity-100">
+                      {isWorking ? <FaSpinner className="animate-spin" size={15} /> : <FaPlay size={15} className="ml-0.5" />}
+                    </span>
+                  )}
                 </div>
 
-                <EpisodeProgress audioUrl={item.status.url?.audio} currentTime={item.currentTime} />
-              </button>
+                {isCompleted ? (
+                  <EpisodeProgress audioUrl={item.status.url?.audio} currentTime={item.currentTime} />
+                ) : (
+                  <div className="h-1.5 overflow-hidden rounded-full bg-white/12">
+                    <div className={`h-full rounded-full ${canRetry ? 'w-1/3 bg-red-300/70' : 'w-2/3 animate-pulse bg-[#b8c7ff]'}`} />
+                  </div>
+                )}
+              </div>
             );
           })}
         </div>

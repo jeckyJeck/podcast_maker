@@ -1,8 +1,9 @@
 import os
 import json
 import tempfile
+from urllib.request import urlopen
 from pathlib import Path
-from typing import Dict
+from typing import Callable, Dict, Optional
 
 from dotenv import load_dotenv
 
@@ -82,76 +83,100 @@ class PodcastMakerOrchestrator:
 
     def _build_storage_path(self, folder_name: str, file_name: str) -> str:
         return f"{folder_name}/{file_name}"
-        
-    def process_topic(self) -> dict:
+
+    def _safe_folder_name(self) -> str:
+        folder_name = "".join(x for x in self.user_topic if x.isalnum() or x in "._- ").strip().replace(" ", "_")
+        return folder_name or "podcast"
+
+    def _load_text_from_url(self, url: str) -> str:
+        with urlopen(url, timeout=60) as response:
+            return response.read().decode("utf-8")
+
+    def _load_json_from_url(self, url: str) -> dict:
+        return json.loads(self._load_text_from_url(url))
+
+    def _save_json_artifact(self, temp_dir: Path, folder_name: str, file_name: str, payload: dict) -> str:
+        artifact_file = temp_dir / file_name
+        with open(artifact_file, 'w', encoding='utf-8') as f:
+            json.dump(payload, f, indent=4, ensure_ascii=False)
+        return self.storage_provider.save_file(str(artifact_file), self._build_storage_path(folder_name, file_name))
+
+    def _save_text_artifact(self, temp_dir: Path, folder_name: str, file_name: str, payload: str) -> str:
+        artifact_file = temp_dir / file_name
+        with open(artifact_file, 'w', encoding='utf-8') as f:
+            f.write(payload)
+        return self.storage_provider.save_file(str(artifact_file), self._build_storage_path(folder_name, file_name))
+
+    def process_topic(
+        self,
+        existing_urls: Optional[Dict[str, str]] = None,
+        progress_callback: Optional[Callable[[str, Dict[str, str]], None]] = None,
+    ) -> dict:
         """
         Orchestrates the entire podcast generation process.
         Returns a dictionary with file names and their URLs/paths.
         """
-        # Create temporary working directory
         user_topic = self.user_topic
-        folder_name = "".join(x for x in user_topic if x.isalnum() or x in "._- ").strip().replace(" ", "_")
+        folder_name = self._safe_folder_name()
         temp_dir = self._get_temp_folder(folder_name)
-        
-        file_urls = {}
-        
-        # Step 1: Generate blueprint
-        blueprint = self.architect.generate_blueprint(user_topic)
-        blueprint_file = temp_dir / "blueprint.json"
-        with open(blueprint_file, 'w', encoding='utf-8') as f:
-            json.dump(blueprint, f, indent=4, ensure_ascii=False)
-        file_urls["blueprint"] = self.storage_provider.save_file(str(blueprint_file), self._build_storage_path(folder_name, "blueprint.json"))
-        logger.info("agent_done agent=architect url=%s", file_urls["blueprint"])
-        
-        # Step 2: Conduct research
-        research = self.researcher.conduct_research(blueprint)
-        research_file = temp_dir / "research.md"
-        with open(research_file, 'w', encoding='utf-8') as f:
-            f.write(research)
-        file_urls["research"] = self.storage_provider.save_file(str(research_file), self._build_storage_path(folder_name, "research.md"))
-        logger.info("agent_done agent=researcher url=%s", file_urls["research"])
-        
-        # Step 3: Create outline
-        outline = self.outliner.create_outline(blueprint, research, user_topic)
-        outline_file = temp_dir / "outline.json"
-        with open(outline_file, 'w', encoding='utf-8') as f:
-            json.dump(outline, f, indent=4, ensure_ascii=False)
-        file_urls["outline"] = self.storage_provider.save_file(str(outline_file), self._build_storage_path(folder_name, "outline.json"))
-        logger.info("agent_done agent=outliner url=%s", file_urls["outline"])
+        file_urls: Dict[str, str] = dict(existing_urls or {})
 
-        # Step 4: Write script
-        script = self.scriptwriter.write_script(outline, research, user_topic)
-        script_file = temp_dir / "script.txt"
-        with open(script_file, 'w', encoding='utf-8') as f:
-            f.write(script)
-        file_urls["script"] = self.storage_provider.save_file(str(script_file), self._build_storage_path(folder_name, "script.txt"))
-        logger.info("agent_done agent=scriptwriter url=%s", file_urls["script"])
+        def notify(checkpoint: str) -> None:
+            if progress_callback:
+                progress_callback(checkpoint, dict(file_urls))
 
-        # Step 5: Convert script to audio with timestamps
+        if file_urls.get("blueprint"):
+            blueprint = self._load_json_from_url(file_urls["blueprint"])
+            logger.info("agent_skipped agent=architect url=%s", file_urls["blueprint"])
+        else:
+            blueprint = self.architect.generate_blueprint(user_topic)
+            file_urls["blueprint"] = self._save_json_artifact(temp_dir, folder_name, "blueprint.json", blueprint)
+            logger.info("agent_done agent=architect url=%s", file_urls["blueprint"])
+            notify("blueprint")
+
+        if file_urls.get("research"):
+            research = self._load_text_from_url(file_urls["research"])
+            logger.info("agent_skipped agent=researcher url=%s", file_urls["research"])
+        else:
+            research = self.researcher.conduct_research(blueprint)
+            file_urls["research"] = self._save_text_artifact(temp_dir, folder_name, "research.md", research)
+            logger.info("agent_done agent=researcher url=%s", file_urls["research"])
+            notify("research")
+
+        if file_urls.get("outline"):
+            outline = self._load_json_from_url(file_urls["outline"])
+            logger.info("agent_skipped agent=outliner url=%s", file_urls["outline"])
+        else:
+            outline = self.outliner.create_outline(blueprint, research, user_topic)
+            file_urls["outline"] = self._save_json_artifact(temp_dir, folder_name, "outline.json", outline)
+            logger.info("agent_done agent=outliner url=%s", file_urls["outline"])
+            notify("outline")
+
+        if file_urls.get("script"):
+            script = self._load_text_from_url(file_urls["script"])
+            logger.info("agent_skipped agent=scriptwriter url=%s", file_urls["script"])
+        else:
+            script = self.scriptwriter.write_script(outline, research, user_topic)
+            file_urls["script"] = self._save_text_artifact(temp_dir, folder_name, "script.txt", script)
+            logger.info("agent_done agent=scriptwriter url=%s", file_urls["script"])
+            notify("script")
+
         voice_dict = self._build_voice_dict()
         audio, transcript_segments = self.google_tts.text_to_speech_with_timestamps(script, voice_dict=voice_dict)
-        
-        # Save audio
+
         audio_file = temp_dir / "podcast_audio.mp3"
         audio.export(audio_file, format="mp3")
         file_urls["audio"] = self.storage_provider.save_file(str(audio_file), self._build_storage_path(folder_name, "podcast_audio.mp3"))
-        
-        # Save transcript as JSON
-        transcript_json = format_transcript_to_json(transcript_segments)
-        transcript_json_file = temp_dir / "transcript.json"
-        with open(transcript_json_file, 'w', encoding='utf-8') as f:
-            f.write(transcript_json)
-        file_urls["transcript"] = self.storage_provider.save_file(str(transcript_json_file), self._build_storage_path(folder_name, "transcript.json"))
-        logger.info("transcript_done format=json url=%s", file_urls["transcript"])
-        
-        # Save transcript as WebVTT
-        transcript_vtt = format_transcript_to_vtt(transcript_segments)
-        transcript_vtt_file = temp_dir / "transcript.vtt"
-        with open(transcript_vtt_file, 'w', encoding='utf-8') as f:
-            f.write(transcript_vtt)
-        file_urls["transcript_vtt"] = self.storage_provider.save_file(str(transcript_vtt_file), self._build_storage_path(folder_name, "transcript.vtt"))
-        logger.info("transcript_done format=vtt url=%s", file_urls["transcript_vtt"])
+        notify("audio")
 
+        transcript_json = format_transcript_to_json(transcript_segments)
+        file_urls["transcript"] = self._save_text_artifact(temp_dir, folder_name, "transcript.json", transcript_json)
+        logger.info("transcript_done format=json url=%s", file_urls["transcript"])
+
+        transcript_vtt = format_transcript_to_vtt(transcript_segments)
+        file_urls["transcript_vtt"] = self._save_text_artifact(temp_dir, folder_name, "transcript.vtt", transcript_vtt)
+        logger.info("transcript_done format=vtt url=%s", file_urls["transcript_vtt"])
+        notify("transcript")
         
         return file_urls
 

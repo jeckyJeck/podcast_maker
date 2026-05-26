@@ -8,7 +8,6 @@ logger = get_logger()
 class Outliner:
     def __init__(self, llm_provider: LLMProvider, prompt_manager: PromptManager):
         self.llm_provider = llm_provider
-        self.model = "gemma-4-31b-it"
         self.prompt_manager = prompt_manager   
     
     def create_outline(self, blueprint: dict, research: str, topic: str) -> dict:
@@ -21,7 +20,6 @@ class Outliner:
         
         outline_data = self.llm_provider.generate_json(
             prompt=system_prompt,
-            model=self.model,
             temperature=0.7,
             metadata={"stage": "outliner", "topic": topic}
         )

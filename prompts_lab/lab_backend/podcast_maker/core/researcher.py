@@ -9,7 +9,6 @@ class Researcher:
         prompt_manager: PromptManager,
     ):
         self.llm_provider = llm_provider
-        self.model = "gemma-4-31b-it"
         self.prompt_manager = prompt_manager
     
     def conduct_research(self, blueprint: dict) -> str:
@@ -31,7 +30,6 @@ class Researcher:
 
             llm_response = self.llm_provider.generate_text(
                 prompt=current_prompt,
-                model=self.model,
                 temperature=0.7,
                 tools=[search_tool],
                 metadata={"stage": "researcher", "segment": direction_name}

@@ -16,8 +16,8 @@ from podcast_maker.core.rate_limiter import RateLimiter
 from podcast_maker.services.llm_provider import (
     LLMProvider,
     LLMResponse,
-    OutputFormat
 )
+from podcast_maker.services.retry import retry_network_call
 
 logger = get_logger()
 
@@ -54,13 +54,13 @@ class GeminiAdapter(LLMProvider):
             raise ValueError("GOOGLE_API_KEY is missing. Set it in backend/.env")
 
         self.client = genai.Client(api_key=api_key)
+        self.model = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
         self.rate_limiter = RateLimiter(max_requests=20, period_seconds=86400)
         self.__class__._initialized = True
         
     def generate_text(
         self,
         prompt: str,
-        model: str,
         temperature: float = 0.7,
         tools: Optional[list[Any]] = None,
         metadata: Optional[dict[str, Any]] = None
@@ -70,7 +70,6 @@ class GeminiAdapter(LLMProvider):
         
         Args:
             prompt: The input prompt/instructions
-            model: Gemini model name (e.g., "gemini-2.5-flash")
             temperature: Sampling temperature (0.0-1.0)
             tools: Optional Gemini tools (e.g., types.Tool(google_search=...))
             metadata: Optional metadata for tracking/logging
@@ -86,7 +85,7 @@ class GeminiAdapter(LLMProvider):
         
         logger.info(
             "GeminiAdapter.generate_text called: stage=%s, model=%s, temperature=%s",
-            stage, model, temperature
+            stage, self.model, temperature
         )
         
         config = types.GenerateContentConfig(
@@ -97,14 +96,10 @@ class GeminiAdapter(LLMProvider):
         if tools:
             config.tools = tools
         
-        # Fixed limiter policy: 20 Gemini requests per day per process.
-        self.rate_limiter.acquire()
-        
         try:
-            response = self.client.models.generate_content(
-                model=model,
-                contents=prompt,
-                config=config
+            response = retry_network_call(
+                f"gemini.generate_text.{stage}",
+                lambda: self._generate_content(contents=prompt, config=config),
             )
             
             if not response.text:
@@ -136,7 +131,6 @@ class GeminiAdapter(LLMProvider):
     def generate_json(
         self,
         prompt: str,
-        model: str,
         temperature: float = 0.7,
         metadata: Optional[dict[str, Any]] = None
     ) -> dict[str, Any]:
@@ -145,7 +139,6 @@ class GeminiAdapter(LLMProvider):
         
         Args:
             prompt: The input prompt/instructions
-            model: Gemini model name (e.g., "gemini-2.5-flash")
             temperature: Sampling temperature (0.0-1.0)
             metadata: Optional metadata for tracking/logging
             
@@ -161,7 +154,7 @@ class GeminiAdapter(LLMProvider):
         
         logger.info(
             "GeminiAdapter.generate_json called: stage=%s, model=%s, temperature=%s",
-            stage, model, temperature
+            stage, self.model, temperature
         )
         
         config = types.GenerateContentConfig(
@@ -169,14 +162,10 @@ class GeminiAdapter(LLMProvider):
             temperature=temperature
         )
         
-        # Fixed limiter policy: 20 Gemini requests per day per process.
-        self.rate_limiter.acquire()
-        
         try:
-            response = self.client.models.generate_content(
-                model=model,
-                contents=prompt,
-                config=config
+            response = retry_network_call(
+                f"gemini.generate_json.{stage}",
+                lambda: self._generate_content(contents=prompt, config=config),
             )
             
             if not response.text:
@@ -216,3 +205,12 @@ class GeminiAdapter(LLMProvider):
         except Exception as e:
             logger.error("GeminiAdapter.generate_json failed: stage=%s, error=%s", stage, str(e))
             raise
+
+    def _generate_content(self, *, contents: str, config: types.GenerateContentConfig):
+        # Fixed limiter policy: 20 Gemini requests per day per process.
+        self.rate_limiter.acquire()
+        return self.client.models.generate_content(
+            model=self.model,
+            contents=contents,
+            config=config,
+        )

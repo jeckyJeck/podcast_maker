@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { TranscriptSegment } from '../types/podcast';
+import { fetchWithRetry } from '../services/http';
 
 interface TranscriptViewerProps {
   transcriptUrl: string;
@@ -43,7 +44,7 @@ export default function TranscriptViewer({ transcriptUrl, currentTime, onSeek }:
     const fetchTranscript = async () => {
       try {
         setLoading(true);
-        const response = await fetch(transcriptUrl);
+        const response = await fetchWithRetry(transcriptUrl);
         if (!response.ok) {
           throw new Error('Failed to fetch transcript');
         }

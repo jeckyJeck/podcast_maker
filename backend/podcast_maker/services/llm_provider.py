@@ -7,26 +7,8 @@ without changing core pipeline logic.
 """
 
 from abc import ABC, abstractmethod
-from dataclasses import dataclass, field
 from typing import Optional, Any
-from enum import Enum
-
-
-class OutputFormat(Enum):
-    """Expected output format from the LLM."""
-    JSON = "application/json"
-    TEXT = "text/plain"
-
-
-@dataclass
-class LLMRequest:
-    """Request configuration for LLM generation."""
-    prompt: str
-    model: str
-    output_format: OutputFormat
-    temperature: float = 0.7
-    tools: list[Any] = field(default_factory=list)
-    metadata: dict[str, Any] = field(default_factory=dict)
+from dataclasses import dataclass, field
 
 
 @dataclass
@@ -54,7 +36,6 @@ class LLMProvider(ABC):
     def generate_text(
         self,
         prompt: str,
-        model: str,
         temperature: float = 0.7,
         tools: Optional[list[Any]] = None,
         metadata: Optional[dict[str, Any]] = None
@@ -64,7 +45,6 @@ class LLMProvider(ABC):
         
         Args:
             prompt: The input prompt/instructions
-            model: Model identifier (provider-specific)
             temperature: Sampling temperature (0.0-1.0)
             tools: Optional provider-specific tools (e.g., GoogleSearch)
             metadata: Optional metadata for tracking/logging
@@ -81,7 +61,6 @@ class LLMProvider(ABC):
     def generate_json(
         self,
         prompt: str,
-        model: str,
         temperature: float = 0.7,
         metadata: Optional[dict[str, Any]] = None
     ) -> dict[str, Any]:
@@ -90,7 +69,6 @@ class LLMProvider(ABC):
         
         Args:
             prompt: The input prompt/instructions
-            model: Model identifier (provider-specific)
             temperature: Sampling temperature (0.0-1.0)
             metadata: Optional metadata for tracking/logging
             

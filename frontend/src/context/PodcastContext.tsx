@@ -40,26 +40,25 @@ const isObjectRecord = (value: unknown): value is Record<string, unknown> =>
 const isPodcastFiles = (value: unknown): value is PodcastFiles => {
   if (!isObjectRecord(value)) return false;
 
-  const requiredStringKeys: Array<keyof PodcastFiles> = [
+  const fileKeys: Array<keyof PodcastFiles> = [
     'blueprint',
     'research',
     'outline',
     'script',
     'audio',
+    'transcript',
+    'transcript_vtt',
   ];
 
-  for (const key of requiredStringKeys) {
-    if (typeof value[key] !== 'string') return false;
+  for (const key of fileKeys) {
+    if (value[key] !== undefined && typeof value[key] !== 'string') return false;
   }
-
-  if (value.transcript !== undefined && typeof value.transcript !== 'string') return false;
-  if (value.transcript_vtt !== undefined && typeof value.transcript_vtt !== 'string') return false;
 
   return true;
 };
 
 const isTaskStatus = (value: unknown): value is PodcastTaskStatus['status'] =>
-  value === 'processing' || value === 'completed' || value === 'failed';
+  value === 'queued' || value === 'processing' || value === 'completed' || value === 'failed';
 
 const isPodcastTaskStatus = (value: unknown): value is PodcastTaskStatus => {
   if (!isObjectRecord(value)) return false;
@@ -86,6 +85,7 @@ const resolvePodcastFiles = (
 
 export interface PodcastHistoryItem {
   id: string;
+  podcastId: string;
   topic: string;
   taskId: string | null;
   selectedFormat: PodcastFormat;
@@ -93,6 +93,8 @@ export interface PodcastHistoryItem {
   currentTime: number;
   status: PodcastTaskStatus;
   updatedAt: string;
+  canRetry?: boolean;
+  recoveryReason?: string;
 }
 
 interface PersistedSession {
@@ -159,12 +161,12 @@ const loadHistory = (): PodcastHistoryItem[] => {
           !isValidHostSelection(item.selectedHostIds) ||
           typeof item.currentTime !== 'number' ||
           typeof item.updatedAt !== 'string' ||
-          !isPodcastTaskStatus(item.status) ||
-          !item.status.url
+          !isPodcastTaskStatus(item.status)
         ) return null;
 
         return {
           id: item.id,
+          podcastId: typeof item.podcastId === 'string' ? item.podcastId : item.id,
           topic: item.topic,
           taskId: item.taskId,
           selectedFormat: item.selectedFormat === 'solo' ? 'solo' : 'dialogue',
@@ -191,10 +193,12 @@ const upsertHistory = (
   session: PersistedSession,
 ): PodcastHistoryItem[] => {
   if (!session.status?.url) return items;
-  const identity = session.taskId ?? session.status.url.audio;
+  const identity = session.taskId ?? session.status.url.audio ?? session.status.url.script;
+  if (!identity) return items;
   const existing = items.find((i) => (i.taskId ?? i.status.url?.audio) === identity);
   const next: PodcastHistoryItem = {
     id: existing?.id ?? identity,
+    podcastId: existing?.podcastId ?? identity,
     topic: session.topic,
     taskId: session.taskId,
     selectedFormat: session.selectedFormat,
@@ -207,17 +211,22 @@ const upsertHistory = (
 };
 
 const mapCloudToHistory = (r: UserPodcastRecord): PodcastHistoryItem | null => {
-  if (r.status !== 'completed' || !r.url) return null;
+  const config = r.config;
+  const hostIds = isValidHostSelection(config?.host_ids)
+    ? config.host_ids
+    : isValidHostSelection(r.host_ids)
+      ? r.host_ids
+      : [...DEFAULT_HOST_IDS];
+
   return {
     id: r.id,
-    topic: r.topic,
+    podcastId: r.id,
+    topic: config?.topic || r.topic,
     taskId: r.task_id,
-    selectedFormat: 'dialogue',
-    selectedHostIds: isValidHostSelection(r.host_ids)
-      ? r.host_ids
-      : [...DEFAULT_HOST_IDS],
+    selectedFormat: config?.format || r.format || (hostIds.length === 1 ? 'solo' : 'dialogue'),
+    selectedHostIds: hostIds,
     currentTime: 0,
-    status: { status: r.status, url: r.url, error: r.error },
+    status: { status: r.status, url: r.url, checkpoint: r.checkpoint, error: r.error },
     updatedAt: r.updated_at ?? r.created_at ?? new Date().toISOString(),
   };
 };
@@ -260,6 +269,7 @@ export interface PodcastContextValue {
   displayHistory: PodcastHistoryItem[];
   cloudLoading: boolean;
   handleRestoreFromHistory: (item: PodcastHistoryItem) => void;
+  handleRetryPodcast: (item: PodcastHistoryItem) => Promise<void>;
   historyOpen: boolean;
   setHistoryOpen: (v: boolean) => void;
 
@@ -314,7 +324,7 @@ export const PodcastProvider: React.FC<{ children: React.ReactNode }> = ({ child
       return null;
     }
 
-    if (persistedSession.status?.status === 'processing') {
+    if (persistedSession.status?.status === 'queued' || persistedSession.status?.status === 'processing') {
       return persistedSession.taskId;
     }
 
@@ -349,7 +359,7 @@ export const PodcastProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [duration, setDuration] = useState(0);
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
 
-  const { status } = usePodcastStatus(taskId);
+  const { status, pollingError } = usePodcastStatus(taskId);
   const effectiveStatus = status ?? restoredStatus;
 
   // ── Load hosts ───────────────────────────────────────────────────────────────
@@ -426,12 +436,14 @@ export const PodcastProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   }, [currentTime, restoredStatus, selectedFormat, selectedHostIds, status, taskId, topic]);
 
-  // ── Refresh cloud history after completion ───────────────────────────────────
+  // ── Refresh cloud history after terminal state ───────────────────────────────
 
   useEffect(() => {
-    if (!user || !taskId || effectiveStatus?.status !== 'completed') return;
-    if (lastCloudSyncRef.current === taskId) return;
-    lastCloudSyncRef.current = taskId;
+    if (!user || !taskId) return;
+    if (effectiveStatus?.status !== 'completed' && effectiveStatus?.status !== 'failed') return;
+    const syncKey = `${taskId}:${effectiveStatus.status}`;
+    if (lastCloudSyncRef.current === syncKey) return;
+    lastCloudSyncRef.current = syncKey;
     podcastApi
       .getUserPodcasts()
       .then((r) =>
@@ -566,13 +578,25 @@ export const PodcastProvider: React.FC<{ children: React.ReactNode }> = ({ child
     try {
       const nextTaskId = await createPodcastTask({ topic, selectedFormat, selectedHostIds });
       setTaskId(nextTaskId);
+      if (user) {
+        podcastApi
+          .getUserPodcasts()
+          .then((r) =>
+            setCloudHistory(
+              r.podcasts
+                .map(mapCloudToHistory)
+                .filter((i): i is PodcastHistoryItem => i !== null),
+            ),
+          )
+          .catch(console.error);
+      }
     } catch (err) {
       console.error(err);
       alert(CREATE_PODCAST_FAILURE_MESSAGE);
     } finally {
       setIsSubmitting(false);
     }
-  }, [topic, selectedFormat, selectedHostIds]);
+  }, [topic, selectedFormat, selectedHostIds, user]);
 
   const handleReset = useCallback(() => {
     const audio = audioRef.current;
@@ -593,6 +617,7 @@ export const PodcastProvider: React.FC<{ children: React.ReactNode }> = ({ child
   }, []);
 
   const handleRestoreFromHistory = useCallback((item: PodcastHistoryItem) => {
+    if (item.status.status !== 'completed' || !item.status.url?.audio) return;
     setTopic(item.topic);
     setTaskId(null);
     setSelectedFormat(item.selectedFormat);
@@ -603,6 +628,38 @@ export const PodcastProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setCurrentScreen('player');
   }, []);
 
+  const handleRetryPodcast = useCallback(async (item: PodcastHistoryItem) => {
+    if (item.status.status === 'completed') return;
+    setIsSubmitting(true);
+    setRestoredStatus({ ...item.status, status: 'queued', error: undefined });
+    setLocalFileUrls({});
+    try {
+      const response = await podcastApi.retryPodcast(item.podcastId);
+      setTopic(item.topic);
+      setTaskId(response.task_id);
+      setSelectedFormat(item.selectedFormat);
+      setSelectedHostIds(item.selectedHostIds);
+      setCurrentScreen('history');
+      if (user) {
+        podcastApi
+          .getUserPodcasts()
+          .then((r) =>
+            setCloudHistory(
+              r.podcasts
+                .map(mapCloudToHistory)
+                .filter((i): i is PodcastHistoryItem => i !== null),
+            ),
+          )
+          .catch(console.error);
+      }
+    } catch (err) {
+      console.error(err);
+      alert(CREATE_PODCAST_FAILURE_MESSAGE);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [user]);
+
   const saveHostsPreference = useCallback(async (ids: string[]) => {
     setSelectedHostIds(ids);
     if (user) {
@@ -610,7 +667,32 @@ export const PodcastProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   }, [user]);
 
-  const displayHistory = cloudHistory.length > 0 ? cloudHistory : persistedHistory;
+  const displayHistory = useMemo(() => {
+    const source = cloudHistory.length > 0 ? cloudHistory : persistedHistory;
+    return source.map((item) => {
+      const canRetry =
+        item.status.status === 'failed' ||
+        Boolean(
+          pollingError &&
+          taskId &&
+          item.taskId === taskId &&
+          (item.status.status === 'queued' || item.status.status === 'processing'),
+        );
+
+      if (!canRetry) {
+        return item;
+      }
+
+      return {
+        ...item,
+        canRetry,
+        recoveryReason:
+          item.status.status === 'failed'
+            ? item.status.error
+            : pollingError ?? 'Status polling failed.',
+      };
+    });
+  }, [cloudHistory, persistedHistory, pollingError, taskId]);
 
   // ── Value ─────────────────────────────────────────────────────────────────────
 
@@ -621,7 +703,7 @@ export const PodcastProvider: React.FC<{ children: React.ReactNode }> = ({ child
     hosts, hostsLoading, selectedHostIds, setSelectedHostIds,
     hostPickerOpen, setHostPickerOpen, saveHostsPreference,
     effectiveStatus, resolvedFiles,
-    displayHistory, cloudLoading, handleRestoreFromHistory,
+    displayHistory, cloudLoading, handleRestoreFromHistory, handleRetryPodcast,
     historyOpen, setHistoryOpen,
     audioRef, isPlaying, currentTime, duration, playbackSpeed,
     togglePlay, seekTo, skipBy, changeSpeed,
