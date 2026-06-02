@@ -1,104 +1,64 @@
-# ⚙️ Podcast Maker Backend
+# Podcast Maker Backend
 
-The backend of Podcast Maker is a FastAPI-based service responsible for orchestrating the AI-driven podcast generation process, managing cloud storage, and exposing an API for the frontend.
+The backend of Podcast Maker is a FastAPI-based service responsible for orchestrating AI-driven podcast generation, managing cloud storage, and exposing the API used by the frontend.
 
-## 🚀 Features
+## Features
 
 - **FastAPI Core**: High-performance asynchronous API.
-- **AI Agent Orchestration**: Managed via a dedicated `podcast_maker` core library.
+- **AI Agent Orchestration**: Managed through the dedicated `podcast_maker` core library.
 - **Google Cloud Integration**:
-    - **Cloud Storage**: For storing generated assets (audio, transcripts, research).
-    - **Vertex AI / Gemini**: For content generation.
-    - **Text-to-Speech**: For generating natural host voices.
-- **Supabase Integration**: For user management, authentication, and metadata storage.
-- **Background Processing**: Handles long-running agent tasks (Research -> Script -> Audio).
+  - **Cloud Storage**: Stores generated assets such as audio, transcripts, and research.
+  - **Vertex AI / Gemini**: Handles content generation.
+  - **Text-to-Speech**: Generates natural host voices.
+- **Supabase Integration**: Handles user management, authentication, and metadata storage.
+- **Background Processing**: Handles long-running generation tasks from research through audio.
 - **Rate Limiting**: Integrated using `slowapi`.
 
 ## Prompt Lab Scope
 
-The production backend no longer serves prompts lab endpoints.
+The production backend does not serve prompt lab endpoints. Prompt lab traffic belongs to the isolated backend in `prompts_lab/lab_backend`.
 
-- Prompts lab traffic should target the isolated backend in `prompts_lab/lab_backend`.
+## Project Structure
 
-## 📂 Project Structure
-
-```
+```text
 backend/
-├── app/
-│   ├── main.py             # Application entry point & middleware
-│   ├── dependencies.py     # FastAPI dependencies (auth, rate limiting)
-│   └── routers/            # API endpoints (podcasts, hosts, users)
-├── podcast_maker/          # Core logic engine
-│   ├── core/               # AI Agent implementations (Architect, Researcher, etc.)
-│   └── services/           # External service adapters (GCS, TTS, Gemini)
-├── prompts/                # System instructions for AI roles (Markdown files)
-├── Dockerfile              # Docker container configuration
-└── requirements.txt        # Python dependencies
+|-- app/
+|   |-- main.py             # Application entry point and middleware
+|   |-- dependencies.py     # FastAPI dependencies
+|   `-- routers/            # API endpoints for podcasts, hosts, and users
+|-- podcast_maker/          # Core generation engine
+|   |-- core/               # AI agent implementations
+|   `-- services/           # External service adapters
+|-- prompts/                # System instructions for AI roles
+|-- Dockerfile              # Container configuration
+`-- requirements.txt        # Python dependencies
 ```
 
-## 🛠️ Setup & Installation
+## Configuration
 
 ### Prerequisites
+
 - Python 3.10+
-- Google Cloud Service Account with:
-    - `AI Platform Service Agent`
-    - `Storage Object Admin`
-    - `Cloud Text-to-Speech API`
-- Supabase Project URL and Service Key.
+- Google Cloud service account with access to AI Platform, Cloud Storage, and Text-to-Speech.
+- Supabase project URL and service key.
 
 ### Environment Variables
+
 Create a `backend/.env` file with the following variables:
 
 ```env
-# Google Cloud
 BUCKET_NAME=your-gcs-bucket
 GOOGLE_APPLICATION_CREDENTIALS=path/to/your/gcp-service-account.json
-
-# AI Configuration
 GEMINI_API_KEY=your-gemini-key
-
-# Supabase
 SUPABASE_URL=your-supabase-url
 SUPABASE_KEY=your-supabase-key
-
-# App Settings
-PORT=8000
+PORT=your-service-port
 ```
 
-### Installation
+## Deployment
 
-1.  **Navigate to the backend directory**:
-    ```bash
-    cd backend
-    ```
+The backend includes a `Dockerfile` for production container builds.
 
-2.  **Create and activate a virtual environment**:
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Windows: venv\Scripts\activate
-    ```
+## API Documentation
 
-3.  **Install dependencies**:
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-4.  **Run the server**:
-    ```bash
-    uvicorn app.main:app --reload --port 8000
-    ```
-
-## 🐳 Docker Deployment
-
-You can containerize the backend using the provided `Dockerfile`.
-
-```bash
-docker build -t podcast-maker-backend .
-docker run -p 8000:8000 --env-file .env podcast-maker-backend
-```
-
----
-
-## 📸 API Documentation
-Once the server is running, you can access the interactive Swagger documentation at:
-`http://localhost:8000/docs`
+FastAPI exposes interactive Swagger documentation from the deployed API service.
