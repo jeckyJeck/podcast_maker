@@ -10,6 +10,7 @@ import os
 from typing import Optional, Any
 from google import genai
 from google.genai import types
+from google.genai.errors import APIError, ServerError
 
 from podcast_maker.core.logging_config import get_logger
 from podcast_maker.core.rate_limiter import RateLimiter
@@ -20,6 +21,7 @@ from podcast_maker.services.llm_provider import (
 from podcast_maker.services.retry import retry_network_call
 
 logger = get_logger()
+FALLBACK_MODEL = os.getenv("GEMINI_FALLBACK_MODEL", "gemma-4-31b-it")
 
 
 class GeminiAdapter(LLMProvider):
@@ -209,8 +211,31 @@ class GeminiAdapter(LLMProvider):
     def _generate_content(self, *, contents: str, config: types.GenerateContentConfig):
         # Fixed limiter policy: 20 Gemini requests per day per process.
         self.rate_limiter.acquire()
+        try:
+            return self.client.models.generate_content(
+                model=self.model,
+                contents=contents,
+                config=config,
+            )
+        except ServerError as e:
+            # 503 Service Unavailable is handled here (5xx)
+            if e.code == 503:
+                print(f"Primary model is experiencing high demand (503). Switching to fallback...")
+                return self._call_fallback(contents, config)
+            raise e
+            
+        except APIError as e:
+            # 429 Rate Limit is a 4xx error, so it falls under ClientError/APIError
+            if e.code == 429:
+                print(f"Primary model hit rate limits (429). Switching to fallback...")
+                return self._call_fallback(contents, config)
+            raise e
+
+    def _call_fallback(self, contents: str, config: types.GenerateContentConfig):
+        # Fallback policy: switch to a cheaper model on 429/503 errors
         return self.client.models.generate_content(
-            model=self.model,
+            model=fallback_model,
             contents=contents,
             config=config,
         )
+    
