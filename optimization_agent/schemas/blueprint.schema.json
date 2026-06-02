@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "required": ["segments", "detected_genre", "episode_title", "total_target_words"],
+  "properties": {
+    "segments": {"type": "array"},
+    "detected_genre": {"type": "string"},
+    "episode_title": {"type": "string"},
+    "total_target_words": {"type": "number"}
+  }
+}
+
