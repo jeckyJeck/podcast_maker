@@ -3,24 +3,21 @@ from typing import Any, Dict, List, Optional
 from postgrest.exceptions import APIError
 from supabase import Client
 from podcast_maker.core.logging_config import get_logger
+from podcast_maker.services.podcast_repository import (
+    PodcastRepository,
+    RepositoryPermissionError,
+    RepositoryWriteError,
+)
 from podcast_maker.services.retry import retry_network_call
 
 
 logger = get_logger()
 
 
-class RepositoryWriteError(RuntimeError):
-    pass
-
-
-class RepositoryPermissionError(RepositoryWriteError):
-    pass
-
-
 PODCAST_COLUMNS = "id, title, urls, user_id, task_id, status, checkpoint, config, error, created_at, updated_at"
 
 
-class SupabaseRepository:
+class SupabaseRepository(PodcastRepository):
     def __init__(self, client: Client):
         self.client = client
 
@@ -128,22 +125,6 @@ class SupabaseRepository:
             return data[0]
         return payload
 
-    def create_podcast_record(self, user_id: str, title: str, urls: Dict[str, str]) -> None:
-        payload = {
-            "title": title,
-            "urls": urls,
-            "user_id": user_id,
-            "status": "completed",
-            "checkpoint": "completed",
-        }
-        try:
-            self._execute(
-                "supabase.podcasts.create_record",
-                self.client.table("podcasts").insert(payload),
-            )
-        except APIError as exc:
-            self._raise_write_error(exc, "failed to create podcast record")
-
     def get_podcast_by_task_id(self, user_id: str, task_id: str) -> Optional[Dict[str, Any]]:
         response = self._execute(
             "supabase.podcasts.get_by_task_id",
@@ -202,19 +183,6 @@ class SupabaseRepository:
         except APIError as exc:
             self._raise_write_error(exc, "failed to update podcast progress")
 
-    def mark_podcast_failed(self, user_id: str, task_id: str, error: str) -> None:
-        self.update_podcast_progress(user_id, task_id, status="failed", error=error)
-
-    def mark_podcast_completed(self, user_id: str, task_id: str, urls: Dict[str, str]) -> None:
-        self.update_podcast_progress(
-            user_id,
-            task_id,
-            status="completed",
-            checkpoint="completed",
-            urls=urls,
-            error=None,
-        )
-
     def get_user_podcasts(self, user_id: str) -> List[Dict[str, Any]]:
         response = self._execute(
             "supabase.podcasts.get_user_podcasts",
@@ -227,16 +195,3 @@ class SupabaseRepository:
         if isinstance(data, list):
             return [item for item in data if isinstance(item, dict)]
         return []
-
-    def get_profile(self, user_id: str) -> Optional[Dict[str, Any]]:
-        response = self._execute(
-            "supabase.profiles.get",
-            self.client.table("profiles")
-            .select("id, user_name, preferences")
-            .eq("id", user_id)
-            .maybe_single(),
-        )
-        data = getattr(response, "data", None)
-        if isinstance(data, dict):
-            return data
-        return None

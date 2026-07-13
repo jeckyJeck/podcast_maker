@@ -5,8 +5,8 @@ from typing import Any, Dict, List
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 
-from app.dependencies import AuthContext, get_current_user, repository
-from podcast_maker.services.supabase.supabase_repository import RepositoryPermissionError, RepositoryWriteError
+from app.dependencies import AuthContext, get_current_user, get_repository
+from podcast_maker.services.podcast_repository import PodcastRepository, RepositoryPermissionError, RepositoryWriteError
 
 router = APIRouter(prefix="/me")
 
@@ -16,7 +16,10 @@ class UserPreferencesUpdateRequest(BaseModel):
 
 
 @router.get("/preferences")
-async def get_my_preferences(auth_context: AuthContext = Depends(get_current_user)):
+async def get_my_preferences(
+    auth_context: AuthContext = Depends(get_current_user),
+    repository: PodcastRepository = Depends(get_repository),
+):
     preferred_hosts = repository.get_user_preferences(auth_context.user_id)
     return {"preferred_hosts": preferred_hosts}
 
@@ -25,6 +28,7 @@ async def get_my_preferences(auth_context: AuthContext = Depends(get_current_use
 async def update_my_preferences(
     payload: UserPreferencesUpdateRequest,
     auth_context: AuthContext = Depends(get_current_user),
+    repository: PodcastRepository = Depends(get_repository),
 ):
     try:
         repository.upsert_user_preferences(auth_context.user_id, payload.preferred_hosts)
@@ -36,7 +40,10 @@ async def update_my_preferences(
 
 
 @router.get("/podcasts")
-async def get_my_podcasts(auth_context: AuthContext = Depends(get_current_user)):
+async def get_my_podcasts(
+    auth_context: AuthContext = Depends(get_current_user),
+    repository: PodcastRepository = Depends(get_repository),
+):
     records = repository.get_user_podcasts(auth_context.user_id)
     response: List[Dict[str, Any]] = []
     for record in records:

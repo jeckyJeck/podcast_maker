@@ -1,21 +1,49 @@
 """Routes: podcast creation and status polling."""
 
+from datetime import datetime, timedelta, timezone
 import uuid
 from typing import Any, Dict, List, Optional, Literal
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request
 from pydantic import BaseModel
 
-from app.dependencies import AuthContext, get_current_user, limiter, repository, tasks_status
+from app.dependencies import AuthContext, get_current_user, get_repository, limiter, tasks_status
 from podcast_maker.core.logging_config import get_logger
 from podcast_maker.core.orchestrator import PodcastMakerOrchestrator
 from podcast_maker.core.prompt_manager import PodcastConfig
 from podcast_maker.core.hosts_config import validate_host_selection, get_host_profile
-from podcast_maker.services.supabase.supabase_repository import RepositoryPermissionError, RepositoryWriteError
+from podcast_maker.services.podcast_repository import PodcastRepository, RepositoryPermissionError, RepositoryWriteError
 from podcast_maker.services.supabase.supabase_storage_provider import SupabaseStorageProvider
 
 router = APIRouter()
 logger = get_logger()
+STALE_PROCESSING_TIMEOUT = timedelta(minutes=15)
+
+
+def _parse_timestamp(value: object) -> datetime | None:
+    if not isinstance(value, str):
+        return None
+
+    normalized = value.replace("Z", "+00:00")
+    try:
+        parsed = datetime.fromisoformat(normalized)
+    except ValueError:
+        return None
+
+    if parsed.tzinfo is None:
+        return parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
+
+def _is_stale_processing(record: Dict[str, Any]) -> bool:
+    if record.get("status") != "processing":
+        return False
+
+    updated_at = _parse_timestamp(record.get("updated_at"))
+    if not updated_at:
+        return False
+
+    return datetime.now(timezone.utc) - updated_at > STALE_PROCESSING_TIMEOUT
 
 
 class PodcastRequest(BaseModel):
@@ -68,6 +96,7 @@ async def create_podcast(
     podcast_data: PodcastRequest,
     background_tasks: BackgroundTasks,
     auth_context: AuthContext = Depends(get_current_user),
+    repository: PodcastRepository = Depends(get_repository),
 ):
     task_id = str(uuid.uuid4())
     config = _normalize_podcast_config(podcast_data)
@@ -107,6 +136,7 @@ async def create_podcast(
         auth_context.user_id,
         config,
         {},
+        repository,
     )
 
     return {
@@ -120,6 +150,7 @@ async def create_podcast(
 async def get_status(
     task_id: str,
     auth_context: AuthContext = Depends(get_current_user),
+    repository: PodcastRepository = Depends(get_repository),
 ):
     record = repository.get_podcast_by_task_id(auth_context.user_id, task_id)
     if record:
@@ -144,6 +175,7 @@ async def retry_podcast(
     podcast_id: str,
     background_tasks: BackgroundTasks,
     auth_context: AuthContext = Depends(get_current_user),
+    repository: PodcastRepository = Depends(get_repository),
 ):
     record = repository.get_podcast_by_id(auth_context.user_id, podcast_id)
     if not record:
@@ -159,7 +191,12 @@ async def retry_podcast(
         raise HTTPException(status_code=400, detail="Podcast config is missing")
 
     live_status = tasks_status.get(task_id)
-    if live_status and live_status.get("user_id") == auth_context.user_id and live_status.get("status") in {"queued", "processing"}:
+    if (
+        live_status
+        and live_status.get("user_id") == auth_context.user_id
+        and live_status.get("status") in {"queued", "processing"}
+        and not _is_stale_processing(record)
+    ):
         return {
             "podcast_id": podcast_id,
             "task_id": task_id,
@@ -187,6 +224,7 @@ async def retry_podcast(
         auth_context.user_id,
         config,
         urls,
+        repository,
     )
 
     return {
@@ -202,7 +240,8 @@ def _run_podcast_pipeline(
     task_id: str,
     user_id: str,
     config_data: Dict[str, Any],
-    existing_urls: Optional[Dict[str, str]] = None,
+    existing_urls: Optional[Dict[str, str]],
+    repository: PodcastRepository,
 ) -> None:
     urls = dict(existing_urls or {})
 

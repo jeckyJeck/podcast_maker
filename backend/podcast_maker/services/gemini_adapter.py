@@ -234,7 +234,7 @@ class GeminiAdapter(LLMProvider):
     def _call_fallback(self, contents: str, config: types.GenerateContentConfig):
         # Fallback policy: switch to a cheaper model on 429/503 errors
         return self.client.models.generate_content(
-            model=fallback_model,
+            model=FALLBACK_MODEL,
             contents=contents,
             config=config,
         )
