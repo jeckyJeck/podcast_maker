@@ -1,0 +1,100 @@
+format: solo_short
+description: "5-minute single-host podcast"
+
+stages:
+  - id: architect
+    execution: single
+    prompt: prompts/architect/architect_5min_solo.md
+    inputs:
+      topic: "{{user.topic}}"
+      USER_TOPIC: "{{user.topic}}"
+      format: "{{user.format}}"
+    outputs:
+      blueprint:
+        file: blueprint.json
+        schema: schemas/blueprint.schema.json
+        required_fields: [segments, detected_genre, episode_title, total_target_words]
+    on_failure:
+      strategy: retry
+      max_attempts: 2
+
+  - id: researcher
+    execution: map
+    over: "{{architect.blueprint.segments}}"
+    item_var: segment
+    prompt: prompts/researcher.md
+    inputs:
+      segment: "{{segment}}"
+      SEGMENT_JSON: "{{segment}}"
+      TARGET_WORD_COUNT: "{{segment.target_word_count}}"
+      DEPTH_LEVEL: "{{segment.depth_level}}"
+    outputs:
+      per_item: "research_{{segment.segment_name}}.md"
+      aggregate:
+        file: research.md
+        strategy: concat_with_headers
+    on_failure:
+      strategy: retry
+      max_attempts: 2
+
+  - id: outliner
+    execution: single
+    prompt: prompts/outliner/outline-solo-short.md
+    inputs:
+      topic: "{{user.topic}}"
+      TOPIC: "{{user.topic}}"
+      blueprint: "{{architect.blueprint}}"
+      BLUEPRINT: "{{architect.blueprint}}"
+      research: "{{researcher.aggregate}}"
+      RESEARCH: "{{researcher.aggregate}}"
+    outputs:
+      outline:
+        file: outline.json
+        schema: schemas/outline.schema.json
+        required_fields: [scenes, outline_metadata]
+    on_failure:
+      strategy: retry
+      max_attempts: 2
+
+  - id: scriptwriter
+    execution: map_with_context
+    over: "{{outliner.outline.scenes}}"
+    item_var: scene
+    accumulate_var: previous_scenes
+    prompt: prompts/scriptwriter/scriptwriter_5min_solo.md
+    inputs:
+      scene: "{{scene}}"
+      outline: "{{outliner.outline}}"
+      OUTLINE_JSON: "{{outliner.outline}}"
+      research: "{{researcher.aggregate}}"
+      RESEARCH_TEXT: "{{researcher.aggregate}}"
+      previous_scenes: "{{previous_scenes}}"
+      PREVIOUS_SCENES: "{{previous_scenes}}"
+      HOSTS_PROFILES: "{{architect.blueprint.host_profiles}}"
+      HOST_NAME: "{{user.host_name}}"
+      SHOW_NAME: "{{user.show_name}}"
+    outputs:
+      per_item: "scene_{{scene.scene_number}}.txt"
+      aggregate:
+        file: script.txt
+        strategy: concat
+    on_failure:
+      strategy: retry
+      max_attempts: 2
+
+user_inputs:
+  - key: topic
+    type: string
+    required: true
+  - key: format
+    type: string
+    required: true
+  - key: host_name
+    type: string
+    required: false
+    default: "Alex"
+  - key: show_name
+    type: string
+    required: false
+    default: "Signal Path"
+

@@ -1,14 +1,18 @@
+"""
+CRUD Template Store for Stage Prompt Templates.
+"""
+
 from __future__ import annotations
 
 import json
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Literal, TypedDict
+from typing import Literal, TypedDict, List, Optional
 
-from podcast_maker.core.paths import BACKEND_ROOT
+BACKEND_ROOT = Path(__file__).resolve().parent.parent
+TEMPLATES_ROOT = BACKEND_ROOT.parent / "common_resources" / "templates"
 
 StageName = Literal["architect", "researcher", "outliner", "scriptwriter"]
-TEMPLATES_ROOT = BACKEND_ROOT.parent / "common_resources" / "templates"
 
 
 class PromptTemplateRecord(TypedDict):
@@ -44,8 +48,8 @@ def is_valid_template_id(template_id: str) -> bool:
     return True
 
 
-def list_templates(user_id: str, stage: StageName | None = None) -> list[PromptTemplateRecord]:
-    rows: list[PromptTemplateRecord] = []
+def list_templates(user_id: str, stage: Optional[StageName] = None) -> List[PromptTemplateRecord]:
+    rows: List[PromptTemplateRecord] = []
     user_dir = _safe_user_dir(user_id)
     for path in user_dir.glob("*.json"):
         try:
@@ -64,6 +68,8 @@ def list_templates(user_id: str, stage: StageName | None = None) -> list[PromptT
 
 def get_template(user_id: str, template_id: str) -> PromptTemplateRecord:
     path = _template_path(user_id, template_id)
+    if not path.is_file():
+        raise FileNotFoundError(f"Template not found: {template_id}")
     row = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(row, dict):
         raise ValueError("Template content is invalid")
@@ -95,8 +101,8 @@ def create_template(
 def update_template(
     user_id: str,
     template_id: str,
-    name: str | None = None,
-    prompt_text: str | None = None,
+    name: Optional[str] = None,
+    prompt_text: Optional[str] = None,
 ) -> PromptTemplateRecord:
     row = get_template(user_id, template_id)
     if name is not None:
@@ -112,4 +118,7 @@ def update_template(
 
 def delete_template(user_id: str, template_id: str) -> None:
     path = _template_path(user_id, template_id)
-    path.unlink()
+    if path.is_file():
+        path.unlink()
+    else:
+        raise FileNotFoundError(f"Template not found: {template_id}")

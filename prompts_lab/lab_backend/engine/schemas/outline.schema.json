@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Podcast outline",
+  "type": "object",
+  "required": [
+    "scenes",
+    "outline_metadata"
+  ],
+  "properties": {
+    "scenes": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "outline_metadata": {
+      "type": "object"
+    },
+    "narrative_flow_notes": {
+      "type": "object"
+    },
+    "quality_checklist": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}
+

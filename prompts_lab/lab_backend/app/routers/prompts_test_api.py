@@ -39,6 +39,7 @@ ALLOWED_FILES = {
     "prompt_researcher.txt",
     "prompt_outliner.txt",
     "prompt_scriptwriter.txt",
+    "pipeline.yaml",
 }
 
 
@@ -157,7 +158,7 @@ async def get_prompts_test_auth() -> AuthContext:
 
 
 def _default_runs_root() -> Path:
-    return BACKEND_ROOT / "prompts_test" / "runs"
+    return BACKEND_ROOT.parent / "common_resources" / "experiments_runs"
 
 
 def _default_fixtures_root() -> Path:
@@ -257,17 +258,17 @@ def _read_manifest(run_dir: Path) -> dict | None:
     return json.loads(manifest_path.read_text(encoding="utf-8"))
 
 
-def _load_default_fixture_json(name: str) -> dict:
-    path = _default_fixtures_root() / name
-    return json.loads(path.read_text(encoding="utf-8"))
+def _get_stage_response_file(pipeline_data: dict, stage_id: str, template_dir: Path) -> Path | None:
+    for stage in pipeline_data.get("stages", []):
+        if stage.get("id") == stage_id:
+            response_spec = stage.get("response", {})
+            file_path_str = response_spec.get("file") or response_spec.get("aggregate_file")
+            if file_path_str:
+                return template_dir / file_path_str
+    return None
 
 
-def _load_default_fixture_text(name: str) -> str:
-    path = _default_fixtures_root() / name
-    return path.read_text(encoding="utf-8")
-
-
-def _resolve_default_inputs(payload: DefaultsRequest) -> tuple[dict, str, dict]:
+def _resolve_default_inputs_dynamic(payload: DefaultsRequest, template_dir: Path, pipeline_data: dict) -> tuple[dict, str, dict]:
     injected = payload.injected
 
     if injected.blueprint_json is not None:
@@ -275,21 +276,33 @@ def _resolve_default_inputs(payload: DefaultsRequest) -> tuple[dict, str, dict]:
     elif injected.blueprint_path:
         blueprint = json.loads(Path(injected.blueprint_path).read_text(encoding="utf-8"))
     else:
-        blueprint = _load_default_fixture_json("blueprint.sample.json")
+        blueprint_file = _get_stage_response_file(pipeline_data, "architect", template_dir)
+        if blueprint_file and blueprint_file.is_file():
+            blueprint = json.loads(blueprint_file.read_text(encoding="utf-8"))
+        else:
+            blueprint = {}
 
     if injected.research_text is not None:
         research = injected.research_text
     elif injected.research_path:
         research = Path(injected.research_path).read_text(encoding="utf-8")
     else:
-        research = _load_default_fixture_text("research.sample.md")
+        research_file = _get_stage_response_file(pipeline_data, "researcher", template_dir)
+        if research_file and research_file.is_file():
+            research = research_file.read_text(encoding="utf-8")
+        else:
+            research = ""
 
     if injected.outline_json is not None:
         outline = injected.outline_json
     elif injected.outline_path:
         outline = json.loads(Path(injected.outline_path).read_text(encoding="utf-8"))
     else:
-        outline = _load_default_fixture_json("outline.sample.json")
+        outline_file = _get_stage_response_file(pipeline_data, "outliner", template_dir)
+        if outline_file and outline_file.is_file():
+            outline = json.loads(outline_file.read_text(encoding="utf-8"))
+        else:
+            outline = {}
 
     return blueprint, research, outline
 
@@ -347,18 +360,36 @@ async def prompts_test_defaults(
     try:
         host_ids = payload.host_ids or ["sarah_curious", "mike_expert"]
         config = PodcastConfig(topic=payload.topic, host_ids=host_ids, format=payload.format)
-        prompt_manager = InstrumentedOverridePromptManager(config)
 
-        blueprint, research, outline = _resolve_default_inputs(payload)
+        template_name = "solo_short" if config.effective_format == "solo" else "duo_long"
+        template_dir = PIPELINES_DIR / template_name
+        pipeline_yaml_path = template_dir / "pipeline.yaml"
+        if not pipeline_yaml_path.exists():
+            raise FileNotFoundError(f"Default pipeline template not found at {pipeline_yaml_path}")
 
-        architect_prompt = prompt_manager.get_architect_prompt()
-        # Use first segment to build a representative researcher prompt preview.
-        representative_segment = blueprint.get("segments", [{}])[0] if isinstance(blueprint, dict) else {}
-        researcher_prompt = prompt_manager.get_researcher_prompt(representative_segment)
-        outliner_prompt = prompt_manager.get_outliner_prompt(blueprint, research, payload.topic)
-        scriptwriter_prompt = prompt_manager.get_scriptwriter_prompt(
-            outline, research, "--- This is Scene 1 - start with the opening ---\n\n"
-        )
+        pipeline_data = yaml.safe_load(pipeline_yaml_path.read_text(encoding="utf-8")) or {}
+        blueprint, research, outline = _resolve_default_inputs_dynamic(payload, template_dir, pipeline_data)
+
+        with tempfile.TemporaryDirectory(prefix="defaults_overrides_") as temp_dir_name:
+            temp_dir = Path(temp_dir_name)
+            overrides = {}
+            for stage_data in pipeline_data.get("stages", []):
+                stage_id = stage_data.get("id")
+                if stage_id:
+                    prompt_text = _resolve_yaml_stage_prompt(stage_data, BACKEND_ROOT, LOCAL_USER_ID)
+                    if prompt_text is not None:
+                        overrides[stage_id] = _write_temp_text(temp_dir, f"default_override_{stage_id}.md", prompt_text)
+
+            prompt_manager = InstrumentedOverridePromptManager(config, overrides=overrides)
+
+            architect_prompt = prompt_manager.get_architect_prompt()
+            # Use first segment to build a representative researcher prompt preview.
+            representative_segment = blueprint.get("segments", [{}])[0] if isinstance(blueprint, dict) else {}
+            researcher_prompt = prompt_manager.get_researcher_prompt(representative_segment)
+            outliner_prompt = prompt_manager.get_outliner_prompt(blueprint, research, payload.topic)
+            scriptwriter_prompt = prompt_manager.get_scriptwriter_prompt(
+                outline, research, "--- This is Scene 1 - start with the opening ---\n\n"
+            )
 
         return {
             "topic": payload.topic,
@@ -575,3 +606,239 @@ async def prompts_test_delete_prompt_template(
     except FileNotFoundError as exc:
         raise HTTPException(status_code=404, detail="Prompt template not found") from exc
     return {"status": "deleted", "id": safe_id}
+
+
+# ============================================================================
+# PIPELINE BUILDER & EXECUTION ENDPOINTS
+# ============================================================================
+
+import yaml
+
+PIPELINES_DIR = BACKEND_ROOT.parent / "common_resources" / "templates"
+
+class PipelineRunRequest(BaseModel):
+    pipeline_yaml: str
+    inputs: dict = Field(default_factory=dict)
+    run_stages: list[str] | None = None
+    mock_outputs: dict = Field(default_factory=dict)
+
+
+def _resolve_yaml_stage_prompt(stage_data: dict, root_path: Path, user_id: str) -> str | None:
+    prompt_spec = stage_data.get("prompt")
+    if not prompt_spec or not isinstance(prompt_spec, dict):
+        return None
+    source = prompt_spec.get("source")
+    if source == "inline":
+        return prompt_spec.get("text")
+    elif source == "file":
+        prompt_path = prompt_spec.get("path")
+        if prompt_path:
+            full_path = root_path / prompt_path
+            if full_path.is_file():
+                return full_path.read_text(encoding="utf-8")
+    elif source == "template":
+        template_id = prompt_spec.get("template_id")
+        if template_id:
+            try:
+                row = prompt_template_store.get_template(user_id, template_id)
+                return row.get("prompt_text")
+            except Exception:
+                pass
+    return None
+
+
+@router.get("/pipelines")
+async def list_pipelines(_auth: AuthContext = Depends(get_prompts_test_auth)):
+    PIPELINES_DIR.mkdir(parents=True, exist_ok=True)
+    pipelines = []
+    for template_dir in PIPELINES_DIR.iterdir():
+        if template_dir.is_dir():
+            path = template_dir / "pipeline.yaml"
+            if path.exists() and path.is_file():
+                try:
+                    with open(path, "r", encoding="utf-8") as f:
+                        content = yaml.safe_load(f) or {}
+                    pipelines.append({
+                        "id": template_dir.name,
+                        "name": content.get("name", template_dir.name),
+                        "description": content.get("description", ""),
+                        "version": content.get("version", 1)
+                    })
+                except Exception:
+                    pipelines.append({
+                        "id": template_dir.name,
+                        "name": template_dir.name,
+                        "description": "Failed to parse YAML metadata",
+                        "version": 1
+                    })
+    return {"pipelines": pipelines}
+
+
+@router.get("/pipelines/{pipeline_id}")
+async def get_pipeline(pipeline_id: str, _auth: AuthContext = Depends(get_prompts_test_auth)):
+    if "/" in pipeline_id or "\\" in pipeline_id or pipeline_id.startswith("."):
+        raise HTTPException(status_code=400, detail="Invalid pipeline ID")
+    path = PIPELINES_DIR / pipeline_id / "pipeline.yaml"
+    if not path.exists():
+        raise HTTPException(status_code=404, detail="Pipeline not found")
+    return Response(content=path.read_text(encoding="utf-8"), media_type="text/yaml")
+
+
+@router.post("/pipelines/{pipeline_id}")
+async def save_pipeline(
+    pipeline_id: str,
+    body: str = Field(..., description="Raw YAML content"),
+    _auth: AuthContext = Depends(get_prompts_test_auth)
+):
+    if "/" in pipeline_id or "\\" in pipeline_id or pipeline_id.startswith("."):
+        raise HTTPException(status_code=400, detail="Invalid pipeline ID")
+    try:
+        yaml.safe_load(body)
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=f"Invalid YAML content: {exc}")
+        
+    template_dir = PIPELINES_DIR / pipeline_id
+    template_dir.mkdir(parents=True, exist_ok=True)
+    path = template_dir / "pipeline.yaml"
+    path.write_text(body, encoding="utf-8")
+    return {"status": "saved", "id": pipeline_id}
+
+
+@router.delete("/pipelines/{pipeline_id}")
+async def delete_pipeline(pipeline_id: str, _auth: AuthContext = Depends(get_prompts_test_auth)):
+    if "/" in pipeline_id or "\\" in pipeline_id or pipeline_id.startswith("."):
+        raise HTTPException(status_code=400, detail="Invalid pipeline ID")
+    template_dir = PIPELINES_DIR / pipeline_id
+    if not template_dir.exists() or not template_dir.is_dir():
+        raise HTTPException(status_code=404, detail="Pipeline not found")
+    import shutil
+    try:
+        shutil.rmtree(template_dir)
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Failed to delete directory: {exc}")
+    return {"status": "deleted", "id": pipeline_id}
+
+
+@router.get("/pipeline-templates")
+async def list_pipeline_templates(_auth: AuthContext = Depends(get_prompts_test_auth)):
+    templates = []
+    for template_name in ["duo_long", "solo_short"]:
+        path = PIPELINES_DIR / template_name / "pipeline.yaml"
+        if path.exists():
+            try:
+                yaml_content = path.read_text(encoding="utf-8")
+                content = yaml.safe_load(yaml_content) or {}
+                templates.append({
+                    "id": template_name,
+                    "name": content.get("name", template_name),
+                    "description": content.get("description", ""),
+                    "yaml": yaml_content
+                })
+            except Exception:
+                pass
+    return {"templates": templates}
+
+
+@router.post("/pipelines/run")
+async def run_pipeline(
+    payload: PipelineRunRequest,
+    _auth: AuthContext = Depends(get_prompts_test_auth),
+):
+    try:
+        pipeline_data = yaml.safe_load(payload.pipeline_yaml)
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=f"Invalid pipeline YAML: {exc}")
+
+    from engine.validate_pipeline import validate_pipeline_data
+    try:
+        validate_pipeline_data(pipeline_data, BACKEND_ROOT)
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=f"Pipeline validation failed: {exc}")
+
+    stages = pipeline_data.get("stages", [])
+    stage_ids = [s.get("id") for s in stages if s.get("id")]
+    run_stages = payload.run_stages if payload.run_stages is not None else stage_ids
+    
+    with tempfile.TemporaryDirectory(prefix="pipeline_run_") as temp_dir_name:
+        temp_dir = Path(temp_dir_name)
+        
+        override_paths = {}
+        for stage_data in stages:
+            stage_id = stage_data.get("id")
+            if not stage_id:
+                continue
+            prompt_text = _resolve_yaml_stage_prompt(stage_data, BACKEND_ROOT, _auth.user_id)
+            if prompt_text is not None:
+                override_paths[stage_id] = _write_temp_text(temp_dir, f"override_{stage_id}.md", prompt_text)
+                
+        blueprint_file = None
+        research_file = None
+        outline_file = None
+        
+        if "architect" not in run_stages and ("researcher" in run_stages or "outliner" in run_stages):
+            mock_bp = payload.mock_outputs.get("architect", {}).get("blueprint") or payload.mock_outputs.get("architect", {})
+            if mock_bp:
+                blueprint_file = _write_temp_json(temp_dir, "mock_blueprint.json", mock_bp)
+                
+        if "researcher" not in run_stages and ("outliner" in run_stages or "scriptwriter" in run_stages):
+            mock_res = payload.mock_outputs.get("researcher", {}).get("research") or payload.mock_outputs.get("researcher", "")
+            if isinstance(mock_res, dict):
+                mock_res = mock_res.get("research", "")
+            if mock_res:
+                research_file = _write_temp_text(temp_dir, "mock_research.md", mock_res)
+                
+        if "outliner" not in run_stages and "scriptwriter" in run_stages:
+            mock_ol = payload.mock_outputs.get("outliner", {}).get("outline") or payload.mock_outputs.get("outliner", {})
+            if mock_ol:
+                outline_file = _write_temp_json(temp_dir, "mock_outline.json", mock_ol)
+
+        topic = payload.inputs.get("topic", "").strip()
+        if not topic:
+            topic = "Default Topic"
+            
+        host_ids = payload.inputs.get("host_ids")
+        podcast_format = payload.inputs.get("format")
+        
+        try:
+            runner_inputs = RunnerInputs(
+                topic=topic,
+                stages_arg=",".join(run_stages),
+                host_ids=host_ids,
+                podcast_format=podcast_format,
+                blueprint_file=blueprint_file,
+                research_file=research_file,
+                outline_file=outline_file,
+                runs_root=_default_runs_root(),
+                prompt_override_architect=override_paths.get("architect"),
+                prompt_override_researcher=override_paths.get("researcher"),
+                prompt_override_outliner=override_paths.get("outliner"),
+                prompt_override_scriptwriter=override_paths.get("scriptwriter"),
+            )
+            
+            runner = PromptTestRunner(runner_inputs)
+            run_dir = runner.run()
+            manifest = _read_manifest(run_dir)
+            
+            # Save the pipeline configuration YAML
+            (run_dir / "pipeline.yaml").write_text(payload.pipeline_yaml, encoding="utf-8")
+            
+            outputs = {}
+            for stage in run_stages:
+                if stage == "architect" and (run_dir / "blueprint.json").exists():
+                    outputs["architect"] = {"blueprint": json.loads((run_dir / "blueprint.json").read_text(encoding="utf-8"))}
+                elif stage == "researcher" and (run_dir / "research.md").exists():
+                    outputs["researcher"] = {"research": (run_dir / "research.md").read_text(encoding="utf-8")}
+                elif stage == "outliner" and (run_dir / "outline.json").exists():
+                    outputs["outliner"] = {"outline": json.loads((run_dir / "outline.json").read_text(encoding="utf-8"))}
+                elif stage == "scriptwriter" and (run_dir / "script.txt").exists():
+                    outputs["scriptwriter"] = {"script": (run_dir / "script.txt").read_text(encoding="utf-8")}
+
+            return {
+                "status": "completed",
+                "run_id": run_dir.name,
+                "outputs": outputs,
+                "manifest": manifest
+            }
+        except Exception as exc:
+            raise HTTPException(status_code=500, detail=str(exc))
+

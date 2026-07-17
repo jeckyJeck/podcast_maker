@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "required": ["scenes", "outline_metadata"],
+  "properties": {
+    "scenes": {"type": "array"},
+    "outline_metadata": {"type": "object"}
+  }
+}
+

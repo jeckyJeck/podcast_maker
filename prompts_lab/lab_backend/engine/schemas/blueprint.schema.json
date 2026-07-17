@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Podcast blueprint",
+  "type": "object",
+  "required": [
+    "segments",
+    "detected_genre",
+    "episode_title",
+    "total_target_words"
+  ],
+  "properties": {
+    "segments": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "detected_genre": {
+      "type": "string"
+    },
+    "episode_title": {
+      "type": "string"
+    },
+    "total_target_words": {
+      "type": "number"
+    },
+    "host_profiles": {
+      "type": "array"
+    },
+    "audio_dynamic_cues": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}
+
