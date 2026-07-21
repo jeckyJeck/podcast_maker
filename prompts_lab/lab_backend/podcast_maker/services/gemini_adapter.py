@@ -37,6 +37,21 @@ GEMINI_MODEL_RATE_LIMITS: dict[str, tuple[int, int]] = {
 DEFAULT_RATE_LIMIT_RPM = 15
 DEFAULT_RATE_LIMIT_RPD = 200
 
+# Order in which to try other models once the configured model's *daily* quota
+# is exhausted. The configured model (GEMINI_MODEL) is always tried first;
+# these are tried afterwards, in this order, skipping duplicates.
+GEMINI_MODEL_FALLBACK_ORDER: list[str] = [
+    "gemini-2.5-flash",
+    "gemini-2.0-flash",
+    "gemini-2.0-flash-lite",
+    "gemini-2.5-flash-lite",
+    "gemma-4-31b-it",
+]
+
+
+class GeminiQuotaExceededError(Exception):
+    """Raised when every candidate Gemini model has exhausted its daily quota."""
+
 
 class GeminiAdapter(LLMProvider):
     """
@@ -72,18 +87,50 @@ class GeminiAdapter(LLMProvider):
         self.client = genai.Client(api_key=api_key)
         self.model = os.getenv("GEMINI_MODEL", "gemma-4-31b-it")
 
-        requests_per_minute, requests_per_day = GEMINI_MODEL_RATE_LIMITS.get(
-            self.model, (DEFAULT_RATE_LIMIT_RPM, DEFAULT_RATE_LIMIT_RPD)
-        )
-        self._minute_rate_limiter = RateLimiter(max_requests=requests_per_minute, period_seconds=60)
-        self._day_rate_limiter = RateLimiter(max_requests=requests_per_day, period_seconds=86400)
+        # self.model is always the first candidate; fallback models are appended
+        # (skipping duplicates) so a daily-quota switch has somewhere to go.
+        self._candidate_models = [self.model] + [
+            m for m in GEMINI_MODEL_FALLBACK_ORDER if m != self.model
+        ]
+
+        self._minute_rate_limiters: dict[str, RateLimiter] = {}
+        self._day_rate_limiters: dict[str, RateLimiter] = {}
+        for candidate in self._candidate_models:
+            requests_per_minute, requests_per_day = GEMINI_MODEL_RATE_LIMITS.get(
+                candidate, (DEFAULT_RATE_LIMIT_RPM, DEFAULT_RATE_LIMIT_RPD)
+            )
+            self._minute_rate_limiters[candidate] = RateLimiter(max_requests=requests_per_minute, period_seconds=60)
+            self._day_rate_limiters[candidate] = RateLimiter(max_requests=requests_per_day, period_seconds=86400)
 
         self.__class__._initialized = True
 
-    def _acquire_rate_limit(self) -> None:
-        """Block until both the per-minute and per-day quotas for this model allow a request."""
-        self._minute_rate_limiter.acquire()
-        self._day_rate_limiter.acquire()
+    def _select_model_for_request(self) -> str:
+        """
+        Pick which model to use for the next API call, applying this policy:
+        - Per-minute quota hit -> block and wait for the same model (short wait, <=60s).
+        - Per-day quota hit -> log it and move on to the next fallback model.
+        - Every candidate's daily quota exhausted -> raise GeminiQuotaExceededError.
+        """
+        previous_model = None
+
+        for candidate in self._candidate_models:
+            # Blocks (sleeps) here if we're only over the per-minute quota.
+            self._minute_rate_limiters[candidate].acquire()
+
+            if self._day_rate_limiters[candidate].try_acquire():
+                if previous_model is not None:
+                    logger.warning(
+                        "GeminiAdapter: daily quota exhausted for model=%s, switching to fallback model=%s",
+                        previous_model, candidate
+                    )
+                return candidate
+
+            logger.warning("GeminiAdapter: daily quota exhausted for model=%s", candidate)
+            previous_model = candidate
+
+        raise GeminiQuotaExceededError(
+            f"Daily Gemini quota exhausted for all candidate models: {self._candidate_models}"
+        )
         
     def generate_text(
         self,
@@ -105,30 +152,35 @@ class GeminiAdapter(LLMProvider):
             LLMResponse with text content and usage metrics
             
         Raises:
+            GeminiQuotaExceededError: If every candidate model's daily quota is exhausted
             Exception: On API errors or empty responses
         """
         metadata = metadata or {}
         stage = metadata.get("stage", "unknown")
-        
-        logger.info(
-            "GeminiAdapter.generate_text called: stage=%s, model=%s, temperature=%s",
-            stage, self.model, temperature
-        )
-        
+
         config = types.GenerateContentConfig(
             response_mime_type="text/plain",
             temperature=temperature
         )
-        
+
         if tools:
             config.tools = tools
-        
-        # Per-model limiter policy: see GEMINI_MODEL_RATE_LIMITS above.
-        self._acquire_rate_limit()
+
+        # Per-model limiter policy: see GEMINI_MODEL_RATE_LIMITS / GEMINI_MODEL_FALLBACK_ORDER above.
+        try:
+            model_name = self._select_model_for_request()
+        except GeminiQuotaExceededError as e:
+            logger.error("GeminiAdapter.generate_text failed: stage=%s, error=%s", stage, str(e))
+            raise
+
+        logger.info(
+            "GeminiAdapter.generate_text called: stage=%s, model=%s, temperature=%s",
+            stage, model_name, temperature
+        )
 
         try:
             response = self.client.models.generate_content(
-                model=self.model,
+                model=model_name,
                 contents=prompt,
                 config=config
             )
@@ -177,28 +229,33 @@ class GeminiAdapter(LLMProvider):
             Parsed JSON as Python dict
             
         Raises:
+            GeminiQuotaExceededError: If every candidate model's daily quota is exhausted
             Exception: On API errors
             Returns dict with "error" key on JSON parse failures (hybrid policy)
         """
         metadata = metadata or {}
         stage = metadata.get("stage", "unknown")
-        
-        logger.info(
-            "GeminiAdapter.generate_json called: stage=%s, model=%s, temperature=%s",
-            stage, self.model, temperature
-        )
-        
+
         config = types.GenerateContentConfig(
             response_mime_type="application/json",
             temperature=temperature
         )
-        
-        # Per-model limiter policy: see GEMINI_MODEL_RATE_LIMITS above.
-        self._acquire_rate_limit()
+
+        # Per-model limiter policy: see GEMINI_MODEL_RATE_LIMITS / GEMINI_MODEL_FALLBACK_ORDER above.
+        try:
+            model_name = self._select_model_for_request()
+        except GeminiQuotaExceededError as e:
+            logger.error("GeminiAdapter.generate_json failed: stage=%s, error=%s", stage, str(e))
+            raise
+
+        logger.info(
+            "GeminiAdapter.generate_json called: stage=%s, model=%s, temperature=%s",
+            stage, model_name, temperature
+        )
 
         try:
             response = self.client.models.generate_content(
-                model=self.model,
+                model=model_name,
                 contents=prompt,
                 config=config
             )

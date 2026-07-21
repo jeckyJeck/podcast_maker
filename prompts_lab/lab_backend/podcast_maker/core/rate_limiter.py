@@ -33,3 +33,20 @@ class RateLimiter:
 
             if sleep_seconds > 0:
                 time.sleep(sleep_seconds)
+
+    def try_acquire(self) -> bool:
+        """
+        Non-blocking variant of acquire(): consumes a slot and returns True if one is
+        available right now, otherwise returns False immediately without waiting.
+        """
+        now = time.time()
+
+        with self._lock:
+            while self._request_timestamps and now - self._request_timestamps[0] >= self.period_seconds:
+                self._request_timestamps.popleft()
+
+            if len(self._request_timestamps) < self.max_requests:
+                self._request_timestamps.append(now)
+                return True
+
+            return False
