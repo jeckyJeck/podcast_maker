@@ -12,10 +12,10 @@ from google import genai
 from google.genai import types
 
 from podcast_maker.core.logging_config import get_logger
-from podcast_maker.core.rate_limiter import RateLimiter
 from podcast_maker.services.llm_provider import (
     LLMProvider,
     LLMResponse,
+    LLMResponseParseError,
 )
 
 logger = get_logger()
@@ -29,8 +29,8 @@ class GeminiAdapter(LLMProvider):
     - Direct integration with google.genai.Client
     - Response parsing and validation
     - Usage tracking and logging
-    - Rate limiting for API calls
-    - Hybrid error policy (fail-fast for critical, fallback for non-critical)
+    - Fail-fast error policy: all failures (API errors, empty/unparseable
+      responses) raise so callers/retry-policy engines can react to them
     """
     
     _instance: Optional["GeminiAdapter"] = None
@@ -54,7 +54,6 @@ class GeminiAdapter(LLMProvider):
 
         self.client = genai.Client(api_key=api_key)
         self.model = os.getenv("GEMINI_MODEL", "gemma-4-31b-it")
-        self.rate_limiter = RateLimiter(max_requests=20, period_seconds=86400)
         self.__class__._initialized = True
         
     def generate_text(
@@ -94,10 +93,7 @@ class GeminiAdapter(LLMProvider):
         
         if tools:
             config.tools = tools
-        
-        # Fixed limiter policy: 20 Gemini requests per day per process.
-        self.rate_limiter.acquire()
-        
+
         try:
             response = self.client.models.generate_content(
                 model=self.model,
@@ -147,10 +143,10 @@ class GeminiAdapter(LLMProvider):
             
         Returns:
             Parsed JSON as Python dict
-            
+
         Raises:
             Exception: On API errors
-            Returns dict with "error" key on JSON parse failures (hybrid policy)
+            LLMResponseParseError: If the response is empty or is not valid JSON
         """
         metadata = metadata or {}
         stage = metadata.get("stage", "unknown")
@@ -164,10 +160,7 @@ class GeminiAdapter(LLMProvider):
             response_mime_type="application/json",
             temperature=temperature
         )
-        
-        # Fixed limiter policy: 20 Gemini requests per day per process.
-        self.rate_limiter.acquire()
-        
+
         try:
             response = self.client.models.generate_content(
                 model=self.model,
@@ -178,8 +171,9 @@ class GeminiAdapter(LLMProvider):
             if not response.text:
                 error_msg = f"Gemini returned empty response for stage '{stage}'"
                 logger.error(error_msg)
-                # Hybrid policy: return error dict for JSON parsing issues
-                return {"error": "No content returned", "stage": stage}
+                raise LLMResponseParseError(
+                    "No content returned", raw_response="", stage=stage
+                )
             
             # Log usage
             usage = response.usage_metadata
@@ -202,13 +196,12 @@ class GeminiAdapter(LLMProvider):
                     "GeminiAdapter.generate_json parse error: stage=%s, error=%s",
                     stage, str(parse_error)
                 )
-                # Hybrid policy: return error dict instead of raising
-                return {
-                    "error": "Invalid JSON",
-                    "stage": stage,
-                    "raw": response.text[:500]  # Truncate for logging
-                }
-                
+                raise LLMResponseParseError(
+                    f"Invalid JSON: {parse_error}",
+                    raw_response=response.text,
+                    stage=stage,
+                ) from parse_error
+
         except Exception as e:
             logger.error("GeminiAdapter.generate_json failed: stage=%s, error=%s", stage, str(e))
             raise
