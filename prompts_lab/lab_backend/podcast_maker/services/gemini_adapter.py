@@ -21,6 +21,23 @@ from podcast_maker.services.llm_provider import (
 logger = get_logger()
 
 
+# Rate limit quotas per Gemini model, as (requests_per_minute, requests_per_day).
+# Google publishes/updates these per model+tier, so keep this table as the single
+# place to tweak the numbers when quotas change.
+GEMINI_MODEL_RATE_LIMITS: dict[str, tuple[int, int]] = {
+    "gemini-2.5-pro": (5, 100),
+    "gemini-2.5-flash": (10, 250),
+    "gemini-2.5-flash-lite": (15, 1000),
+    "gemini-2.0-flash": (15, 200),
+    "gemini-2.0-flash-lite": (30, 200),
+    "gemma-4-31b-it": (30, 14400),
+}
+
+# Used when self.model isn't a key in GEMINI_MODEL_RATE_LIMITS above.
+DEFAULT_RATE_LIMIT_RPM = 15
+DEFAULT_RATE_LIMIT_RPD = 200
+
+
 class GeminiAdapter(LLMProvider):
     """
     Gemini implementation of LLM provider.
@@ -54,8 +71,19 @@ class GeminiAdapter(LLMProvider):
 
         self.client = genai.Client(api_key=api_key)
         self.model = os.getenv("GEMINI_MODEL", "gemma-4-31b-it")
-        self.rate_limiter = RateLimiter(max_requests=20, period_seconds=86400)
+
+        requests_per_minute, requests_per_day = GEMINI_MODEL_RATE_LIMITS.get(
+            self.model, (DEFAULT_RATE_LIMIT_RPM, DEFAULT_RATE_LIMIT_RPD)
+        )
+        self._minute_rate_limiter = RateLimiter(max_requests=requests_per_minute, period_seconds=60)
+        self._day_rate_limiter = RateLimiter(max_requests=requests_per_day, period_seconds=86400)
+
         self.__class__._initialized = True
+
+    def _acquire_rate_limit(self) -> None:
+        """Block until both the per-minute and per-day quotas for this model allow a request."""
+        self._minute_rate_limiter.acquire()
+        self._day_rate_limiter.acquire()
         
     def generate_text(
         self,
@@ -95,16 +123,16 @@ class GeminiAdapter(LLMProvider):
         if tools:
             config.tools = tools
         
-        # Fixed limiter policy: 20 Gemini requests per day per process.
-        self.rate_limiter.acquire()
-        
+        # Per-model limiter policy: see GEMINI_MODEL_RATE_LIMITS above.
+        self._acquire_rate_limit()
+
         try:
             response = self.client.models.generate_content(
                 model=self.model,
                 contents=prompt,
                 config=config
             )
-            
+
             if not response.text:
                 error_msg = f"Gemini returned empty response for stage '{stage}'"
                 logger.error(error_msg)
@@ -165,9 +193,9 @@ class GeminiAdapter(LLMProvider):
             temperature=temperature
         )
         
-        # Fixed limiter policy: 20 Gemini requests per day per process.
-        self.rate_limiter.acquire()
-        
+        # Per-model limiter policy: see GEMINI_MODEL_RATE_LIMITS above.
+        self._acquire_rate_limit()
+
         try:
             response = self.client.models.generate_content(
                 model=self.model,
