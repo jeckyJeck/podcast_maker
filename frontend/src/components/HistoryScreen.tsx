@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FaClock, FaExclamationCircle, FaFolder, FaHistory, FaPlay, FaRedo, FaSpinner } from 'react-icons/fa';
-import { usePodcast } from '../context/PodcastContext';
+import type { PodcastHistoryItem } from '../services/podcastPersistence';
 
 const formatTime = (seconds: number): string => {
   if (!Number.isFinite(seconds) || seconds < 0) return '0:00';
@@ -74,8 +74,16 @@ const EpisodeProgress: React.FC<{ audioUrl?: string; currentTime: number }> = ({
   );
 };
 
-export const HistoryScreen: React.FC = () => {
-  const { displayHistory, cloudLoading, handleRestoreFromHistory, handleRetryPodcast } = usePodcast();
+export interface HistoryScreenProps {
+  displayHistory: PodcastHistoryItem[];
+  cloudLoading: boolean;
+  handleRestoreFromHistory: (item: PodcastHistoryItem) => void;
+  handleRetryPodcast: (item: PodcastHistoryItem) => Promise<void>;
+}
+
+export const HistoryScreen: React.FC<HistoryScreenProps> = ({
+  displayHistory, cloudLoading, handleRestoreFromHistory, handleRetryPodcast,
+}) => {
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-8">
@@ -87,7 +95,7 @@ export const HistoryScreen: React.FC = () => {
         <h1 className="font-display text-5xl font-extrabold text-white">Your Library</h1>
       </section>
 
-      {cloudLoading ? (
+      {cloudLoading && displayHistory.length === 0 ? (
         <div className="grid h-64 place-items-center text-[#8f93a3]">
           <div className="animate-pulse">Loading history...</div>
         </div>

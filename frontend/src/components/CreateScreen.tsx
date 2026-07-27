@@ -2,9 +2,8 @@ import React from 'react';
 import { FaCheck, FaComments, FaPen, FaPlay, FaUser, FaVolumeUp } from 'react-icons/fa';
 import { FaWandMagicSparkles } from 'react-icons/fa6';
 import { FORMAT_MAX_HOSTS } from '../config/podcast';
-import { usePodcast } from '../context/PodcastContext';
 import { StatusDisplay } from './StatusDisplay';
-import type { PodcastFormat } from '../types/podcast';
+import type { HostProfile, PodcastFormat, PodcastTaskStatus } from '../types/podcast';
 
 const FORMAT_OPTIONS: { value: PodcastFormat; title: string; description: string; meta: string }[] = [
   {
@@ -29,12 +28,20 @@ const traitForTone = (tone: string) => {
   return tone || 'Voice';
 };
 
-const InlineHostPicker: React.FC = () => {
-  const {
-    hosts, hostsLoading, selectedHostIds, selectedFormat,
-    hostPickerOpen, setHostPickerOpen, saveHostsPreference,
-  } = usePodcast();
+interface HostsSliceProps {
+  hosts: HostProfile[];
+  hostsLoading: boolean;
+  selectedFormat: PodcastFormat;
+  selectedHostIds: string[];
+  hostPickerOpen: boolean;
+  setHostPickerOpen: (v: boolean) => void;
+  saveHostsPreference: (ids: string[]) => Promise<void>;
+}
 
+const InlineHostPicker: React.FC<HostsSliceProps> = ({
+  hosts, hostsLoading, selectedHostIds, selectedFormat,
+  hostPickerOpen, setHostPickerOpen, saveHostsPreference,
+}) => {
   const [localSelected, setLocalSelected] = React.useState<string[]>(selectedHostIds);
   const maxHosts = FORMAT_MAX_HOSTS[selectedFormat];
 
@@ -145,9 +152,9 @@ const InlineHostPicker: React.FC = () => {
   );
 };
 
-const SelectedHostsStrip: React.FC = () => {
-  const { hosts, hostsLoading, selectedHostIds, hostPickerOpen, setHostPickerOpen, selectedFormat } = usePodcast();
-
+const SelectedHostsStrip: React.FC<Omit<HostsSliceProps, 'saveHostsPreference'>> = ({
+  hosts, hostsLoading, selectedHostIds, hostPickerOpen, setHostPickerOpen, selectedFormat,
+}) => {
   const selectedHosts = selectedHostIds
     .map((id) => hosts.find((h) => h.id === id))
     .filter(Boolean);
@@ -203,15 +210,26 @@ const SelectedHostsStrip: React.FC = () => {
   );
 };
 
-export const CreateScreen: React.FC = () => {
-  const {
-    topic, setTopic,
-    selectedFormat, handleFormatChange,
-    isSubmitting, handleSubmit, handleReset,
-    effectiveStatus, podcastReady,
-    goToPlayer,
-  } = usePodcast();
+export interface CreateScreenProps extends HostsSliceProps {
+  handleFormatChange: (format: PodcastFormat) => void;
+  topic: string;
+  setTopic: (v: string) => void;
+  isSubmitting: boolean;
+  handleSubmit: () => Promise<void>;
+  handleReset: () => void;
+  effectiveStatus: PodcastTaskStatus | null;
+  podcastReady: boolean;
+  goToPlayer: () => void;
+}
 
+export const CreateScreen: React.FC<CreateScreenProps> = ({
+  hosts, hostsLoading, selectedHostIds, hostPickerOpen, setHostPickerOpen, saveHostsPreference,
+  selectedFormat, handleFormatChange,
+  topic, setTopic,
+  isSubmitting, handleSubmit, handleReset,
+  effectiveStatus, podcastReady,
+  goToPlayer,
+}) => {
   const showStatus = Boolean(
     effectiveStatus && effectiveStatus.status !== 'completed',
   );
@@ -260,8 +278,23 @@ export const CreateScreen: React.FC = () => {
 
       <section>
         <p className="mb-5 text-xs font-bold uppercase tracking-[0.24em] text-[#b8c7ff]">02. Select hosts</p>
-        <SelectedHostsStrip />
-        <InlineHostPicker />
+        <SelectedHostsStrip
+          hosts={hosts}
+          hostsLoading={hostsLoading}
+          selectedHostIds={selectedHostIds}
+          hostPickerOpen={hostPickerOpen}
+          setHostPickerOpen={setHostPickerOpen}
+          selectedFormat={selectedFormat}
+        />
+        <InlineHostPicker
+          hosts={hosts}
+          hostsLoading={hostsLoading}
+          selectedHostIds={selectedHostIds}
+          hostPickerOpen={hostPickerOpen}
+          setHostPickerOpen={setHostPickerOpen}
+          saveHostsPreference={saveHostsPreference}
+          selectedFormat={selectedFormat}
+        />
       </section>
 
       {showForm && (
