@@ -30,8 +30,27 @@ self.addEventListener('fetch', (event) => {
   const requestUrl = new URL(request.url);
 
   if (request.mode === 'navigate') {
+    // Stale-while-revalidate for the app shell: return cached shell immediately
+    // if available, and refresh the cache in the background from network.
     event.respondWith(
-      fetch(request).catch(() => caches.match('/')),
+      caches.match('/').then((cachedResponse) => {
+        const networkFetch = fetch(request)
+          .then((networkResponse) => {
+            if (networkResponse && networkResponse.status === 200) {
+              const cloned = networkResponse.clone();
+              void caches.open(CACHE_NAME).then((cache) => cache.put(request, cloned));
+            }
+            return networkResponse;
+          })
+          .catch(() => null);
+
+        // Keep the worker alive until the background refresh finishes, even
+        // though the response below may already be served from cache.
+        event.waitUntil(networkFetch);
+
+        // Serve cached shell immediately when present, otherwise wait for network.
+        return cachedResponse || networkFetch;
+      }),
     );
     return;
   }

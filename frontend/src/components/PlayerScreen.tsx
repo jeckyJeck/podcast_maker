@@ -9,7 +9,6 @@ import {
   FaPlay,
   FaTachometerAlt,
 } from 'react-icons/fa';
-import { usePodcast } from '../context/PodcastContext';
 import TranscriptViewer from './TranscriptViewer';
 import type { PodcastFiles } from '../types/podcast';
 import { fetchWithRetry } from '../services/http';
@@ -74,13 +73,24 @@ const downloadZip = async (
   }
 };
 
-const PlayerControls: React.FC = () => {
-  const {
-    topic, resolvedFiles,
-    isPlaying, currentTime, duration, playbackSpeed,
-    togglePlay, seekTo, skipBy, changeSpeed,
-  } = usePodcast();
+interface PlayerControlsProps {
+  topic: string;
+  resolvedFiles: PodcastFiles | null;
+  isPlaying: boolean;
+  currentTime: number;
+  duration: number;
+  playbackSpeed: number;
+  togglePlay: () => void;
+  seekTo: (time: number) => void;
+  skipBy: (seconds: number) => void;
+  changeSpeed: (speed: number) => void;
+}
 
+const PlayerControls: React.FC<PlayerControlsProps> = ({
+  topic, resolvedFiles,
+  isPlaying, currentTime, duration, playbackSpeed,
+  togglePlay, seekTo, skipBy, changeSpeed,
+}) => {
   const [showSpeed, setShowSpeed] = useState(false);
   const [downloading, setDownloading] = useState(false);
 
@@ -194,9 +204,28 @@ const PlayerControls: React.FC = () => {
   );
 };
 
-export const PlayerScreen: React.FC = () => {
-  const { topic, resolvedFiles, currentTime, seekTo, podcastReady, goToCreate, goToHistory } = usePodcast();
+export interface PlayerScreenProps {
+  topic: string;
+  resolvedFiles: PodcastFiles | null;
+  isPlaying: boolean;
+  currentTime: number;
+  duration: number;
+  playbackSpeed: number;
+  togglePlay: () => void;
+  seekTo: (time: number) => void;
+  skipBy: (seconds: number) => void;
+  changeSpeed: (speed: number) => void;
+  podcastReady: boolean;
+  goToCreate: () => void;
+  goToHistory: () => void;
+}
 
+export const PlayerScreen: React.FC<PlayerScreenProps> = ({
+  topic, resolvedFiles,
+  isPlaying, currentTime, duration, playbackSpeed,
+  togglePlay, seekTo, skipBy, changeSpeed,
+  podcastReady, goToCreate, goToHistory,
+}) => {
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-7">
       <section>
@@ -258,7 +287,18 @@ export const PlayerScreen: React.FC = () => {
         </div>
       </section>
 
-      <PlayerControls />
+      <PlayerControls
+        topic={topic}
+        resolvedFiles={resolvedFiles}
+        isPlaying={isPlaying}
+        currentTime={currentTime}
+        duration={duration}
+        playbackSpeed={playbackSpeed}
+        togglePlay={togglePlay}
+        seekTo={seekTo}
+        skipBy={skipBy}
+        changeSpeed={changeSpeed}
+      />
     </div>
   );
 };
