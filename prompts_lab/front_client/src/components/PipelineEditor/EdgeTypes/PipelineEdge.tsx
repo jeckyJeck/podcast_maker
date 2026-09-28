@@ -13,6 +13,13 @@ export default function PipelineEdge({
   markerEnd,
   data
 }: EdgeProps) {
+  // Multiple edges between the same two nodes (e.g. a stage's "array to loop
+  // over" edge and a separate placeholder binding from that same source)
+  // would otherwise draw as an identical, fully-overlapping curve - only
+  // whichever renders last would be visible/clickable. Fan them out by lane.
+  const laneIndex = (data?.laneIndex as number) || 0;
+  const curvature = 0.25 + laneIndex * 0.35;
+
   const [edgePath, labelX, labelY] = getBezierPath({
     sourceX,
     sourceY,
@@ -20,6 +27,7 @@ export default function PipelineEdge({
     targetX,
     targetY,
     targetPosition,
+    curvature,
   });
 
   const connectionType = (data?.type as string) || "normal";

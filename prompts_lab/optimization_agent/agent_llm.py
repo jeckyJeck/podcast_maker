@@ -106,27 +106,40 @@ class OllamaAgentLLM(AgentLLM):
             return AgentLLMResponse(text=message.get("content", "") or "", tool_call=tool_call)
 
         chunks: list[str] = []
-        if ollama_tools:
+        tool_call: ToolCall | None = None
+        print("\n--- Ollama stream start ---", file=sys.stderr, flush=True)
+        try:
+            stream = self._client.chat(
+                model=self._model,
+                messages=messages,
+                tools=ollama_tools or None,
+                stream=True,
+            )
+            for chunk in stream:
+                message = chunk.get("message", {})
+                content = message.get("content", "")
+                if content:
+                    chunks.append(content)
+                    print(content, end="", file=sys.stderr, flush=True)
+                chunk_tool_calls = message.get("tool_calls")
+                if chunk_tool_calls:
+                    tool_call = _first_ollama_tool_call(chunk_tool_calls)
+        except Exception as exc:  # noqa: BLE001 - fall back if this ollama version rejects stream+tools together
             print(
-                "Ollama streaming does not expose tool calls reliably; using streamed text fallback.",
+                f"\nOllama streaming with tools failed ({exc}); retrying this call without streaming.",
                 file=sys.stderr,
                 flush=True,
             )
-        print("\n--- Ollama stream start ---", file=sys.stderr, flush=True)
-        for chunk in self._client.chat(
-            model=self._model,
-            messages=messages,
-            stream=True,
-        ):
-            content = chunk.get("message", {}).get("content", "")
-            if not content:
-                continue
-            chunks.append(content)
-            print(content, end="", file=sys.stderr, flush=True)
+            response = self._client.chat(model=self._model, messages=messages, tools=ollama_tools or None)
+            message = response.get("message", {})
+            return AgentLLMResponse(
+                text=message.get("content", "") or "",
+                tool_call=_first_ollama_tool_call(message.get("tool_calls") or []),
+            )
         print("\n--- Ollama stream end ---", file=sys.stderr, flush=True)
-        if not chunks:
-            print("no response got")
-        return AgentLLMResponse(text="".join(chunks))
+        if not chunks and not tool_call:
+            print("no response got", file=sys.stderr, flush=True)
+        return AgentLLMResponse(text="".join(chunks), tool_call=tool_call)
 
 
 class GeminiAgentLLM(AgentLLM):

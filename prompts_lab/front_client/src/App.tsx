@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import PipelineBuilderTab from "./components/PipelineEditor/PipelineBuilderTab";
 import ComparisonTab from "./components/Comparison/ComparisonTab";
-import { GitCompare, Workflow, Key } from "lucide-react";
+import EvaluationTab from "./components/Evaluation/EvaluationTab";
+import { GitCompare, Workflow, Key, ClipboardCheck } from "lucide-react";
 
-type ActiveTabType = "builder" | "comparison";
+type ActiveTabType = "builder" | "comparison" | "evaluation";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<ActiveTabType>("builder");
@@ -46,6 +47,15 @@ export default function App() {
           >
             <GitCompare size={14} /> Runs Comparison
           </button>
+          <button
+            className={`tab-btn ${activeTab === "evaluation" ? "active" : ""}`}
+            onClick={() => {
+              setActiveTab("evaluation");
+              setStatusText("Switched to Evaluation View");
+            }}
+          >
+            <ClipboardCheck size={14} /> Evaluation
+          </button>
         </div>
 
         {/* Supabase Bearer Token Input */}
@@ -71,11 +81,9 @@ export default function App() {
 
       {/* Main View Port */}
       <main className="view-content">
-        {activeTab === "builder" ? (
-          <PipelineBuilderTab />
-        ) : (
-          <ComparisonTab />
-        )}
+        {activeTab === "builder" && <PipelineBuilderTab />}
+        {activeTab === "comparison" && <ComparisonTab />}
+        {activeTab === "evaluation" && <EvaluationTab />}
       </main>
 
       {/* Status Bar */}

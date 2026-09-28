@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Purpose
 
-`prompts_lab` is a sandbox for iterating on the prompts used by the podcastMaker pipeline (architect → researcher → outliner → scriptwriter). It lets a human (via `front_client`) or an autonomous agent (`optimization_agent`, not yet wired to a UI) define a pipeline as YAML, run it against real LLMs, inspect per-stage prompts/outputs, and diff results across runs. Audio/TTS generation is intentionally out of scope here — that lives in the main podcastMaker app, not this lab.
+`prompts_lab` is a sandbox for iterating on podcast-generation prompts via arbitrary, YAML-defined pipelines. It lets a human (via `front_client`) or an autonomous agent (`optimization_agent`, not yet wired to a UI) define a pipeline as YAML with arbitrary stage ids, run it against real LLMs, inspect per-stage prompts/outputs, and diff results across runs. Audio/TTS generation is intentionally out of scope here — that lives in the main podcastMaker app, not this lab.
 
 ## Folder map
 
@@ -24,10 +24,9 @@ python run_server.py          # or: uvicorn app.main:app --reload --port 8000
 ```
 CORS only allows the frontend's dev origin `http://localhost:5180`.
 
-CLI for running/comparing stages directly (from `lab_backend/`):
+CLI for inspecting/comparing run directories (from `lab_backend/`) — pipeline *execution* goes through the API's `POST /pipelines/run`, not the CLI:
 ```
-python -m prompts_test.cli run --topic "..." --stages architect,researcher,outliner,scriptwriter
-python -m prompts_test.cli compare --run-a <name> --run-b <name> --file research.md
+python -m prompts_test.cli compare --run-a <name> --run-b <name> --file outputs/research.md
 python -m prompts_test.cli list-runs
 ```
 
@@ -55,20 +54,22 @@ Everything flows through the YAML format defined in `common_resources/PIPELINE_C
 ### lab_backend layers
 
 - `app/main.py` — FastAPI entrypoint, mounts `app/routers/prompts_test_api.py` at `/prompts-test-api`.
-- `app/routers/prompts_test_api.py` — all HTTP routes: meta/hosts, default-prompt preview (`/defaults`), run creation (async via `BackgroundTasks` + in-memory `TASKS` dict), run listing/inspection/compare, CRUD for saved prompt templates, and full pipeline builder endpoints (list/get/save/delete pipeline YAML under `common_resources/templates/`, plus `/pipelines/run` which validates and executes an arbitrary YAML pipeline with optional per-stage prompt/output mocking).
-- `prompts_test/` — the stage-runner layer used by both the API and the CLI:
-  - `stage_runner.py` (`RunnerInputs`, `PromptTestRunner`) drives execution of one or more stages, writing outputs + a `run_manifest.json` per run.
-  - `prompt_resolver.py` (`InstrumentedOverridePromptManager`) lets prompts be overridden by file/text/template instead of using the built-in defaults, and captures the actually-rendered prompt text for preview/inspection.
-  - `io_contracts.py` — defines `STAGE_ORDER` and injected-artifact contracts (blueprint/research/outline) so stages can be run standalone with mocked upstream outputs.
-  - `compare.py` — diffs an output file between two run directories.
-- `podcast_maker/` — vendored copy of the core pipeline logic shared conceptually with the main app: `core/{architect,researcher,outliner,scriptwriter}.py` (per-stage logic), `core/prompt_manager.py` (`PodcastConfig`, default prompt construction), `core/hosts_config.py` (`AVAILABLE_HOSTS`), `services/{llm_provider,llm_provider_factory,gemini_adapter}.py` (LLM abstraction, Gemini-backed), `services/prompt_template_store.py` (persistence for user-saved prompt templates, keyed by a fixed local user id since auth is disabled in this lab).
-- `engine/validate_pipeline.py` + `engine/schemas/*.schema.json` — contract validation and JSON schemas for architect/outliner outputs.
+- `app/routers/prompts_test_api.py` — all HTTP routes: `/meta` (hosts/formats), run listing/inspection/file-serving/compare, CRUD for saved prompt templates, and the pipeline builder endpoints (list/get/save/delete pipeline YAML under `common_resources/templates/`, plus `POST /pipelines/run`, the single execution entry point). `POST /pipelines/run` is registered *before* `GET|POST|DELETE /pipelines/{pipeline_id}` — Starlette matches routes in registration order, so the literal `/pipelines/run` path must come first or it gets shadowed by the `{pipeline_id}` pattern.
+- `app/hosts_config.py` — `AVAILABLE_HOSTS`, the host registry backing `/meta`'s `hosts`/`default_host_ids` fields, loaded from `common_resources/hosts.json` (shared reference data, not lab-backend-specific). Lives under `app/` rather than `utils/` because `prompts_test_api.py` is its only consumer — it's app-layer domain data, not cross-cutting infra. Note: the frontend currently fetches `/meta` but never reads the `hosts` field it returns (stored in an underscore-prefixed, unused React state) — the host registry isn't wired into pipeline building today.
+- `engine/` — the generic pipeline engine, stage-id-agnostic throughout:
+  - `validate_pipeline.py` + `schemas/*.schema.json` — validates a pipeline dict against `PIPELINE_CONTRACT.md` before it's run.
+  - `executor.py` — the interpreter: `run_pipeline()` loops over a validated pipeline's `stages` and dispatches by `execution` (`single` / `map` / `map_with_context`), rendering prompts via `bindings`, calling the `LLMProvider`, applying `failure` retry/skip policy, writing `response.file`/`per_item_file`/`aggregate_file`, and populating each stage's `outputs`. Stages can be selectively skipped (`run_stages`) with their context bucket seeded from `mock_outputs[stage_id]` instead — used by `front_client`'s per-node "Execute Stage" / "Mock Output" toggle.
+  - `sources.py` — resolves contract source references (`inputs.<name>`, `<stage>.<output>`, `item[.field]`, `context.<name>`) and renders `bindings` into prompt text.
+  - `inputs.py` — resolves a pipeline's declared `inputs` block against a request payload (defaults, required checks, type coercion).
+  - `tools.py` — maps contract `tools` entries (e.g. `google_search`) to provider-specific tool objects attached to the LLM call.
+- `prompts_test/` — supporting utilities, not stage-specific: `compare.py` (diffs a file between two run directories), `cli.py` (`compare`/`list-runs` only — pipeline execution goes through the API, not the CLI).
+- `utils/`, `services/` — provider/service plumbing shared conceptually with the main app (previously vendored under a `podcast_maker/` package, flattened to top-level since only these modules were actually reachable): `utils/` holds only dependency-free infra imported by more than one layer — `paths.py` (`BACKEND_ROOT`) and `logging_config.py` (`get_logger`, used by both `app/main.py` and `services/gemini_adapter.py`). `services/{llm_provider,llm_provider_factory,gemini_adapter,rate_limiter}.py` (LLM abstraction, Gemini-backed — `generate_text`/`generate_json` raise rather than silently returning empty/malformed results, so the executor's failure policy sees real errors; `rate_limiter.py` is a generic per-minute/per-day token-bucket used only by `gemini_adapter.py`), `services/prompt_template_store.py` (persistence for user-saved prompt templates, keyed by a fixed local user id since auth is disabled in this lab). The old `podcast_maker/core/{architect,outliner,scriptwriter,prompt_manager}.py` and `services/{storage_provider,local_storage_provider}.py` were leftover/unreferenced from the old hardcoded 4-stage runner and have been deleted — the real prompt text now lives inline in `common_resources/templates/*/pipeline.yaml` (`prompt.source: inline`).
 
 Auth is stubbed out everywhere in this lab (`AuthContext(user_id="lab-local-user")`, `method="disabled"`) — there is no real login here, unlike the main app's `AuthProvider` abstraction.
 
 ### Run artifacts
 
-Every run writes to a directory under `common_resources/experiments_runs/` (gitignored) containing per-stage prompt text (`prompt_<stage>.txt`), raw outputs (`blueprint.json`, `research.md`, `outline.json`, `script.txt`), and `run_manifest.json`. The API only ever serves files from an explicit allowlist (`ALLOWED_FILES` in `prompts_test_api.py`) plus anything prefixed `prompt_`.
+Every run writes to a directory under `common_resources/experiments_runs/` (gitignored) containing a `run_manifest.json` (per-stage status/attempts/duration and overall status) and whatever output files each stage's `response.file`/`per_item_file`/`aggregate_file` declares — paths are pipeline-defined (e.g. `outputs/blueprint.json`), not fixed. `GET /runs/{run_id}/files/{file_name}` serves any file under that run's directory (nested paths allowed; `..`/absolute-path escapes are rejected) — there's no fixed filename allowlist anymore since filenames are pipeline-defined.
 
 ### front_client
 

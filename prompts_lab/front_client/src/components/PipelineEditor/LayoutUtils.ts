@@ -69,19 +69,26 @@ export function layoutPipelineNodes(nodes: Node[], edges: Edge[]): Node[] {
   const startX = 60;
   const startY = 100;
 
-  // Assign coordinates based on groups
+  // Assign coordinates based on groups, walked in ascending depth order.
+  // Map iteration order is insertion order, not numeric key order, and
+  // insertion happens in `nodes` array order - so without this sort, groups
+  // (and therefore the topological stage order callers derive from this
+  // function) can come out scrambled whenever a node isn't already listed
+  // before its dependents.
   const layedOutNodes: Node[] = [];
-  depthGroups.forEach((groupNodes, depth) => {
-    groupNodes.forEach((node, index) => {
-      layedOutNodes.push({
-        ...node,
-        position: {
-          x: startX + depth * columnWidth,
-          y: startY + index * rowHeight
-        }
+  [...depthGroups.entries()]
+    .sort(([depthA], [depthB]) => depthA - depthB)
+    .forEach(([depth, groupNodes]) => {
+      groupNodes.forEach((node, index) => {
+        layedOutNodes.push({
+          ...node,
+          position: {
+            x: startX + depth * columnWidth,
+            y: startY + index * rowHeight
+          }
+        });
       });
     });
-  });
 
   return layedOutNodes;
 }

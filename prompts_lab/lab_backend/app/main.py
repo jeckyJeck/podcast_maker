@@ -10,7 +10,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.routers import prompts_test_api
-from podcast_maker.core.logging_config import get_logger
+from utils.logging_config import get_logger
 
 # Load .env from lab_backend root directory
 LAB_BACKEND_ROOT = Path(__file__).resolve().parent.parent

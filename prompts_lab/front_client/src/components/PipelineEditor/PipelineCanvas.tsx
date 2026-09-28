@@ -53,23 +53,60 @@ export default function PipelineCanvas({
   const onConnect = useCallback(
     (params: Connection) => {
       const sourceNode = nodes.find(n => n.id === params.source);
+      const targetNode = nodes.find(n => n.id === params.target);
       let defaultLabel = `{{${params.source}}}`;
-      let defaultSource = `${params.source}`;
+      // Only the *chosen output field* is recorded here for stage sources.
+      // The node/stage identity itself is resolved live at compile time
+      // (see compileGraphToYaml) so renames can never leave this stale.
+      let outputField: string | undefined;
 
       if (sourceNode) {
         if (sourceNode.type === "inputNode") {
-          // If source is a pipeline input
           const inputName = sourceNode.data.id as string;
           defaultLabel = `{{${inputName}}}`;
-          defaultSource = `inputs.${inputName}`;
         } else {
           // If source is another prompt stage, bind to first output
           const outputs = Object.keys(sourceNode.data.outputs || {});
-          const firstOutput = outputs[0] || "response";
-          defaultLabel = `{{${firstOutput}}}`;
-          defaultSource = `${params.source}.${firstOutput}`;
+          outputField = outputs[0] || "response";
+          defaultLabel = `{{${outputField}}}`;
         }
       }
+
+      // Default to the array-source connection type when the target stage
+      // is a map/map_with_context execution and doesn't have one yet, so
+      // drawing the "loop over this" edge doesn't silently fall back to a
+      // plain Link that the user has to remember to reclassify by hand.
+      // isOverSource is the explicit, single source of truth for which edge
+      // defines map.over - never inferred later from "first match in array",
+      // since that breaks once a second map-typed edge (an item field tap)
+      // exists between the same pair.
+      const targetExecution = (targetNode?.data as any)?.execution;
+      const existingOverEdge = edges.find(
+        e => e.target === params.target && (e.data as any)?.isOverSource === true
+      );
+      let defaultType: "normal" | "map" | "accum" = "normal";
+      let isOverSource = false;
+      if (!existingOverEdge && targetExecution === "map") {
+        defaultType = "map";
+        isOverSource = true;
+      } else if (!existingOverEdge && targetExecution === "map_with_context") {
+        defaultType = "accum";
+        isOverSource = true;
+      } else if (
+        existingOverEdge &&
+        existingOverEdge.source === params.source &&
+        (targetExecution === "map" || targetExecution === "map_with_context")
+      ) {
+        // Same node that already feeds the loop - this new edge is almost
+        // certainly meant to pull a field out of the current item, not to
+        // bind the whole array again.
+        defaultType = "map";
+      }
+
+      // Multiple edges between the same two nodes render as an identical,
+      // fully-overlapping bezier curve by default - fan them out so an
+      // existing binding edge can never visually bury this one (or vice versa).
+      const laneIndex = edges.filter(e => e.source === params.source && e.target === params.target).length;
 
       const newEdge: Edge = {
         ...params,
@@ -81,15 +118,17 @@ export default function PipelineCanvas({
           color: "var(--normal-edge)",
         },
         data: {
-          type: "normal",
+          type: defaultType,
           label: defaultLabel,
-          source: defaultSource,
-          format: "text"
+          outputField,
+          isOverSource,
+          format: "text",
+          laneIndex
         }
       };
       setEdges(eds => addEdge(newEdge, eds));
     },
-    [nodes, setEdges]
+    [nodes, edges, setEdges]
   );
 
   // Canvas selection listeners

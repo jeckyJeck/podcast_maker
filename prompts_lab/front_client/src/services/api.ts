@@ -133,6 +133,54 @@ export function getRunFile(runId: string, fileName: string, token?: string): Pro
   ).then(res => res.content);
 }
 
+// Evaluation (LLM-as-a-judge)
+export interface EvaluationDimensionScore {
+  name: string;
+  score: number;
+  rationale: string;
+}
+
+export interface EvaluationResult {
+  rubric_id: string;
+  overall_score: number;
+  dimensions: EvaluationDimensionScore[];
+  reasoning: string;
+  suggestions: string[];
+  evaluator_model: string;
+  evaluated_at_utc: string;
+  duration_ms: number;
+}
+
+export function listEvalRubrics(token?: string) {
+  return apiFetch<{ rubrics: string[] }>("/prompts-test-api/eval-rubrics", undefined, token).then(
+    res => res.rubrics
+  );
+}
+
+export function evaluateRun(
+  runId: string,
+  payload: {
+    content_files: Record<string, string>;
+    rubric_id?: string;
+    context_files?: Record<string, string>;
+  },
+  token?: string
+) {
+  return apiFetch<{ run_id: string; evaluation: EvaluationResult }>(
+    `/prompts-test-api/runs/${encodeURIComponent(runId)}/evaluate`,
+    { method: "POST", body: JSON.stringify(payload) },
+    token
+  ).then(res => res.evaluation);
+}
+
+export function getRunEvaluation(runId: string, token?: string) {
+  return apiFetch<{ run_id: string; evaluation: EvaluationResult }>(
+    `/prompts-test-api/runs/${encodeURIComponent(runId)}/evaluation`,
+    undefined,
+    token
+  ).then(res => res.evaluation);
+}
+
 // Prompt templates API (for stage prompts)
 export function listPromptTemplates(stage: string, token?: string) {
   const params = new URLSearchParams({ stage });

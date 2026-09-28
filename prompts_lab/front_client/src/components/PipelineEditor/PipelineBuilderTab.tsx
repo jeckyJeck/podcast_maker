@@ -20,6 +20,7 @@ import {
 import PipelineCanvas from "./PipelineCanvas";
 import SidebarNodeProps from "./SidebarNodeProps";
 import { layoutPipelineNodes } from "./LayoutUtils";
+import { resolveEdgeSource, parseInputValue } from "./EdgeSource";
 import {
   saveWorkspace,
   loadWorkspace
@@ -61,13 +62,8 @@ export default function PipelineBuilderTab() {
   const [pipelinesList, setPipelinesList] = useState<any[]>([]);
   const [templatesList, setTemplatesList] = useState<any[]>([]);
   const [_runsList, setRunsList] = useState<any[]>([]);
-  const [meta, setMeta] = useState<any>(null);
+  const [_meta, setMeta] = useState<any>(null);
   
-  // Inputs config for execution
-  const [runTopic, setRunTopic] = useState("Generative AI Tools and Workspace Agents");
-  const [runFormat, setRunFormat] = useState("dialogue");
-  const [runHostIds, setRunHostIds] = useState<string[]>(["sarah_curious", "mike_expert"]);
-
   // Token (from localstorage)
   const token = localStorage.getItem("prompts_lab_token") || "";
 
@@ -77,6 +73,48 @@ export default function PipelineBuilderTab() {
     setEdges(eds => eds.filter(e => e.source !== idToDelete && e.target !== idToDelete));
     setSelectedNode(null);
   }, [setNodes, setEdges]);
+
+  // Convert a node between an execution stage and a static pipeline input
+  const handleChangeNodeType = useCallback((nodeId: string, newType: "promptNode" | "inputNode") => {
+    setNodes(nds => nds.map((node: Node) => {
+      if (node.id !== nodeId || node.type === newType) return node;
+
+      const currentId = ((node.data as any)?.id as string) || node.id;
+
+      if (newType === "inputNode") {
+        // Dropping stage-only wiring (execution/prompt/response/outputs) since it's not a step anymore
+        return {
+          ...node,
+          type: "inputNode",
+          data: {
+            id: currentId,
+            inputType: "text",
+            required: true,
+            default: undefined,
+            onDelete: deleteStageNode
+          }
+        };
+      }
+
+      return {
+        ...node,
+        type: "promptNode",
+        data: {
+          id: currentId,
+          execution: "single",
+          prompt: { source: "inline", text: "Write your prompt here..." },
+          response: { kind: "text", file: `outputs/${currentId}.txt` },
+          outputs: { result: { source: "response" } },
+          runMode: "run",
+          mockOutput: "",
+          onDelete: deleteStageNode
+        }
+      };
+    }));
+    // Edges touching this node no longer make sense once its role changes
+    setEdges(eds => eds.filter(e => e.source !== nodeId && e.target !== nodeId));
+    setSelectedNode(null);
+  }, [setNodes, setEdges, deleteStageNode]);
 
   // Load from local storage workspace on component mount
   useEffect(() => {
@@ -107,8 +145,11 @@ export default function PipelineBuilderTab() {
     if (nodes.length > 0) {
       const inputs: Record<string, any> = {};
       nodes.filter(n => n.type === "inputNode").forEach(n => {
-        const inputName = ((n.data as any)?.id as string) || n.id;
-        inputs[inputName] = { type: "text", required: true };
+        const data = n.data as any;
+        const inputName = (data?.id as string) || n.id;
+        const spec: any = { type: data?.inputType || "text", required: data?.required !== false };
+        if (data?.default !== undefined && data?.default !== "") spec.default = data.default;
+        inputs[inputName] = spec;
       });
 
       saveWorkspace({
@@ -195,8 +236,9 @@ export default function PipelineBuilderTab() {
 
   // Edge updates from properties panel
   const handleUpdateEdge = useCallback((edgeId: string, updates: any) => {
-    setEdges(eds =>
-      eds.map(edge => {
+    setEdges(eds => {
+      const target = eds.find(e => e.id === edgeId)?.target;
+      return eds.map(edge => {
         if (edge.id === edgeId) {
           return {
             ...edge,
@@ -206,9 +248,21 @@ export default function PipelineBuilderTab() {
             }
           };
         }
+        // Only one edge per stage can define map.over - promoting this one
+        // demotes any other edge already marked as the array-source for the
+        // same target.
+        if (updates.isOverSource === true && target && edge.target === target) {
+          return { ...edge, data: { ...edge.data, isOverSource: false } };
+        }
         return edge;
-      })
-    );
+      });
+    });
+  }, [setEdges]);
+
+  // Remove a single edge (used by the Edge properties panel's Delete button)
+  const handleDeleteEdge = useCallback((edgeId: string) => {
+    setEdges(eds => eds.filter(e => e.id !== edgeId));
+    setSelectedEdge(null);
   }, [setEdges]);
 
   // Load a default standard 4-stage pipeline layout
@@ -311,11 +365,12 @@ stages:
     nodes
       .filter(n => n.type === "inputNode")
       .forEach(n => {
-        const inputName = ((n.data as any)?.id as string) || n.id;
-        inputs[inputName] = {
-          type: "text",
-          required: true
-        };
+        const data = n.data as any;
+        const inputName = (data?.id as string) || n.id;
+        const spec: any = { type: data?.inputType || "text" };
+        if (data?.required !== undefined) spec.required = data.required;
+        if (data?.default !== undefined && data?.default !== "") spec.default = data.default;
+        inputs[inputName] = spec;
       });
 
     // 2. Compile Stages and Sort topologically
@@ -327,15 +382,71 @@ stages:
     const stages = sortedNodes.map(node => {
       const data = node.data as any;
       const incomingEdges = edges.filter(e => e.target === node.id);
-      
-      const bindings = incomingEdges.map(edge => {
-        const edgeData = edge.data || {};
-        return {
-          placeholder: (edgeData.label as string) || "",
-          source: (edgeData.source as string) || "",
-          format: (edgeData.format as string) !== "text" ? (edgeData.format as "text" | "json") : undefined
-        };
-      });
+
+      // The "array to loop over" must be a real edge from the node that
+      // produces it - never free text. isOverSource is the explicit,
+      // single source of truth for which incoming edge defines map.over;
+      // it's set when the edge is created/promoted (see PipelineCanvas
+      // onConnect and the sidebar's edge panel) and never inferred from
+      // "first map/accum-typed edge found", since that breaks once a
+      // second map/accum-typed edge (an item/context field tap) exists
+      // between the same pair. Older edges saved before isOverSource
+      // existed fall back to that legacy first-match behavior. When the
+      // over edge is "accum", its contextName is the single source of
+      // truth for every context.<name> tap below.
+      const explicitOverEdge = incomingEdges.find(
+        e => (e.data as any)?.isOverSource === true && nodes.some(n => n.id === e.source)
+      );
+      const legacyOverEdge = incomingEdges.find(
+        e => ((e.data as any)?.type === "map" || (e.data as any)?.type === "accum") && nodes.some(n => n.id === e.source)
+      );
+      const overEdge = explicitOverEdge || legacyOverEdge;
+      const overSource = overEdge ? resolveEdgeSource(overEdge, nodes) : undefined;
+      const contextName =
+        (overEdge?.data as any)?.type === "accum" ? ((overEdge?.data as any)?.contextName as string | undefined) : undefined;
+
+      const bindings = incomingEdges
+        .filter(e => e !== overEdge || (e.data as any)?.label) // pure array-source edge with no placeholder isn't a prompt binding
+        .map(edge => {
+          const edgeData: any = edge.data || {};
+          const sourceNode = nodes.find(n => n.id === edge.source);
+          const isTap = edge !== overEdge && (edgeData.type === "map" || edgeData.type === "accum");
+
+          let source: string;
+          if (edgeData.type === "accum" && !sourceNode) {
+            // Legacy phantom "context" pseudo-edge from an older import -
+            // always rewrite to the live contextName from the array-source
+            // edge above, instead of trusting whatever name was baked in
+            // when it was created.
+            const legacyField = ((edgeData.source as string) || "").startsWith("context.")
+              ? (edgeData.source as string).slice("context.".length)
+              : undefined;
+            source = `context.${contextName || legacyField || ""}`;
+          } else if (edgeData.type === "map" && !sourceNode) {
+            // Legacy phantom "item" pseudo-edge from an older import.
+            const legacyField = ((edgeData.source as string) || "").startsWith("item.")
+              ? (edgeData.source as string).slice("item.".length)
+              : undefined;
+            source = legacyField ? `item.${legacyField}` : "item";
+          } else if (isTap && edgeData.type === "accum") {
+            // Secondary accum-typed edge attached to the real producing
+            // node - still just re-exposes the same accumulated context.
+            source = `context.${contextName || ""}`;
+          } else if (isTap && edgeData.type === "map") {
+            // Secondary map-typed edge attached to the real producing
+            // node (the one this stage loops over) - pulls the current
+            // loop item, or one field of it, not the whole array.
+            source = edgeData.itemField ? `item.${edgeData.itemField}` : "item";
+          } else {
+            source = resolveEdgeSource(edge, nodes);
+          }
+
+          return {
+            placeholder: (edgeData.label as string) || "",
+            source,
+            format: (edgeData.format as string) !== "text" ? (edgeData.format as "text" | "json") : undefined
+          };
+        });
 
       const stageObj: any = {
         id: node.id,
@@ -350,7 +461,13 @@ stages:
       };
 
       if (data.execution !== "single") {
-        stageObj.map = data.map;
+        stageObj.map = {
+          ...data.map,
+          over: overSource || data.map?.over
+        };
+        if (data.execution === "map_with_context") {
+          stageObj.map.context_name = contextName || data.map?.context_name;
+        }
       }
 
       return stageObj;
@@ -385,20 +502,17 @@ stages:
 
       // 1. Create Input Nodes
       const inputs = doc.inputs || {};
-      Object.entries(inputs).forEach(([name, _spec]: [string, any], index) => {
+      Object.entries(inputs).forEach(([name, spec]: [string, any], index) => {
         newNodes.push({
           id: `inputs.${name}`,
           type: "inputNode",
           position: { x: 50, y: 100 + index * 140 },
           data: {
             id: name,
-            execution: "single",
-            prompt: { source: "inline", text: `Pipeline Input: ${name}` },
-            response: { kind: "text" },
-            runMode: "run",
-            outputs: {
-              value: { source: `inputs.${name}` }
-            }
+            inputType: spec?.type || "text",
+            required: spec?.required !== false,
+            default: spec?.default,
+            onDelete: deleteStageNode
           }
         });
       });
@@ -425,25 +539,85 @@ stages:
           }
         });
 
+        // Counts existing edges between a given (source, target) pair among
+        // the edges built so far in this import, so duplicates fan out
+        // visually instead of drawing as one fully-overlapping curve.
+        const laneIndexFor = (sourceId: string, targetId: string) =>
+          newEdges.filter(e => e.source === sourceId && e.target === targetId).length;
+
+        // Create the real "array to loop over" edge from map.over - this
+        // used to be a free-text field on the stage with no graph
+        // representation at all. It's typed "accum" (not "map") whenever the
+        // stage accumulates its own output across iterations, so the
+        // dedicated "map with accumulation" styling actually shows up on it,
+        // and it carries context_name directly (no separate self-loop needed).
+        if (stage.execution !== "single" && stage.map) {
+          const overSource: string = stage.map.over || "";
+          if (overSource && !(overSource === "item" || overSource.startsWith("item.") || overSource.startsWith("context."))) {
+            const parts = overSource.split(".");
+            const overSourceNodeId = overSource.startsWith("inputs.") ? `inputs.${parts[1]}` : parts[0];
+            const overOutputField = overSource.startsWith("inputs.") ? undefined : parts.slice(1).join(".") || undefined;
+            const isAccum = stage.execution === "map_with_context";
+            newEdges.push({
+              id: `e-map-over-${overSourceNodeId}-${stage.id}-${Date.now()}`,
+              source: overSourceNodeId,
+              target: stage.id,
+              type: "pipelineEdge",
+              markerEnd: { type: MarkerType.ArrowClosed, color: isAccum ? "var(--accum-edge)" : "var(--map-edge)" },
+              data: {
+                type: isAccum ? "accum" : "map",
+                label: "",
+                outputField: overOutputField,
+                contextName: isAccum ? stage.map.context_name : undefined,
+                isOverSource: true,
+                laneIndex: laneIndexFor(overSourceNodeId, stage.id)
+              }
+            });
+          }
+        }
+
+        // The current map item (and, for map_with_context, the accumulated
+        // context) always comes from the same node this stage loops over
+        // (stage.map.over) - never a standalone source. Resolve that real
+        // node id once so item/context bindings below attach to it instead
+        // of a phantom "item"/"context" node with no place on the canvas.
+        const overSource: string = stage.map?.over || "";
+        const overSourceNodeId =
+          overSource && !(overSource === "item" || overSource.startsWith("item.") || overSource.startsWith("context."))
+            ? (overSource.startsWith("inputs.") ? `inputs.${overSource.split(".")[1]}` : overSource.split(".")[0])
+            : undefined;
+
         // Create Edges from bindings
         const bindings = stage.bindings || [];
         bindings.forEach((binding: any, bIdx: number) => {
           const source = binding.source || "";
           let sourceNodeId = "";
-          
+          let outputField: string | undefined;
+          let itemField: string | undefined;
+
           if (source.startsWith("inputs.")) {
             // e.g. inputs.topic -> source is node inputs.topic
             const inputKey = source.split(".")[1];
             sourceNodeId = `inputs.${inputKey}`;
+          } else if (source === "item" || source.startsWith("item.")) {
+            // Attach to the real node producing the loop's array so this
+            // shows up as a normal, editable edge instead of a dangling
+            // reference to a node that doesn't exist on the canvas.
+            sourceNodeId = overSourceNodeId || "item";
+            itemField = source.startsWith("item.") ? source.slice("item.".length) : undefined;
+          } else if (source.startsWith("context.")) {
+            sourceNodeId = overSourceNodeId || "context";
           } else {
-            // e.g. architect.blueprint -> source node is architect
-            sourceNodeId = source.split(".")[0];
+            // e.g. architect.blueprint -> source node is architect, field is blueprint
+            const parts = source.split(".");
+            sourceNodeId = parts[0];
+            outputField = parts.slice(1).join(".") || undefined;
           }
 
           // Verify source node exists
           if (sourceNodeId) {
             let edgeType: "normal" | "map" | "accum" = "normal";
-            if (stage.execution === "map" && source === "item") {
+            if (stage.execution !== "single" && (source === "item" || source.startsWith("item."))) {
               edgeType = "map";
             } else if (stage.execution === "map_with_context" && source.startsWith("context.")) {
               edgeType = "accum";
@@ -462,7 +636,15 @@ stages:
                 type: edgeType,
                 label: binding.placeholder,
                 source: binding.source,
-                format: binding.format || "text"
+                outputField,
+                itemField,
+                // The binding-derived edges are always taps on the loop's
+                // array-source node - the primary "Array to Loop Over" edge
+                // is created separately above (from stage.map.over) and is
+                // the only one ever marked isOverSource: true.
+                isOverSource: false,
+                format: binding.format || "text",
+                laneIndex: laneIndexFor(sourceNodeId, stage.id)
               }
             });
           }
@@ -536,12 +718,19 @@ stages:
           }
         });
 
-      // Inputs definition
-      const inputs: Record<string, any> = {
-        topic: runTopic,
-        format: runFormat,
-        host_ids: runHostIds
-      };
+      // Runtime input values come from each Input node's own "Value" field -
+      // this is the graph's single source of truth; nothing here is
+      // hardcoded to specific input names anymore.
+      const inputs: Record<string, any> = {};
+      nodes
+        .filter(n => n.type === "inputNode")
+        .forEach(n => {
+          const nodeData = n.data as any;
+          const name = (nodeData?.id as string) || n.id;
+          const raw = nodeData?.value !== undefined && nodeData?.value !== "" ? nodeData.value : nodeData?.default;
+          if (raw === undefined) return;
+          inputs[name] = parseInputValue(raw, nodeData?.inputType);
+        });
 
       setRunLogs({ status: "running", message: "Executing pipeline stages on server..." });
       setShowRunResults(true);
@@ -611,17 +800,13 @@ stages:
         promptTemplates={promptTemplates}
         onUpdateNode={handleUpdateNode}
         onUpdateEdge={handleUpdateEdge}
+        onDeleteEdge={handleDeleteEdge}
+        onChangeNodeType={handleChangeNodeType}
         onClose={() => {
           setSelectedNode(null);
           setSelectedEdge(null);
         }}
         onDeleteNode={deleteStageNode}
-        runTopic={runTopic}
-        setRunTopic={setRunTopic}
-        runFormat={runFormat}
-        setRunFormat={setRunFormat}
-        runHostIds={runHostIds}
-        setRunHostIds={setRunHostIds}
         onRunPipeline={handleRunPipeline}
         pipelineId={pipelineId}
         setPipelineId={setPipelineId}
@@ -631,7 +816,6 @@ stages:
         setPipelineDesc={setPipelineDesc}
         compileGraphToYaml={compileGraphToYaml}
         importYamlToGraph={importYamlToGraph}
-        meta={meta}
       />
 
       {/* Load Pipeline Modal */}

@@ -22,6 +22,9 @@ VALID_BINDING_FORMATS = {"text", "json"}
 VALID_RESPONSE_KINDS = {"text", "json"}
 VALID_AGGREGATE_STRATEGIES = {"concat", "concat_with_headers", "structured_json"}
 VALID_FAILURE_STRATEGIES = {"abort", "retry", "skip"}
+# Closed today, expected to grow: add new provider tool names here as they're
+# supported by the engine.
+VALID_TOOLS = {"google_search"}
 
 
 @dataclass
@@ -207,6 +210,21 @@ def _validate_bindings(
             _add(issues, f"{path}.format", f"must be one of {sorted(VALID_BINDING_FORMATS)}")
 
 
+def _validate_tools(tools: Any, stage_path: str, issues: list[ValidationIssue]) -> None:
+    if tools is None:
+        return
+    path = f"{stage_path}.tools"
+    if not _is_list(tools):
+        _add(issues, path, "must be a list")
+        return
+    for index, tool in enumerate(tools):
+        tool_path = f"{path}[{index}]"
+        if not isinstance(tool, str) or not tool:
+            _add(issues, tool_path, "must be a non-empty string")
+        elif tool not in VALID_TOOLS:
+            _add(issues, tool_path, f"must be one of {sorted(VALID_TOOLS)}")
+
+
 def _validate_map(stage: dict[str, Any], stage_path: str, input_names: set[str], available_outputs: dict[str, set[str]], issues: list[ValidationIssue]) -> str | None:
     execution = stage.get("execution")
     map_spec = stage.get("map")
@@ -360,6 +378,7 @@ def validate_pipeline_data(data: Any, root: Path) -> None:
         output_names = _validate_outputs(stage.get("outputs"), stage_path, str(execution), issues)
 
         _validate_failure(stage.get("failure"), f"{stage_path}.failure", issues)
+        _validate_tools(stage.get("tools"), stage_path, issues)
         model = stage.get("model")
         if model is not None and not _is_mapping(model):
             _add(issues, f"{stage_path}.model", "must be a mapping")

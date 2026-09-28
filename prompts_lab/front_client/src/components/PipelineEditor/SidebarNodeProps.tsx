@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Node, Edge } from "@xyflow/react";
 import { ExecutionMode, PromptSourceType, ResponseKind } from "../../types";
 import { Trash2, Plus, X, Play, FileCode } from "lucide-react";
+import { resolveEdgeSource } from "./EdgeSource";
 
 interface SidebarNodePropsProps {
   selectedNode: Node | null;
@@ -11,15 +12,11 @@ interface SidebarNodePropsProps {
   promptTemplates: Record<string, any[]>;
   onUpdateNode: (nodeId: string, updates: any) => void;
   onUpdateEdge: (edgeId: string, updates: any) => void;
+  onDeleteEdge?: (edgeId: string) => void;
+  onChangeNodeType?: (nodeId: string, newType: "promptNode" | "inputNode") => void;
   onClose: () => void;
 
   onDeleteNode?: (id: string) => void;
-  runTopic?: string;
-  setRunTopic?: (topic: string) => void;
-  runFormat?: string;
-  setRunFormat?: (format: string) => void;
-  runHostIds?: string[];
-  setRunHostIds?: (ids: string[]) => void;
   onRunPipeline?: () => void;
   pipelineId?: string;
   setPipelineId?: (id: string) => void;
@@ -29,7 +26,6 @@ interface SidebarNodePropsProps {
   setPipelineDesc?: (desc: string) => void;
   compileGraphToYaml?: () => string;
   importYamlToGraph?: (yaml: string) => void;
-  meta?: any;
 }
 
 export default function SidebarNodeProps({
@@ -38,15 +34,11 @@ export default function SidebarNodeProps({
   promptTemplates,
   onUpdateNode,
   onUpdateEdge,
+  onDeleteEdge,
+  onChangeNodeType,
   onClose,
-  
+
   onDeleteNode,
-  runTopic,
-  setRunTopic,
-  runFormat,
-  setRunFormat,
-  runHostIds,
-  setRunHostIds,
   onRunPipeline,
   pipelineId,
   setPipelineId,
@@ -56,16 +48,13 @@ export default function SidebarNodeProps({
   setPipelineDesc,
   compileGraphToYaml,
   importYamlToGraph,
-  meta,
   nodes = [],
   edges = []
 }: SidebarNodePropsProps) {
   // --- Local states for Node editing ---
   const [nodeId, setNodeId] = useState("");
   const [execution, setExecution] = useState<ExecutionMode>("single");
-  const [mapOver, setMapOver] = useState("");
   const [mapItem, setMapItem] = useState("");
-  const [contextName, setContextName] = useState("");
   const [promptSource, setPromptSource] = useState<PromptSourceType>("inline");
   const [promptText, setPromptText] = useState("");
   const [promptPath, setPromptPath] = useState("");
@@ -82,10 +71,19 @@ export default function SidebarNodeProps({
   const [failStrategy, setFailStrategy] = useState<"abort" | "retry" | "skip">("abort");
   const [failMaxAttempts, setFailMaxAttempts] = useState(2);
 
+  // --- Local states for Input node editing ---
+  const [inputType, setInputType] = useState<"text" | "json" | "number" | "boolean">("text");
+  const [inputRequired, setInputRequired] = useState(true);
+  const [inputDefault, setInputDefault] = useState("");
+  const [inputValue, setInputValue] = useState("");
+
   // --- Local states for Edge editing ---
   const [placeholder, setPlaceholder] = useState("");
   const [edgeFormat, setEdgeFormat] = useState<"text" | "json">("text");
   const [edgeType, setEdgeType] = useState<"normal" | "map" | "accum">("normal");
+  const [edgeContextName, setEdgeContextName] = useState("");
+  const [edgeItemField, setEdgeItemField] = useState("");
+  const [edgeIsOverSource, setEdgeIsOverSource] = useState(false);
 
   // Sync state with selected node
   useEffect(() => {
@@ -93,9 +91,7 @@ export default function SidebarNodeProps({
       const data = selectedNode.data as any;
       setNodeId(selectedNode.id);
       setExecution(data.execution || "single");
-      setMapOver(data.map?.over || "");
       setMapItem(data.map?.item_name || "");
-      setContextName(data.map?.context_name || "");
       setPromptSource(data.prompt?.source || "inline");
       setPromptText(data.prompt?.text || "");
       setPromptPath(data.prompt?.path || "");
@@ -117,6 +113,11 @@ export default function SidebarNodeProps({
       setModelName(data.model?.name || "");
       setFailStrategy(data.failure?.strategy || "abort");
       setFailMaxAttempts(data.failure?.max_attempts || 2);
+
+      setInputType(data.inputType || "text");
+      setInputRequired(data.required !== false);
+      setInputDefault(data.default !== undefined ? String(data.default) : "");
+      setInputValue(data.value !== undefined ? String(data.value) : "");
     }
   }, [selectedNode]);
 
@@ -126,8 +127,31 @@ export default function SidebarNodeProps({
       setPlaceholder((selectedEdge.data?.label as string) || "");
       setEdgeFormat((selectedEdge.data?.format as "text" | "json") || "text");
       setEdgeType((selectedEdge.data?.type as "normal" | "map" | "accum") || "normal");
+      setEdgeContextName((selectedEdge.data?.contextName as string) || "");
+      setEdgeItemField((selectedEdge.data?.itemField as string) || "");
+      setEdgeIsOverSource((selectedEdge.data?.isOverSource as boolean) || false);
     }
   }, [selectedEdge]);
+
+  // Live status for the selected stage's map config - derived from the real
+  // "array to loop over" edge, never from a free-text field the user could
+  // leave stale. isOverSource is the explicit marker for that edge (set
+  // when it's created, or promoted from the Edge panel); older edges saved
+  // before isOverSource existed fall back to "first map/accum edge found".
+  // It's typed "accum" instead of "map" precisely when the stage accumulates
+  // its own output across iterations, so this same edge is also where
+  // contextName lives (edited from the Edge panel below). Any other
+  // map/accum-typed edge on this stage is a field "tap" on that same
+  // connection, not a second loop source.
+  const stageIncomingEdges = selectedNode ? edges.filter(e => e.target === selectedNode.id) : [];
+  const overEdge =
+    stageIncomingEdges.find(e => (e.data as any)?.isOverSource === true && nodes.some(n => n.id === e.source)) ||
+    stageIncomingEdges.find(
+      e => ((e.data as any)?.type === "map" || (e.data as any)?.type === "accum") && nodes.some(n => n.id === e.source)
+    );
+  const overSource = overEdge ? resolveEdgeSource(overEdge, nodes) : undefined;
+  const overIsAccum = (overEdge?.data as any)?.type === "accum";
+  const overContextName = (overEdge?.data as any)?.contextName as string | undefined;
 
   const [yamlText, setYamlText] = useState("");
 
@@ -154,68 +178,64 @@ export default function SidebarNodeProps({
   };
 
   if (!selectedNode && !selectedEdge) {
+    // Everything that actually runs comes from the graph/compiled YAML now -
+    // no more separate Topic/Format/Hosts fields duplicating what the Input
+    // nodes already declare. This is just a live readout + the run button.
+    const inputNodes = nodes.filter(n => n.type === "inputNode");
+    const missingRequired = inputNodes.filter(n => {
+      const d = n.data as any;
+      const hasValue = d?.value !== undefined && d?.value !== "";
+      const hasDefault = d?.default !== undefined && d?.default !== "";
+      return d?.required !== false && !hasValue && !hasDefault;
+    });
+
     return (
       <aside className="sidebar-pane">
         <div className="sidebar-header">
           <h2>Workspace Control</h2>
         </div>
-        
+
         <div className="sidebar-scrollable">
-          
+
           {/* Execute Workspace (Run Config) */}
           <div style={{ background: "rgba(59, 130, 246, 0.05)", border: "1px solid var(--border-color)", padding: "1rem", borderRadius: 8, marginBottom: "1.5rem" }}>
             <h3 style={{ margin: "0 0 0.75rem 0", fontSize: "0.9rem", color: "#f8fafc", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-              <Play size={14} className="edge-badge map" /> Execute Workspace
+              <Play size={14} className="edge-badge map" /> Execute Pipeline
             </h3>
-            
-            <div className="form-group">
-              <label>Topic</label>
-              <input
-                type="text"
-                className="form-input"
-                value={runTopic || ""}
-                onChange={e => setRunTopic && setRunTopic(e.target.value)}
-              />
-            </div>
 
-            <div className="form-group">
-              <label>Podcast Format</label>
-              <select
-                className="form-select"
-                value={runFormat || "dialogue"}
-                onChange={e => setRunFormat && setRunFormat(e.target.value)}
-              >
-                <option value="dialogue">dialogue</option>
-                <option value="solo">solo</option>
-              </select>
-            </div>
+            {inputNodes.length === 0 ? (
+              <p style={{ color: "#94a3b8", fontSize: "0.8rem" }}>No Input nodes on canvas yet.</p>
+            ) : (
+              <ul style={{ listStyle: "none", padding: 0, margin: "0 0 0.75rem 0", fontSize: "0.8rem" }}>
+                {inputNodes.map(n => {
+                  const d = n.data as any;
+                  const name = d?.id || n.id;
+                  const hasValue = d?.value !== undefined && d?.value !== "";
+                  const shown = hasValue ? d.value : d?.default !== undefined && d?.default !== "" ? d.default : null;
+                  return (
+                    <li key={n.id} style={{ display: "flex", justifyContent: "space-between", gap: "0.5rem", padding: "0.2rem 0", color: shown === null ? "#f59e0b" : "#e2e8f0" }}>
+                      <span>{name}</span>
+                      <span style={{ maxWidth: "60%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={String(shown ?? "")}>
+                        {shown === null ? "⚠ no value set" : String(shown)}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
 
-            <div className="form-group">
-              <label>Hosts Selection</label>
-              <select
-                multiple
-                className="form-select"
-                style={{ height: "80px" }}
-                value={runHostIds || []}
-                onChange={e => {
-                  const selectedOptions = Array.from(e.target.selectedOptions).map(o => o.value);
-                  setRunHostIds && setRunHostIds(selectedOptions);
-                }}
-              >
-                {(meta?.hosts || []).map((host: any) => (
-                  <option key={host.id} value={host.id}>
-                    {host.name} ({host.role})
-                  </option>
-                ))}
-              </select>
-            </div>
+            {missingRequired.length > 0 && (
+              <p style={{ color: "#f59e0b", fontSize: "0.75rem" }}>
+                ⚠ Missing required value: {missingRequired.map(n => (n.data as any)?.id || n.id).join(", ")}
+              </p>
+            )}
 
             <button
               className="btn btn-primary"
               style={{ width: "100%" }}
               onClick={onRunPipeline}
             >
-              <Play size={14} /> Run Workspace
+              <Play size={14} /> Run Pipeline
             </button>
           </div>
 
@@ -333,14 +353,54 @@ export default function SidebarNodeProps({
     };
 
     if (execution !== "single") {
+      // over / context_name are derived live from graph edges at compile
+      // time (see compileGraphToYaml) - only item_name is edited here.
       updates.map = {
-        over: mapOver,
-        item_name: mapItem,
-        context_name: execution === "map_with_context" ? contextName : undefined
+        ...(selectedNode.data as any)?.map,
+        item_name: mapItem
       };
     }
 
     onUpdateNode(selectedNode.id, updates);
+  };
+
+  // --- Input node saving updates ---
+  const handleSaveInputNode = () => {
+    if (!selectedNode) return;
+
+    const cleanId = nodeId.trim().replace(/[^A-Za-z0-9_-]/g, "");
+    if (!cleanId) return;
+
+    let parsedDefault: any = undefined;
+    if (inputDefault.trim() !== "") {
+      if (inputType === "number") {
+        const n = Number(inputDefault);
+        parsedDefault = Number.isNaN(n) ? undefined : n;
+      } else if (inputType === "boolean") {
+        parsedDefault = inputDefault === "true";
+      } else if (inputType === "json") {
+        try {
+          parsedDefault = JSON.parse(inputDefault);
+        } catch {
+          parsedDefault = inputDefault;
+        }
+      } else {
+        parsedDefault = inputDefault;
+      }
+    }
+
+    onUpdateNode(selectedNode.id, {
+      id: cleanId,
+      inputType,
+      required: inputRequired,
+      default: parsedDefault,
+      value: inputValue.trim() !== "" ? inputValue : undefined
+    });
+  };
+
+  const handleNodeKindChange = (newType: "promptNode" | "inputNode") => {
+    if (!selectedNode || !onChangeNodeType) return;
+    onChangeNodeType(selectedNode.id, newType);
   };
 
   // --- Edge saving updates ---
@@ -349,7 +409,8 @@ export default function SidebarNodeProps({
     onUpdateEdge(selectedEdge.id, {
       label: placeholder.trim(),
       format: edgeFormat,
-      type: edgeType
+      type: edgeType,
+      itemField: edgeItemField.trim()
     });
   };
 
@@ -372,7 +433,7 @@ export default function SidebarNodeProps({
   return (
     <aside className="sidebar-pane">
       <div className="sidebar-header">
-        <h2>{selectedNode ? `Stage: ${nodeId}` : "Connection"}</h2>
+        <h2>{selectedNode ? `${selectedNode.type === "inputNode" ? "Input" : "Stage"}: ${nodeId}` : "Connection"}</h2>
         <button onClick={onClose} className="toolbar-btn" style={{ padding: "0.2rem" }} title="Close">
           <X size={18} />
         </button>
@@ -381,18 +442,145 @@ export default function SidebarNodeProps({
       <div className="sidebar-scrollable">
         {selectedNode ? (
           <div>
+            {/* Node Kind toggle - convert between execution stage and static input */}
+            <div className="form-group">
+              <label>Node Kind</label>
+              <select
+                className="form-select"
+                value={selectedNode.type === "inputNode" ? "inputNode" : "promptNode"}
+                onChange={e => handleNodeKindChange(e.target.value as "promptNode" | "inputNode")}
+              >
+                <option value="promptNode">Execution Stage (runs an LLM call)</option>
+                <option value="inputNode">Pipeline Input (static data, not executed)</option>
+              </select>
+            </div>
+
             {/* Node Identification */}
             <div className="form-group">
-              <label>Stage ID</label>
+              <label>{selectedNode.type === "inputNode" ? "Input Name" : "Stage ID"}</label>
               <input
                 type="text"
                 className="form-input"
                 value={nodeId}
                 onChange={e => setNodeId(e.target.value)}
-                onBlur={handleSaveNode}
+                onBlur={selectedNode.type === "inputNode" ? handleSaveInputNode : handleSaveNode}
               />
             </div>
 
+            {selectedNode.type === "inputNode" ? (
+              <div>
+                <div className="form-group">
+                  <label>Value Type</label>
+                  <select
+                    className="form-select"
+                    value={inputType}
+                    onChange={e => setInputType(e.target.value as any)}
+                    onBlur={handleSaveInputNode}
+                  >
+                    <option value="text">Text</option>
+                    <option value="json">JSON</option>
+                    <option value="number">Number</option>
+                    <option value="boolean">Boolean</option>
+                  </select>
+                </div>
+
+                <div className="form-group checkbox-label" style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                  <input
+                    type="checkbox"
+                    checked={inputRequired}
+                    onChange={e => {
+                      setInputRequired(e.target.checked);
+                      onUpdateNode(selectedNode.id, { required: e.target.checked });
+                    }}
+                  />
+                  <label style={{ margin: 0 }}>Required</label>
+                </div>
+
+                <div className="form-group">
+                  <label>Value {inputType === "json" && "(JSON)"} — used when you click Run Pipeline</label>
+                  {inputType === "json" ? (
+                    <textarea
+                      className="form-textarea"
+                      value={inputValue}
+                      onChange={e => setInputValue(e.target.value)}
+                      onBlur={handleSaveInputNode}
+                      placeholder='e.g. {"key": "value"}'
+                    />
+                  ) : inputType === "boolean" ? (
+                    <select
+                      className="form-select"
+                      value={inputValue || ""}
+                      onChange={e => {
+                        setInputValue(e.target.value);
+                        onUpdateNode(selectedNode.id, { value: e.target.value || undefined });
+                      }}
+                    >
+                      <option value="">(use default)</option>
+                      <option value="true">true</option>
+                      <option value="false">false</option>
+                    </select>
+                  ) : (
+                    <input
+                      type={inputType === "number" ? "number" : "text"}
+                      className="form-input"
+                      value={inputValue}
+                      onChange={e => setInputValue(e.target.value)}
+                      onBlur={handleSaveInputNode}
+                      placeholder="This is the actual content sent to the pipeline"
+                    />
+                  )}
+                  <small style={{ color: "#94a3b8" }}>
+                    This is the real content for this run - not just a schema default.
+                  </small>
+                </div>
+
+                <div className="form-group">
+                  <label>Default Value {inputType === "json" && "(JSON)"} (schema fallback if no value is given)</label>
+                  {inputType === "json" ? (
+                    <textarea
+                      className="form-textarea"
+                      value={inputDefault}
+                      onChange={e => setInputDefault(e.target.value)}
+                      onBlur={handleSaveInputNode}
+                      placeholder='e.g. {"key": "value"}'
+                    />
+                  ) : inputType === "boolean" ? (
+                    <select
+                      className="form-select"
+                      value={inputDefault || ""}
+                      onChange={e => setInputDefault(e.target.value)}
+                      onBlur={handleSaveInputNode}
+                    >
+                      <option value="">No default</option>
+                      <option value="true">true</option>
+                      <option value="false">false</option>
+                    </select>
+                  ) : (
+                    <input
+                      type={inputType === "number" ? "number" : "text"}
+                      className="form-input"
+                      value={inputDefault}
+                      onChange={e => setInputDefault(e.target.value)}
+                      onBlur={handleSaveInputNode}
+                      placeholder="Optional default value"
+                    />
+                  )}
+                </div>
+
+                {onDeleteNode && (
+                  <div style={{ marginTop: "1.5rem", borderTop: "1px solid var(--border-color)", paddingTop: "1rem" }}>
+                    <button
+                      className="btn btn-danger"
+                      style={{ width: "100%" }}
+                      onClick={() => onDeleteNode(selectedNode.id)}
+                    >
+                      <Trash2 size={14} /> Delete Input Node
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
             {/* Run mode (Partial execution) */}
             <div className="form-group">
               <label>Run Mode (Partial Execution)</label>
@@ -443,15 +631,23 @@ export default function SidebarNodeProps({
             {execution !== "single" && (
               <div style={{ padding: "0.5rem", background: "rgba(0,0,0,0.15)", borderRadius: 6, marginBottom: "1rem" }}>
                 <div className="form-group">
-                  <label>Map Over (Source path)</label>
-                  <input
-                    type="text"
-                    className="form-input"
-                    value={mapOver}
-                    onChange={e => setMapOver(e.target.value)}
-                    onBlur={handleSaveNode}
-                    placeholder="e.g. architect.segments"
-                  />
+                  <label>Array to Loop Over</label>
+                  {overSource ? (
+                    <div className="form-input" style={{ display: "flex", alignItems: "center", gap: "0.4rem", color: "#e2e8f0" }}>
+                      <span className={`edge-badge ${overIsAccum ? "accum" : "map"}`} title={overIsAccum ? "Map with Accumulation connection" : "Map connection"}>
+                        {overIsAccum ? "+ ↺" : "↺"}
+                      </span>
+                      <code>{overSource}</code>
+                      {execution === "map_with_context" && !overIsAccum && (
+                        <span style={{ color: "#f59e0b" }} title="This stage needs a Map with Accumulation edge, not a plain Map edge">⚠ wrong type</span>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="form-input" style={{ color: "#f59e0b" }}>
+                      ⚠ No array connected. Drag an edge here from the stage/input
+                      producing the list; it'll default to the right connection type automatically.
+                    </div>
+                  )}
                 </div>
                 <div className="form-group">
                   <label>Item Variable Name</label>
@@ -467,14 +663,12 @@ export default function SidebarNodeProps({
                 {execution === "map_with_context" && (
                   <div className="form-group">
                     <label>Accumulated Context Variable</label>
-                    <input
-                      type="text"
-                      className="form-input"
-                      value={contextName}
-                      onChange={e => setContextName(e.target.value)}
-                      onBlur={handleSaveNode}
-                      placeholder="e.g. previous_scenes"
-                    />
+                    <div className="form-input" style={{ color: overContextName ? "#e2e8f0" : "#f59e0b" }}>
+                      {overContextName ? <code>{overContextName}</code> : "⚠ Not set - select the accumulation edge to name it"}
+                    </div>
+                    <small style={{ color: "#94a3b8" }}>
+                      Select the incoming edge on canvas to rename it (Edge panel → Context Variable Name).
+                    </small>
                   </div>
                 )}
               </div>
@@ -668,6 +862,8 @@ export default function SidebarNodeProps({
                 </button>
               </div>
             )}
+              </>
+            )}
 
           </div>
         ) : (
@@ -702,6 +898,55 @@ export default function SidebarNodeProps({
               </select>
             </div>
 
+            {(edgeType === "map" || edgeType === "accum") && (
+              <div className="form-group checkbox-label" style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <input
+                  type="checkbox"
+                  checked={edgeIsOverSource}
+                  onChange={e => {
+                    setEdgeIsOverSource(e.target.checked);
+                    onUpdateEdge(selectedEdge!.id, { isOverSource: e.target.checked });
+                  }}
+                />
+                <label style={{ margin: 0 }}>Defines the array to loop over (map.over)</label>
+              </div>
+            )}
+
+            {edgeType === "accum" && edgeIsOverSource && (
+              <div className="form-group">
+                <label>Context Variable Name</label>
+                <input
+                  type="text"
+                  className="form-input"
+                  value={edgeContextName}
+                  onChange={e => setEdgeContextName(e.target.value)}
+                  onBlur={() => onUpdateEdge(selectedEdge!.id, { contextName: edgeContextName.trim() })}
+                  placeholder="e.g. previous_scenes"
+                />
+                <small style={{ color: "#94a3b8" }}>
+                  Referenced in the prompt as source: context.{edgeContextName || "<name>"}
+                </small>
+              </div>
+            )}
+
+            {edgeType === "map" && !edgeIsOverSource && (
+              <div className="form-group">
+                <label>Field Within Item (optional)</label>
+                <input
+                  type="text"
+                  className="form-input"
+                  value={edgeItemField}
+                  onChange={e => setEdgeItemField(e.target.value)}
+                  onBlur={handleSaveEdge}
+                  placeholder="e.g. target_word_count (blank = whole item)"
+                />
+                <small style={{ color: "#94a3b8" }}>
+                  Same connection as the loop's array source - just pulls the current
+                  item ({edgeItemField ? `item.${edgeItemField}` : "item"}), not the array itself.
+                </small>
+              </div>
+            )}
+
             <div className="form-group">
               <label>Value Format</label>
               <select
@@ -716,6 +961,18 @@ export default function SidebarNodeProps({
                 <option value="json">JSON Object/Array</option>
               </select>
             </div>
+
+            {onDeleteEdge && (
+              <div style={{ marginTop: "1.5rem", borderTop: "1px solid var(--border-color)", paddingTop: "1rem" }}>
+                <button
+                  className="btn btn-danger"
+                  style={{ width: "100%" }}
+                  onClick={() => onDeleteEdge(selectedEdge!.id)}
+                >
+                  <Trash2 size={14} /> Delete Connection
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>

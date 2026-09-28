@@ -23,6 +23,7 @@ myEnv/
 # Generated outputs
 output/
 trash/
+run_prompts_lab.ps1
 
 # Common secrets
 *.pem

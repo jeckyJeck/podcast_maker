@@ -28,6 +28,9 @@
   --node-bg: #1e293b;
   --node-border: #334155;
   --node-selected-border: #3b82f6;
+
+  --input-node-border: #f59e0b;
+  --input-node-glow: rgba(245, 158, 11, 0.25);
 }
 
 body {
@@ -250,6 +253,20 @@ body {
   box-shadow: 0 0 16px var(--accent-glow);
 }
 
+.custom-prompt-node.input-node {
+  border-color: var(--input-node-border);
+  background: linear-gradient(180deg, rgba(245, 158, 11, 0.08), var(--node-bg));
+}
+
+.custom-prompt-node.input-node .node-header {
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.custom-prompt-node.input-node.selected {
+  border-color: var(--input-node-border);
+  box-shadow: 0 0 16px var(--input-node-glow);
+}
+
 .node-header {
   padding: 0.5rem 0.75rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -298,6 +315,11 @@ body {
 .node-badge.accum {
   background: rgba(139, 92, 246, 0.15);
   color: var(--accum-edge);
+}
+
+.node-badge.input-type {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--input-node-border);
 }
 
 .node-body {
@@ -609,4 +631,13 @@ body {
   margin-bottom: 0.75rem;
   display: flex;
   justify-content: space-between;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }

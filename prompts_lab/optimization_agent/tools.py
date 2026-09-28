@@ -13,13 +13,21 @@ import yaml
 
 try:
     from .agent_llm import ToolSpec
+    from . import workspace as workspace_module
 except ImportError:  # pragma: no cover - supports direct script execution
     from agent_llm import ToolSpec
+    import workspace as workspace_module
 
 
 ROOT = Path(__file__).resolve().parent
 RUNS_DIR = ROOT / "runs"
 EXPERIMENTS_DIR = ROOT / "experiments"
+
+# Set by agent.py at startup once a workspace exists. read_file/write_file/edit_file
+# resolve against this instead of ROOT so the agent can never touch files outside its
+# sandboxed workspace copy. promote_prompt is the only path back to the real files.
+CONTENT_ROOT: Path | None = None
+PROMOTE_ENABLED: bool = False
 
 
 def utc_now() -> str:
@@ -33,6 +41,19 @@ def safe_path(path: str) -> Path:
     return candidate
 
 
+def safe_content_path(path: str) -> Path:
+    """Resolve a path for read_file/write_file/edit_file against the active workspace.
+
+    Confines content edits to CONTENT_ROOT (the sandboxed workspace) so the agent can
+    never write to common_resources or anything else outside its own copy.
+    """
+    base = CONTENT_ROOT or ROOT
+    candidate = (base / path).resolve()
+    if base not in candidate.parents and candidate != base:
+        raise ValueError(f"Path escapes workspace root: {path}")
+    return candidate
+
+
 def read_json_if_exists(path: Path) -> Any | None:
     if not path.exists():
         return None
@@ -42,7 +63,7 @@ def read_json_if_exists(path: Path) -> Any | None:
 def read_file(path: str) -> str:
     """Read a file and return its contents as a string."""
     try:
-        file_path = safe_path(path)
+        file_path = safe_content_path(path)
         if not file_path.exists():
             return f"error: file does not exist: {path}"
         return file_path.read_text(encoding="utf-8")
@@ -53,9 +74,28 @@ def read_file(path: str) -> str:
 def write_file(path: str, content: str) -> str:
     """Write content to a file, creating it if it does not exist."""
     try:
-        file_path = safe_path(path)
+        file_path = safe_content_path(path)
         file_path.parent.mkdir(parents=True, exist_ok=True)
         file_path.write_text(content, encoding="utf-8")
+        return "ok"
+    except Exception as exc:  # noqa: BLE001 - tool boundary
+        return f"error: {exc}"
+
+
+def edit_file(path: str, old_text: str, new_text: str, replace_all: bool = False) -> str:
+    """Replace an exact text segment within an existing file (paragraph-level edit, not a full rewrite)."""
+    try:
+        file_path = safe_content_path(path)
+        if not file_path.exists():
+            return f"error: file does not exist: {path}"
+        content = file_path.read_text(encoding="utf-8")
+        count = content.count(old_text)
+        if count == 0:
+            return "error: old_text not found in file"
+        if count > 1 and not replace_all:
+            return f"error: old_text is not unique ({count} occurrences); pass replace_all=true or include more context"
+        updated = content.replace(old_text, new_text) if replace_all else content.replace(old_text, new_text, 1)
+        file_path.write_text(updated, encoding="utf-8")
         return "ok"
     except Exception as exc:  # noqa: BLE001 - tool boundary
         return f"error: {exc}"
@@ -275,19 +315,47 @@ def revert_file(path: str, run_id: str) -> str:
         return f"error: {exc}"
 
 
+def diff_against_source(stage_id: str) -> str:
+    """Diff a stage's workspace prompt against the current real prompt in common_resources."""
+    try:
+        if CONTENT_ROOT is None:
+            return "error: no workspace active"
+        return workspace_module.diff_against_source(CONTENT_ROOT, stage_id)
+    except Exception as exc:  # noqa: BLE001 - tool boundary
+        return f"error: {exc}"
+
+
+def promote_prompt(stage_id: str) -> str:
+    """Write a stage's edited workspace prompt back into the real common_resources pipeline.yaml."""
+    if not PROMOTE_ENABLED:
+        return (
+            "error: promotion is disabled for this run; rerun the agent with --allow-promote "
+            "to apply changes to common_resources. Your edit still exists in the workspace."
+        )
+    try:
+        if CONTENT_ROOT is None:
+            return "error: no workspace active"
+        return workspace_module.promote_prompt(CONTENT_ROOT, stage_id)
+    except Exception as exc:  # noqa: BLE001 - tool boundary
+        return f"error: {exc}"
+
+
 TOOLS: dict[str, Callable[..., str]] = {
     "read_file": read_file,
     "write_file": write_file,
+    "edit_file": edit_file,
     "list_runs": list_runs,
     "read_run": read_run,
     "read_run_full": read_run_full,
     "diff_files": diff_files,
     "diff_runs": diff_runs,
+    "diff_against_source": diff_against_source,
     "run_pipeline": run_pipeline,
     "run_evaluation": run_evaluation,
     "run_all_test_topics": run_all_test_topics,
     "log_experiment": log_experiment,
     "revert_file": revert_file,
+    "promote_prompt": promote_prompt,
 }
 
 
@@ -316,8 +384,25 @@ TOOL_SPECS: list[ToolSpec] = [
     ),
     ToolSpec(
         name="write_file",
-        description="Write complete file contents under the optimization_agent root.",
+        description="Write complete file contents under the optimization_agent root. Use only to create a new file; for edits to an existing file use edit_file instead.",
         parameters=object_schema({"path": {"type": "string"}, "content": {"type": "string"}}, ["path", "content"]),
+    ),
+    ToolSpec(
+        name="edit_file",
+        description=(
+            "Replace one exact text segment in an existing file with new text (paragraph-level edit). "
+            "old_text must match the file content exactly, including whitespace, and must be unique unless replace_all is true. "
+            "Prefer this over write_file for any change to an existing file."
+        ),
+        parameters=object_schema(
+            {
+                "path": {"type": "string"},
+                "old_text": {"type": "string"},
+                "new_text": {"type": "string"},
+                "replace_all": {"type": "boolean"},
+            },
+            ["path", "old_text", "new_text"],
+        ),
     ),
     ToolSpec(
         name="list_runs",
@@ -350,6 +435,25 @@ TOOL_SPECS: list[ToolSpec] = [
             },
             ["run_id_a", "run_id_b"],
         ),
+    ),
+    ToolSpec(
+        name="diff_against_source",
+        description=(
+            "Diff a stage's workspace prompt (your edits) against the current real prompt text in "
+            "common_resources. Use this before promote_prompt to confirm exactly what will change."
+        ),
+        parameters=object_schema({"stage_id": {"type": "string"}}, ["stage_id"]),
+    ),
+    ToolSpec(
+        name="promote_prompt",
+        description=(
+            "Write a stage's edited workspace prompt back into the real pipeline.yaml under "
+            "common_resources, replacing that stage's prompt text. This is the ONLY tool that changes "
+            "production files — everything else (read_file/write_file/edit_file) only touches your "
+            "private workspace copy. May be disabled for this run, in which case it returns an error "
+            "explaining that promotion needs --allow-promote."
+        ),
+        parameters=object_schema({"stage_id": {"type": "string"}}, ["stage_id"]),
     ),
     ToolSpec(
         name="run_pipeline",
@@ -402,5 +506,5 @@ TOOL_SPECS: list[ToolSpec] = [
 READ_ONLY_TOOL_SPECS = [
     tool
     for tool in TOOL_SPECS
-    if tool.name in {"read_file", "list_runs", "read_run", "read_run_full", "diff_files", "diff_runs"}
+    if tool.name in {"read_file", "list_runs", "read_run", "read_run_full", "diff_files", "diff_runs", "diff_against_source"}
 ]

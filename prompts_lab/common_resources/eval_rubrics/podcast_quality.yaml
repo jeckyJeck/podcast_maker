@@ -1,0 +1,41 @@
+# Rubric for judging a finished podcast script. Loaded by lab_backend/evaluation/rubric.py.
+# Dimension names/descriptions are free text - the judge derives dimension keys from `name`.
+# Edit this file to change what gets scored; nothing about these dimensions is hardcoded in code.
+
+id: podcast_quality
+name: Podcast Quality
+instructions: >
+  Evaluate the episode as spoken audio, not as an essay. A strong episode should
+  feel clear, accurate, paced, and worth listening to all the way through.
+
+dimensions:
+  - name: narrative_quality
+    description: >
+      The episode has a coherent story arc with stakes, turns, examples, and a
+      satisfying ending. It avoids a flat encyclopedia structure.
+
+  - name: technical_depth
+    description: >
+      The episode explains mechanisms and trade-offs with enough detail to teach
+      a curious listener something real. It should avoid hand-wavy summaries.
+
+  - name: speakability
+    description: >
+      The script sounds natural when read aloud. Sentences are human-length,
+      dialogue or monologue feels performable, and transitions are easy to follow.
+
+  - name: engagement
+    description: >
+      The episode sustains attention through tension, surprise, vivid examples,
+      callbacks, and changes in energy.
+
+  - name: factual_accuracy
+    description: >
+      The episode uses concrete details responsibly and does not overstate
+      uncertain claims. Claims should be internally consistent and plausible.
+
+  - name: format_fit
+    description: >
+      The episode should fit its intended format. Two-host episodes should use
+      natural back-and-forth. Solo episodes should speak directly to the listener
+      without fake co-host dynamics.

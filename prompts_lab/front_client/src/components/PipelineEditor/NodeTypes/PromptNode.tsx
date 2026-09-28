@@ -16,9 +16,79 @@ interface PromptNodeData {
   runMode?: "run" | "mock" | "skip";
   outputs?: Record<string, { source: string }>;
   onDelete?: (id: string) => void;
+  // Input-node-only fields
+  inputType?: "text" | "json" | "number" | "boolean";
+  required?: boolean;
+  default?: unknown;
 }
 
-export default function PromptNode({ data, selected }: { data: PromptNodeData; selected: boolean }) {
+interface PromptNodeProps {
+  data: PromptNodeData;
+  selected: boolean;
+  type?: string;
+}
+
+export default function PromptNode({ data, selected, type }: PromptNodeProps) {
+  const isInput = type === "inputNode";
+
+  const handleDeleteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (data.onDelete) {
+      data.onDelete(data.id);
+    }
+  };
+
+  if (isInput) {
+    const inputType = data.inputType || "text";
+    const hasDefault = data.default !== undefined && data.default !== "";
+
+    return (
+      <div className={`custom-prompt-node input-node ${selected ? "selected" : ""}`}>
+        <div className="node-header">
+          <div className="node-title-area">
+            <span className="node-id">{data.id}</span>
+            <span className="node-type">Pipeline Input</span>
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
+            <span className="node-badge input-type">{inputType.toUpperCase()}</span>
+            <button
+              onClick={handleDeleteClick}
+              style={{
+                background: "transparent",
+                border: "none",
+                color: "#f87171",
+                fontSize: "1rem",
+                fontWeight: "bold",
+                cursor: "pointer",
+                padding: "0 0.2rem",
+                lineHeight: 1
+              }}
+              title="Delete input"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+
+        <div className="node-body">
+          <div style={{ display: "flex", justifyContent: "space-between", color: "#94a3b8", fontSize: "0.7rem" }}>
+            <span>{data.required !== false ? "Required" : "Optional"}</span>
+            {hasDefault && <span title={String(data.default)}>Has default</span>}
+          </div>
+        </div>
+
+        {/* Input nodes are sources only - nothing feeds into them */}
+        <Handle
+          type="source"
+          position={Position.Right}
+          id="output"
+          style={{ background: "#f59e0b", width: 8, height: 8 }}
+        />
+      </div>
+    );
+  }
+
   const runMode = data.runMode || "run";
   const execution = data.execution || "single";
   const responseKind = data.response?.kind || "text";
@@ -49,13 +119,6 @@ export default function PromptNode({ data, selected }: { data: PromptNodeData; s
     statusLabel = "Excluded (Skip)";
   }
 
-  const handleDeleteClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (data.onDelete) {
-      data.onDelete(data.id);
-    }
-  };
-
   return (
     <div className={`custom-prompt-node ${selected ? "selected" : ""}`}>
       {/* Node input handle */}
@@ -71,12 +134,12 @@ export default function PromptNode({ data, selected }: { data: PromptNodeData; s
           <span className="node-id">{data.id}</span>
           <span className="node-type">LLM Stage</span>
         </div>
-        
+
         <div style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
           <span className={`node-badge ${execution === "single" ? "single" : execution === "map" ? "map" : "accum"}`}>
             {execution === "single" ? "Single" : execution === "map" ? "Map" : "Reduce"}
           </span>
-          <button 
+          <button
             onClick={handleDeleteClick}
             style={{
               background: "transparent",
@@ -100,7 +163,7 @@ export default function PromptNode({ data, selected }: { data: PromptNodeData; s
           <span>Output: <strong>{responseKind.toUpperCase()}</strong></span>
           <span>Outputs Count: {Object.keys(data.outputs || {}).length}</span>
         </div>
-        
+
         {promptSnippet && (
           <div className="node-prompt-preview" title={promptSnippet}>
             {promptSnippet}

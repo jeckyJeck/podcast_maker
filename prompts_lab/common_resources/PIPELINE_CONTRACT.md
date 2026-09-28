@@ -169,6 +169,10 @@ stages:
 `model`
 : Optional stage-level model override.
 
+`tools`
+: Optional list of provider tool names to attach to this stage's LLM call. Defaults
+  to none. See "Tools" below.
+
 `failure`
 : Optional stage-level failure policy override.
 
@@ -407,6 +411,33 @@ Rules:
 - Output names are what later stages use: `architect.segments`, `outliner.outline`.
 - Use `source: response` to pass the whole raw parsed response forward.
 
+## Tools
+
+`tools` attaches a provider-side tool or grounding capability to a stage's LLM call
+(for example, Google Search grounding for a research stage).
+
+```yaml
+stages:
+  - id: researcher
+    type: llm
+    execution: map
+    tools:
+      - google_search
+    ...
+```
+
+Allowed values today:
+
+- `google_search`
+
+Rules:
+
+- Optional. Defaults to no tools attached.
+- If present, must be a list of strings.
+- Every entry must be one of the known tool names above. This list is intentionally
+  closed today but expected to grow; validators check entries against an explicit
+  allow-list rather than accepting arbitrary strings.
+
 ## Failure Policy
 
 ```yaml
@@ -441,4 +472,6 @@ A valid v1 pipeline must satisfy:
 - JSON schema paths exist when provided.
 - Response shape matches execution mode.
 - Output response references are legal for the stage execution.
+- Stage `tools`, if present, is a list of strings and every entry is a known tool
+  name.
 
