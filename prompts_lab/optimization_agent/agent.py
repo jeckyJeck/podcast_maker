@@ -14,12 +14,12 @@ try:
         EXPERIMENTS_DIR,
         READ_ONLY_TOOL_SPECS,
         ROOT,
-        RUNS_DIR,
         TOOL_SPECS,
         TOOLS,
         list_runs,
         log_experiment,
         read_json_if_exists,
+        run_summaries,
     )
     from .workspace import WorkspaceInfo
 except ImportError:  # pragma: no cover - supports direct script execution
@@ -30,12 +30,12 @@ except ImportError:  # pragma: no cover - supports direct script execution
         EXPERIMENTS_DIR,
         READ_ONLY_TOOL_SPECS,
         ROOT,
-        RUNS_DIR,
         TOOL_SPECS,
         TOOLS,
         list_runs,
         log_experiment,
         read_json_if_exists,
+        run_summaries,
     )
     from workspace import WorkspaceInfo
 
@@ -73,10 +73,10 @@ def describe_tools(tool_specs: list[ToolSpec]) -> str:
 
 def describe_pipeline(workspace_info: WorkspaceInfo) -> str:
     """Describe the real pipeline this run is improving: every stage's current prompt
-    text, read live from the sandboxed workspace copy (never from common_resources
+    text, read live from the sandboxed workspace copy (never from the backend
     directly, so the model always sees exactly what it's allowed to edit)."""
     manifest = json.loads((workspace_info.root / "manifest.json").read_text(encoding="utf-8"))
-    sections = [f"Format: {workspace_info.format}", f"Source: {manifest['pipeline_source']} (read-only; edit via the workspace)"]
+    sections = [f"Format: {workspace_info.format}", f"Source: backend pipeline {manifest['pipeline_id']!r} at {manifest['backend_url']} (read-only; edit via the workspace)"]
     for stage_id, entry in manifest.get("stages", {}).items():
         prompt_path = workspace_info.root / entry["workspace_file"]
         prompt_text = prompt_path.read_text(encoding="utf-8") if prompt_path.exists() else "(missing)"
@@ -94,22 +94,11 @@ def last_experiments() -> str:
 
 
 def scores_table() -> str:
-    rows = []
-    for run_dir in sorted(RUNS_DIR.glob("run_*")):
-        manifest = read_json_if_exists(run_dir / "manifest.json") or {}
-        evaluation = read_json_if_exists(run_dir / "evaluation.json") or {}
-        user = manifest.get("user_inputs", {})
-        rows.append(
-            {
-                "run_id": run_dir.name,
-                "topic": user.get("topic"),
-                "format": user.get("format"),
-                "status": manifest.get("overall_status"),
-                "score": evaluation.get("overall_score"),
-                "dimensions": evaluation.get("dimension_scores"),
-            }
-        )
-    return json.dumps(rows[-30:], ensure_ascii=False, indent=2)
+    try:
+        rows = run_summaries()
+    except Exception as exc:  # noqa: BLE001 - backend may be unreachable; don't kill the context build
+        return f"(could not fetch runs from the backend: {exc})"
+    return json.dumps(rows, ensure_ascii=False, indent=2)
 
 
 def compact(text: str, limit: int = 12000) -> str:
@@ -288,7 +277,7 @@ def run_agent(
             if trace:
                 log_print(f"Iteration {iteration} step {step}: tool result:\n{preview(result)}")
             if tool_name in {"write_file", "edit_file", "revert_file"} and result == "ok":
-                path = action["params"].get("path")
+                path = action["params"].get("path") or action["params"].get("stage_id")
                 if path:
                     changes_made.append(path)
             if tool_name == "promote_prompt" and not result.startswith("error:"):
@@ -353,15 +342,15 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--format",
         required=True,
-        help="Pipeline format to work on, e.g. duo_long or solo_short. "
-        "Resolves common_resources/templates/<format>/pipeline.yaml and extracts its "
+        help="Backend pipeline id to work on, e.g. duo_long or solo_short. "
+        "Fetches that pipeline from the backend (BACKEND_URL) and extracts its "
         "stage prompts into a fresh sandboxed workspace for this run.",
     )
     parser.add_argument(
         "--allow-promote",
         action="store_true",
-        help="Allow the agent to call promote_prompt, writing its workspace edits back into the real "
-        "common_resources/templates/<format>/pipeline.yaml. Off by default — without this flag, "
+        help="Allow the agent to call promote_prompt, saving its workspace edits to the backend's "
+        "stored pipeline (POST /prompts-test-api/pipelines/<format>). Off by default — without this flag, "
         "promote_prompt returns an explanatory error and all edits stay confined to the workspace.",
     )
     parser.add_argument(

@@ -1,5 +1,13 @@
 # Optimization Agent
 
+The agent holds no copy of the pipeline engine or of the data. Everything (pipelines, runs, evaluations) goes through the merged backend's `/prompts-test-api` over HTTP. Start the backend first (`run_prompts_lab.ps1`, or `uvicorn app.main:app` from `backend/` with `LAB_AUTH_BYPASS=true`), then:
+
+```bash
+python agent.py --format duo_long --task "..."
+```
+
+Environment: `BACKEND_URL` (default `http://127.0.0.1:8000`); `BACKEND_TOKEN` only if the backend runs with real auth. `test_topics.yaml` lists the fixed topics for `run_all_test_topics`; `workspace/` and `experiments/` are local scratch.
+
 The optimization agent can run against different reasoning model providers through the `AgentLLM` abstraction in `agent_llm.py`.
 
 ## Agent Model Selection

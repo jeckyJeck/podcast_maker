@@ -1,10 +1,7 @@
 from __future__ import annotations
 
-import difflib
 import json
 import re
-import subprocess
-import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
@@ -13,19 +10,30 @@ import yaml
 
 try:
     from .agent_llm import ToolSpec
+    from . import backend_client
     from . import workspace as workspace_module
 except ImportError:  # pragma: no cover - supports direct script execution
     from agent_llm import ToolSpec
+    import backend_client
     import workspace as workspace_module
 
 
 ROOT = Path(__file__).resolve().parent
-RUNS_DIR = ROOT / "runs"
 EXPERIMENTS_DIR = ROOT / "experiments"
+TEST_TOPICS_PATH = ROOT / "test_topics.yaml"
+
+# Files a pipeline run writes into its run directory on the backend.
+STAGE_FILES = {
+    "script": "outputs/script.txt",
+    "outline": "outputs/outline.json",
+    "blueprint": "outputs/blueprint.json",
+    "research": "outputs/research.md",
+}
+MAX_LISTED_RUNS = 30
 
 # Set by agent.py at startup once a workspace exists. read_file/write_file/edit_file
 # resolve against this instead of ROOT so the agent can never touch files outside its
-# sandboxed workspace copy. promote_prompt is the only path back to the real files.
+# sandboxed workspace copy. promote_prompt is the only path back to the backend's pipeline.
 CONTENT_ROOT: Path | None = None
 PROMOTE_ENABLED: bool = False
 
@@ -34,20 +42,13 @@ def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
-def safe_path(path: str) -> Path:
-    candidate = (ROOT / path).resolve()
-    if ROOT not in candidate.parents and candidate != ROOT:
-        raise ValueError(f"Path escapes optimization_agent root: {path}")
-    return candidate
-
-
 def safe_content_path(path: str) -> Path:
-    """Resolve a path for read_file/write_file/edit_file against the active workspace.
+    """Resolve a path for read_file/write_file/edit_file/diff_files against the active workspace.
 
     Confines content edits to CONTENT_ROOT (the sandboxed workspace) so the agent can
-    never write to common_resources or anything else outside its own copy.
+    never write anywhere outside its own copy.
     """
-    base = CONTENT_ROOT or ROOT
+    base = (CONTENT_ROOT or ROOT).resolve()
     candidate = (base / path).resolve()
     if base not in candidate.parents and candidate != base:
         raise ValueError(f"Path escapes workspace root: {path}")
@@ -58,6 +59,10 @@ def read_json_if_exists(path: Path) -> Any | None:
     if not path.exists():
         return None
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _json_or_none(text: str | None) -> Any | None:
+    return json.loads(text) if text else None
 
 
 def read_file(path: str) -> str:
@@ -101,70 +106,62 @@ def edit_file(path: str, old_text: str, new_text: str, replace_all: bool = False
         return f"error: {exc}"
 
 
-def list_runs() -> str:
-    """Return a JSON list of all run directories with their manifest summaries."""
+def run_summaries(limit: int = MAX_LISTED_RUNS) -> list[dict[str, Any]]:
+    """Latest backend runs with their evaluation score (if evaluated)."""
     entries: list[dict[str, Any]] = []
-    for run_dir in sorted(RUNS_DIR.glob("run_*")):
-        if not run_dir.is_dir():
-            continue
-        manifest = read_json_if_exists(run_dir / "manifest.json") or {}
-        evaluation = read_json_if_exists(run_dir / "evaluation.json") or {}
-        user_inputs = manifest.get("user_inputs", {})
+    for run in sorted(backend_client.list_runs(), key=lambda r: r["run_id"])[-limit:]:
+        evaluation = backend_client.get_evaluation(run["run_id"]) or {}
         entries.append(
             {
-                "run_id": run_dir.name,
-                "timestamp": manifest.get("timestamp"),
-                "topic": user_inputs.get("topic"),
-                "format": user_inputs.get("format"),
-                "overall_status": manifest.get("overall_status"),
+                "run_id": run["run_id"],
+                "created_at": run.get("created_at_utc"),
+                "topic": run.get("topic"),
                 "overall_score": evaluation.get("overall_score"),
+                "dimensions": evaluation.get("dimensions"),
             }
         )
-    return json.dumps(entries, ensure_ascii=False, indent=2)
+    return entries
+
+
+def list_runs() -> str:
+    """Return a JSON list of the latest backend runs with their evaluation summaries."""
+    try:
+        return json.dumps(run_summaries(), ensure_ascii=False, indent=2)
+    except Exception as exc:  # noqa: BLE001 - tool boundary
+        return f"error: {exc}"
+
+
+def _read_run(run_id: str, stages: list[str]) -> str:
+    try:
+        data: dict[str, Any] = {
+            "manifest": backend_client.get_run(run_id).get("manifest"),
+            "evaluation": backend_client.get_evaluation(run_id),
+        }
+        for stage in stages:
+            text = backend_client.read_run_file(run_id, STAGE_FILES[stage])
+            data[stage] = _json_or_none(text) if STAGE_FILES[stage].endswith(".json") else text
+        return json.dumps(data, ensure_ascii=False, indent=2)
+    except Exception as exc:  # noqa: BLE001 - tool boundary
+        return f"error: {exc}"
 
 
 def read_run(run_id: str) -> str:
-    """Return key contents of a run as a JSON object."""
-    try:
-        run_dir = safe_path(f"runs/{run_id}")
-        data = {
-            "manifest": read_json_if_exists(run_dir / "manifest.json"),
-            "evaluation": read_json_if_exists(run_dir / "evaluation.json"),
-            "script": (run_dir / "script.txt").read_text(encoding="utf-8")
-            if (run_dir / "script.txt").exists()
-            else None,
-        }
-        return json.dumps(data, ensure_ascii=False, indent=2)
-    except Exception as exc:  # noqa: BLE001 - tool boundary
-        return f"error: {exc}"
+    """Return the manifest, evaluation and script of a run as a JSON object."""
+    return _read_run(run_id, ["script"])
 
 
 def read_run_full(run_id: str) -> str:
-    """Return all major contents of a run directory as a JSON object."""
-    try:
-        run_dir = safe_path(f"runs/{run_id}")
-        data = {
-            "manifest": read_json_if_exists(run_dir / "manifest.json"),
-            "evaluation": read_json_if_exists(run_dir / "evaluation.json"),
-            "blueprint": read_json_if_exists(run_dir / "blueprint.json"),
-            "research": (run_dir / "research.md").read_text(encoding="utf-8")
-            if (run_dir / "research.md").exists()
-            else None,
-            "outline": read_json_if_exists(run_dir / "outline.json"),
-            "script": (run_dir / "script.txt").read_text(encoding="utf-8")
-            if (run_dir / "script.txt").exists()
-            else None,
-        }
-        return json.dumps(data, ensure_ascii=False, indent=2)
-    except Exception as exc:  # noqa: BLE001 - tool boundary
-        return f"error: {exc}"
+    """Return all major contents of a run as a JSON object."""
+    return _read_run(run_id, ["blueprint", "research", "outline", "script"])
 
 
 def diff_files(path_a: str, path_b: str) -> str:
-    """Return a unified diff between two files."""
+    """Return a unified diff between two workspace files."""
     try:
-        a = safe_path(path_a)
-        b = safe_path(path_b)
+        import difflib
+
+        a = safe_content_path(path_a)
+        b = safe_content_path(path_b)
         text_a = a.read_text(encoding="utf-8").splitlines(keepends=True)
         text_b = b.read_text(encoding="utf-8").splitlines(keepends=True)
         return "".join(difflib.unified_diff(text_a, text_b, fromfile=path_a, tofile=path_b))
@@ -174,88 +171,63 @@ def diff_files(path_a: str, path_b: str) -> str:
 
 def diff_runs(run_id_a: str, run_id_b: str, stage: str = "script") -> str:
     """Return a diff of a specific output file between two runs."""
-    stage_files = {
-        "script": "script.txt",
-        "outline": "outline.json",
-        "blueprint": "blueprint.json",
-        "research": "research.md",
-    }
-    if stage not in stage_files:
+    if stage not in STAGE_FILES:
         return f"error: unknown stage: {stage}"
-    return diff_files(f"runs/{run_id_a}/{stage_files[stage]}", f"runs/{run_id_b}/{stage_files[stage]}")
-
-
-def pipeline_for_format(format: str) -> str:
-    path = ROOT / "pipeline" / f"{format}.yaml"
-    if path.exists():
-        return f"pipeline/{format}.yaml"
-    aliases = {"duo_long": "pipeline/duo_long.yaml", "solo_short": "pipeline/solo_short.yaml"}
-    if format in aliases:
-        return aliases[format]
-    raise ValueError(f"No pipeline YAML found for format: {format}")
-
-
-def run_subprocess(args: list[str]) -> tuple[int, str]:
-    completed = subprocess.run(args, cwd=ROOT, text=True, capture_output=True, check=False)
-    output = "\n".join(part for part in [completed.stdout.strip(), completed.stderr.strip()] if part)
-    return completed.returncode, output
-
-
-def newest_run_id_before_after(before: set[str]) -> str | None:
-    after = {p.name for p in RUNS_DIR.glob("run_*") if p.is_dir()}
-    created = sorted(after - before)
-    return created[-1] if created else None
-
-
-def run_pipeline(topic: str, format: str, extra_inputs: dict | None = None) -> str:
-    """Execute the pipeline for a given topic and format by calling engine.py."""
     try:
-        before = {p.name for p in RUNS_DIR.glob("run_*") if p.is_dir()}
-        args = [
-            sys.executable,
-            "engine.py",
-            "--pipeline",
-            pipeline_for_format(format),
-            "--topic",
-            topic,
-            "--format",
-            format,
-        ]
-        for key, value in (extra_inputs or {}).items():
-            args.extend([f"--{key.replace('_', '-')}", str(value)])
-        code, output = run_subprocess(args)
-        if code != 0:
-            return f"error: pipeline failed\n{output}"
-        return newest_run_id_before_after(before) or output
+        return backend_client.compare_runs(run_id_a, run_id_b, STAGE_FILES[stage])
     except Exception as exc:  # noqa: BLE001 - tool boundary
         return f"error: {exc}"
 
 
+def run_pipeline(topic: str, format: str, extra_inputs: dict | None = None) -> str:
+    """Run the workspace's (edited) pipeline on the backend for a topic; returns the new run_id."""
+    try:
+        if CONTENT_ROOT is None:
+            return "error: no workspace active"
+        manifest = workspace_module.load_manifest(CONTENT_ROOT)
+        if format != manifest["format"]:
+            return f"error: this workspace edits pipeline {manifest['format']!r}; cannot run format {format!r}"
+        pipeline_yaml = workspace_module.build_pipeline_yaml(CONTENT_ROOT)
+        result = backend_client.run_pipeline(pipeline_yaml, {"topic": topic, **(extra_inputs or {})})
+        return result["run_id"]
+    except Exception as exc:  # noqa: BLE001 - tool boundary
+        return f"error: pipeline failed\n{exc}"
+
+
 def run_evaluation(run_id: str) -> str:
-    """Run the LLM evaluator on a completed run and write evaluation.json."""
-    code, output = run_subprocess([sys.executable, "evaluator.py", "--run-id", run_id])
-    if code != 0:
-        return f"error: evaluation failed\n{output}"
-    evaluation = read_json_if_exists(ROOT / "runs" / run_id / "evaluation.json")
-    if not evaluation:
-        return output
-    return json.dumps(
-        {
-            "run_id": run_id,
-            "overall_score": evaluation.get("overall_score"),
-            "dimension_scores": evaluation.get("dimension_scores"),
-        },
-        ensure_ascii=False,
-        indent=2,
-    )
+    """Run the backend's LLM judge on a completed run (stored as the run's evaluation)."""
+    try:
+        context_files = {}
+        if backend_client.read_run_file(run_id, STAGE_FILES["research"]) is not None:
+            context_files["research"] = STAGE_FILES["research"]
+        evaluation = backend_client.evaluate_run(
+            run_id, content_files={"script": STAGE_FILES["script"]}, context_files=context_files or None
+        )
+        return json.dumps(
+            {
+                "run_id": run_id,
+                "overall_score": evaluation.get("overall_score"),
+                "dimension_scores": evaluation.get("dimensions"),
+                "suggestions": evaluation.get("suggestions"),
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+    except Exception as exc:  # noqa: BLE001 - tool boundary
+        return f"error: evaluation failed\n{exc}"
 
 
 def run_all_test_topics(extra_inputs: dict | None = None) -> str:
-    """Run and evaluate every topic in evaluation/test_topics.yaml."""
+    """Run and evaluate every topic in test_topics.yaml that matches the workspace's pipeline."""
     try:
-        config = yaml.safe_load((ROOT / "evaluation" / "test_topics.yaml").read_text(encoding="utf-8"))
+        if CONTENT_ROOT is None:
+            return "error: no workspace active"
+        workspace_format = workspace_module.load_manifest(CONTENT_ROOT)["format"]
+        config = yaml.safe_load(TEST_TOPICS_PATH.read_text(encoding="utf-8"))
         summary: dict[str, Any] = {}
         for topic in config.get("topics", []):
+            if topic["format"] != workspace_format:
+                continue
             run_id = run_pipeline(topic["topic"], topic["format"], extra_inputs)
             if run_id.startswith("error:"):
                 summary[topic["id"]] = {"error": run_id}
@@ -264,8 +236,7 @@ def run_all_test_topics(extra_inputs: dict | None = None) -> str:
             if evaluation.startswith("error:"):
                 summary[topic["id"]] = {"run_id": run_id, "error": evaluation}
                 continue
-            parsed = json.loads(evaluation)
-            summary[topic["id"]] = parsed
+            summary[topic["id"]] = json.loads(evaluation)
         return json.dumps(summary, ensure_ascii=False, indent=2)
     except Exception as exc:  # noqa: BLE001 - tool boundary
         return f"error: {exc}"
@@ -284,7 +255,7 @@ def log_experiment(
     results: dict,
     conclusion: str,
 ) -> str:
-    """Write an experiment log entry."""
+    """Write an experiment log entry (agent-local scratch)."""
     try:
         path = next_experiment_path()
         payload = {
@@ -301,22 +272,18 @@ def log_experiment(
         return f"error: {exc}"
 
 
-def revert_file(path: str, run_id: str) -> str:
-    """Revert a prompt or pipeline YAML file to the version used in a specific run."""
+def revert_file(stage_id: str, run_id: str) -> str:
+    """Restore a stage's workspace prompt to the text a specific backend run used."""
     try:
-        target = safe_path(path)
-        snapshot = safe_path(f"runs/{run_id}/snapshots/{Path(path).name}")
-        if not snapshot.exists():
-            return f"error: snapshot not found for {path} in {run_id}"
-        target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text(snapshot.read_text(encoding="utf-8"), encoding="utf-8")
-        return "ok"
+        if CONTENT_ROOT is None:
+            return "error: no workspace active"
+        return workspace_module.restore_prompt_from_run(CONTENT_ROOT, stage_id, run_id)
     except Exception as exc:  # noqa: BLE001 - tool boundary
         return f"error: {exc}"
 
 
 def diff_against_source(stage_id: str) -> str:
-    """Diff a stage's workspace prompt against the current real prompt in common_resources."""
+    """Diff a stage's workspace prompt against the backend's current prompt."""
     try:
         if CONTENT_ROOT is None:
             return "error: no workspace active"
@@ -326,11 +293,11 @@ def diff_against_source(stage_id: str) -> str:
 
 
 def promote_prompt(stage_id: str) -> str:
-    """Write a stage's edited workspace prompt back into the real common_resources pipeline.yaml."""
+    """Save a stage's edited workspace prompt to the backend's pipeline."""
     if not PROMOTE_ENABLED:
         return (
             "error: promotion is disabled for this run; rerun the agent with --allow-promote "
-            "to apply changes to common_resources. Your edit still exists in the workspace."
+            "to save changes to the backend pipeline. Your edit still exists in the workspace."
         )
     try:
         if CONTENT_ROOT is None:
@@ -379,12 +346,12 @@ def object_schema(
 TOOL_SPECS: list[ToolSpec] = [
     ToolSpec(
         name="read_file",
-        description="Read a file under the optimization_agent root.",
+        description="Read a file under your workspace root (e.g. prompts/<stage_id>.md).",
         parameters=object_schema({"path": {"type": "string"}}, ["path"]),
     ),
     ToolSpec(
         name="write_file",
-        description="Write complete file contents under the optimization_agent root. Use only to create a new file; for edits to an existing file use edit_file instead.",
+        description="Write complete file contents under your workspace root. Use only to create a new file; for edits to an existing file use edit_file instead.",
         parameters=object_schema({"path": {"type": "string"}, "content": {"type": "string"}}, ["path", "content"]),
     ),
     ToolSpec(
@@ -406,7 +373,7 @@ TOOL_SPECS: list[ToolSpec] = [
     ),
     ToolSpec(
         name="list_runs",
-        description="List all run directories with manifest and evaluation summaries.",
+        description="List the latest backend runs with their evaluation scores.",
         parameters=object_schema(),
     ),
     ToolSpec(
@@ -421,7 +388,7 @@ TOOL_SPECS: list[ToolSpec] = [
     ),
     ToolSpec(
         name="diff_files",
-        description="Return a unified diff between two files.",
+        description="Return a unified diff between two files in your workspace.",
         parameters=object_schema({"path_a": {"type": "string"}, "path_b": {"type": "string"}}, ["path_a", "path_b"]),
     ),
     ToolSpec(
@@ -439,25 +406,28 @@ TOOL_SPECS: list[ToolSpec] = [
     ToolSpec(
         name="diff_against_source",
         description=(
-            "Diff a stage's workspace prompt (your edits) against the current real prompt text in "
-            "common_resources. Use this before promote_prompt to confirm exactly what will change."
+            "Diff a stage's workspace prompt (your edits) against the backend pipeline's current prompt "
+            "text. Use this before promote_prompt to confirm exactly what will change."
         ),
         parameters=object_schema({"stage_id": {"type": "string"}}, ["stage_id"]),
     ),
     ToolSpec(
         name="promote_prompt",
         description=(
-            "Write a stage's edited workspace prompt back into the real pipeline.yaml under "
-            "common_resources, replacing that stage's prompt text. This is the ONLY tool that changes "
-            "production files — everything else (read_file/write_file/edit_file) only touches your "
-            "private workspace copy. May be disabled for this run, in which case it returns an error "
+            "Save a stage's edited workspace prompt to the backend's stored pipeline, replacing that "
+            "stage's prompt text. This is the ONLY tool that changes the backend's pipeline — "
+            "everything else (read_file/write_file/edit_file, run_pipeline) only uses your private "
+            "workspace copy. May be disabled for this run, in which case it returns an error "
             "explaining that promotion needs --allow-promote."
         ),
         parameters=object_schema({"stage_id": {"type": "string"}}, ["stage_id"]),
     ),
     ToolSpec(
         name="run_pipeline",
-        description="Execute the podcast pipeline for a topic and format.",
+        description=(
+            "Run your workspace's edited pipeline on the backend for a topic; format must be the "
+            "pipeline you are working on. Returns the new run_id."
+        ),
         parameters=object_schema(
             {
                 "topic": {"type": "string"},
@@ -469,12 +439,12 @@ TOOL_SPECS: list[ToolSpec] = [
     ),
     ToolSpec(
         name="run_evaluation",
-        description="Run the LLM evaluator on a completed run.",
+        description="Score a completed run with the backend's LLM judge (rubric podcast_quality).",
         parameters=object_schema({"run_id": {"type": "string"}}, ["run_id"]),
     ),
     ToolSpec(
         name="run_all_test_topics",
-        description="Run and evaluate every topic in evaluation/test_topics.yaml.",
+        description="Run and evaluate every test topic (test_topics.yaml) that matches your pipeline.",
         parameters=object_schema({"extra_inputs": {"type": "object"}}),
     ),
     ToolSpec(
@@ -493,8 +463,8 @@ TOOL_SPECS: list[ToolSpec] = [
     ),
     ToolSpec(
         name="revert_file",
-        description="Revert a prompt or pipeline YAML file to the version used in a specific run.",
-        parameters=object_schema({"path": {"type": "string"}, "run_id": {"type": "string"}}, ["path", "run_id"]),
+        description="Restore a stage's workspace prompt to the text that a specific earlier run used.",
+        parameters=object_schema({"stage_id": {"type": "string"}, "run_id": {"type": "string"}}, ["stage_id", "run_id"]),
     ),
     ToolSpec(
         name="finish_iteration",
