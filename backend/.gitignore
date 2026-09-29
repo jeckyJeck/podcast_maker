@@ -7,3 +7,5 @@
 *.py[cod]
 env.yaml
 
+/data/
+/resources/pipelines/*/outputs/

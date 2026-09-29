@@ -8,7 +8,7 @@ from typing import Dict, List, Optional
 from dataclasses import dataclass
 from pathlib import Path
 
-from podcast_maker.core.paths import BACKEND_ROOT
+from podcast_maker.core.paths import HOSTS_FILE
 
 
 @dataclass
@@ -25,7 +25,7 @@ class HostProfile:
 
 def _load_hosts_config() -> Dict:
     """Load hosts configuration from JSON file"""
-    hosts_file = BACKEND_ROOT / "podcast_maker" / "core" / "hosts.json"
+    hosts_file = HOSTS_FILE
     
     if not hosts_file.exists():
         raise FileNotFoundError(f"Hosts configuration file not found: {hosts_file}")
