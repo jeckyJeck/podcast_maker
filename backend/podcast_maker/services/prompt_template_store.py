@@ -5,10 +5,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Literal, TypedDict
 
-from utils.paths import BACKEND_ROOT
+from podcast_maker.core.paths import TEMPLATES_DIR
 
 StageName = Literal["architect", "researcher", "outliner", "scriptwriter"]
-TEMPLATES_ROOT = BACKEND_ROOT.parent / "common_resources" / "templates"
+TEMPLATES_ROOT = TEMPLATES_DIR
 
 
 class PromptTemplateRecord(TypedDict):

@@ -1,8 +1,8 @@
-"""Loads judge rubrics from YAML config under common_resources/eval_rubrics/.
+"""Loads judge rubrics from YAML config under resources/eval_rubrics/.
 
 A rubric declares scoring dimensions as free text (name + description) so the
 dimensions themselves are configurable without touching evaluator code - see
-common_resources/eval_rubrics/podcast_quality.yaml for the current default.
+resources/eval_rubrics/podcast_quality.yaml for the current default.
 """
 
 from __future__ import annotations
@@ -12,9 +12,9 @@ from pathlib import Path
 
 import yaml
 
-from utils.paths import BACKEND_ROOT
+from podcast_maker.core.paths import EVAL_RUBRICS_DIR
 
-RUBRICS_DIR = BACKEND_ROOT.parent / "common_resources" / "eval_rubrics"
+RUBRICS_DIR = EVAL_RUBRICS_DIR
 
 
 class RubricError(Exception):

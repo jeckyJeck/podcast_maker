@@ -7,6 +7,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from podcast_maker.core.paths import BACKEND_ROOT
+
 try:
     import yaml
 except ImportError:  # pragma: no cover - handled at CLI boundary
@@ -398,7 +400,7 @@ def load_yaml_file(path: Path) -> Any:
 
 
 def validate_pipeline_file(path: Path, root: Path | None = None) -> None:
-    root = root or Path(__file__).resolve().parent.parent
+    root = root or BACKEND_ROOT
     validate_pipeline_data(load_yaml_file(path), root.resolve())
 
 
@@ -407,12 +409,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("pipeline", help="Path to a pipeline YAML file")
     parser.add_argument(
         "--root",
-        help="Lab backend root for resolving prompt/schema files. Defaults to prompts_lab/lab_backend.",
+        help="Backend root for resolving prompt/schema files. Defaults to the backend/ directory.",
     )
     args = parser.parse_args(argv)
 
     pipeline_path = Path(args.pipeline)
-    root = Path(args.root) if args.root else Path(__file__).resolve().parent.parent
+    root = Path(args.root) if args.root else BACKEND_ROOT
     try:
         validate_pipeline_file(pipeline_path, root)
     except PipelineValidationError as exc:

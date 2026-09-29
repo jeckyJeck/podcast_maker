@@ -18,10 +18,10 @@ from typing import Any
 from jsonschema import ValidationError as JSONSchemaValidationError
 from jsonschema import validate as jsonschema_validate
 
-from engine import sources
-from engine import tools as tools_module
-from services import prompt_template_store
-from services.llm_provider_factory import build_llm_provider
+from podcast_maker.engine import sources
+from podcast_maker.engine import tools as tools_module
+from podcast_maker.services import prompt_template_store
+from podcast_maker.services.llm_provider_factory import build_llm_provider
 
 JSON_FENCE_RE = re.compile(r"^```(?:json)?\s*")
 

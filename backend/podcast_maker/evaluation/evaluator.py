@@ -19,9 +19,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from evaluation.rubric import Rubric, load_rubric
-from services.llm_provider import LLMProvider, LLMResponseParseError
-from services.llm_provider_factory import build_llm_provider
+from podcast_maker.evaluation.rubric import Rubric, load_rubric
+from podcast_maker.services.llm_provider import LLMProvider, LLMResponseParseError
+from podcast_maker.services.llm_provider_factory import build_llm_provider
 
 
 class EvaluationError(Exception):

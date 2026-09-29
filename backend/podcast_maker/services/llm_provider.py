@@ -11,6 +11,21 @@ from typing import Optional, Any
 from dataclasses import dataclass, field
 
 
+class LLMResponseParseError(Exception):
+    """
+    Raised when an LLM provider's response cannot be parsed into the
+    expected structured format (e.g. invalid/empty JSON from generate_json).
+
+    Carries the raw response text so callers/retry policies can inspect
+    or log it without needing to re-derive it from a swallowed error dict.
+    """
+
+    def __init__(self, message: str, raw_response: str = "", stage: str = "unknown"):
+        self.raw_response = raw_response
+        self.stage = stage
+        super().__init__(f"{message} (stage={stage}): {raw_response[:500]!r}")
+
+
 @dataclass
 class LLMResponse:
     """Response from LLM generation."""
@@ -74,9 +89,9 @@ class LLMProvider(ABC):
             
         Returns:
             Parsed JSON as Python dict
-            
+
         Raises:
-            Exception: On critical failures or invalid JSON
-            Returns dict with "error" key on non-critical parse failures
+            Exception: On critical failures (e.g. API errors)
+            LLMResponseParseError: If the response is empty or is not valid JSON
         """
         pass
