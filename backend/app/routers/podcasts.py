@@ -1,6 +1,7 @@
 """Routes: podcast creation and status polling."""
 
 from datetime import datetime, timedelta, timezone
+import os
 import uuid
 from typing import Any, Dict, List, Optional, Literal
 
@@ -10,7 +11,7 @@ from pydantic import BaseModel
 from app.dependencies import AuthContext, get_current_user, get_repository, limiter, tasks_status
 from podcast_maker.core.logging_config import get_logger
 from podcast_maker.core.orchestrator import PodcastMakerOrchestrator
-from podcast_maker.core.prompt_manager import PodcastConfig
+from podcast_maker.core.podcast_job import PodcastConfig, PodcastJob
 from podcast_maker.core.hosts_config import validate_host_selection, get_host_profile
 from podcast_maker.services.podcast_repository import PodcastRepository, RepositoryPermissionError, RepositoryWriteError
 from podcast_maker.services.supabase.supabase_storage_provider import SupabaseStorageProvider
@@ -18,6 +19,8 @@ from podcast_maker.services.supabase.supabase_storage_provider import SupabaseSt
 router = APIRouter()
 logger = get_logger()
 STALE_PROCESSING_TIMEOUT = timedelta(minutes=15)
+# Temporary (removed in step 7): run production through the YAML engine instead of the old orchestrator.
+USE_YAML_PIPELINE = os.getenv("USE_YAML_PIPELINE", "").strip().lower() in {"1", "true", "yes", "on"}
 
 
 def _parse_timestamp(value: object) -> datetime | None:
@@ -272,9 +275,12 @@ def _run_podcast_pipeline(
             host_ids=list(config_data.get("host_ids") or ["sarah_curious", "mike_expert"]),
             format=str(config_data.get("format") or "dialogue"),
         )
-        orchestrator = PodcastMakerOrchestrator(config, storage)
+        if USE_YAML_PIPELINE:
+            job = PodcastJob(config, storage, user_id=user_id)
+        else:
+            job = PodcastMakerOrchestrator(config, storage)
 
-        final_url: dict = orchestrator.process_topic(
+        final_url: dict = job.process_topic(
             existing_urls=urls,
             progress_callback=progress,
         )

@@ -13,7 +13,7 @@ import json
 import re
 import time
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 from jsonschema import ValidationError as JSONSchemaValidationError
 from jsonschema import validate as jsonschema_validate
@@ -141,7 +141,9 @@ def _write_response_value(path: Path, kind: str, value: Any) -> None:
 
 def _call_llm(provider, prompt: str, stage: dict[str, Any], metadata: dict[str, Any]) -> str:
     tool_list = tools_module.resolve_tools(stage.get("tools"))
-    response = provider.generate_text(prompt, tools=tool_list, metadata=metadata)
+    temperature = stage.get("temperature")
+    kwargs = {} if temperature is None else {"temperature": float(temperature)}
+    response = provider.generate_text(prompt, tools=tool_list, metadata=metadata, **kwargs)
     return response.text
 
 
@@ -296,8 +298,13 @@ def run_pipeline(
     user_id: str,
     run_stages: set[str] | None = None,
     mock_outputs: dict[str, dict[str, Any]] | None = None,
+    on_stage_complete: Callable[[str, dict[str, Any], dict[str, Any]], None] | None = None,
 ) -> dict[str, Any]:
     """Executes a validated pipeline. Returns {"outputs": {...}, "stage_results": {...}}.
+
+    on_stage_complete(stage_id, outputs, stage_result), if given, is called right after
+    each executed stage succeeds (its response files are already in run_dir), so callers
+    can persist progress incrementally. It is not called for stages skipped via run_stages.
 
     Stages not in run_stages are not executed; their context bucket is seeded from
     mock_outputs[stage_id] (an {output_name: value} dict, same shape execution would
@@ -344,5 +351,7 @@ def run_pipeline(
         stage_results[stage_id] = result
         context[stage_id] = outputs
         executed_outputs[stage_id] = outputs
+        if on_stage_complete:
+            on_stage_complete(stage_id, outputs, result)
 
     return {"outputs": executed_outputs, "stage_results": stage_results}

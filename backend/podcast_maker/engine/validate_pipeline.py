@@ -227,6 +227,13 @@ def _validate_tools(tools: Any, stage_path: str, issues: list[ValidationIssue]) 
             _add(issues, tool_path, f"must be one of {sorted(VALID_TOOLS)}")
 
 
+def _validate_temperature(temperature: Any, stage_path: str, issues: list[ValidationIssue]) -> None:
+    if temperature is None:
+        return
+    if isinstance(temperature, bool) or not isinstance(temperature, (int, float)) or not 0 <= temperature <= 2:
+        _add(issues, f"{stage_path}.temperature", "must be a number between 0 and 2")
+
+
 def _validate_map(stage: dict[str, Any], stage_path: str, input_names: set[str], available_outputs: dict[str, set[str]], issues: list[ValidationIssue]) -> str | None:
     execution = stage.get("execution")
     map_spec = stage.get("map")
@@ -381,6 +388,7 @@ def validate_pipeline_data(data: Any, root: Path) -> None:
 
         _validate_failure(stage.get("failure"), f"{stage_path}.failure", issues)
         _validate_tools(stage.get("tools"), stage_path, issues)
+        _validate_temperature(stage.get("temperature"), stage_path, issues)
         model = stage.get("model")
         if model is not None and not _is_mapping(model):
             _add(issues, f"{stage_path}.model", "must be a mapping")

@@ -15,6 +15,9 @@ inputs:
   topic:
     type: text
     required: true
+  host_profiles:
+    type: text
+    default: ''
 stages:
 - id: architect
   type: llm
@@ -247,6 +250,8 @@ stages:
       source: response.aggregate
     research_items:
       source: response.items
+  tools:
+  - google_search
 - id: outliner
   type: llm
   execution: single
@@ -866,8 +871,8 @@ stages:
       ```\nHOST_1: [emotion] text\nHOST_2: [emotion] text\n```\n\nBegin writing now:"
   bindings:
   - placeholder: '{{HOSTS_PROFILES}}'
-    source: architect.host_profiles
-    format: json
+    source: inputs.host_profiles
+    format: text
   - placeholder: '{{OUTLINE_JSON}}'
     source: outliner.outline
     format: json
@@ -887,3 +892,4 @@ stages:
       source: response.aggregate
     script_scenes:
       source: response.items
+  temperature: 0.8

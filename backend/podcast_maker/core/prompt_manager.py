@@ -5,34 +5,8 @@ from pathlib import Path
 from typing import Dict, Any, List, Optional
 
 from podcast_maker.core.paths import PROMPTS_DIR
+from podcast_maker.core.podcast_job import PodcastConfig
 from podcast_maker.core.hosts_config import format_hosts_for_prompt, get_host_profile
-
-@dataclass
-class PodcastConfig:
-    """User preferences for podcast generation"""
-    topic: str
-    host_ids: List[str] = field(default_factory=lambda: ["sarah_curious", "mike_expert"])
-    format: Optional[str] = None
-    duration_minutes: int = 30
-    tone: str = "conversational"
-    target_audience: str = "general"
-
-    @property
-    def normalized_host_ids(self) -> List[str]:
-        return self.host_ids or ["sarah_curious", "mike_expert"]
-
-    @property
-    def effective_format(self) -> str:
-        if self.format:
-            return self.format.strip().lower()
-        if len(self.normalized_host_ids) == 1:
-            return "solo"
-        return "dialogue"
-
-    @property
-    def hosts(self) -> Dict[str, str]:
-        return {f"HOST_{i}": host_id for i, host_id in enumerate(self.normalized_host_ids, start=1)}
-
 
 class PromptManager:
     """Responsible for building prompts based on user preferences"""
