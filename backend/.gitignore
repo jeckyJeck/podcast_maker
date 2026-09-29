@@ -9,3 +9,4 @@ env.yaml
 
 /data/
 /resources/pipelines/*/outputs/
+!.env.example

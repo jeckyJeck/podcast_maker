@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from datetime import datetime, timezone
 import json
 import uuid
@@ -12,14 +11,13 @@ from typing import Any, Literal, Mapping
 from fastapi import APIRouter, Body, Depends, HTTPException, Response
 from pydantic import BaseModel, Field
 
-from app.hosts_config import AVAILABLE_HOSTS
-from utils.paths import BACKEND_ROOT
-from services import prompt_template_store
-from prompts_test.compare import compare_files, list_run_directories, resolve_run_dir
+from app.dependencies import AuthContext, get_lab_user
+from podcast_maker.core.hosts_config import AVAILABLE_HOSTS
+from podcast_maker.core.paths import BACKEND_ROOT, PIPELINES_DIR, RUNS_DIR
+from podcast_maker.evaluation.compare import compare_files, list_run_directories, resolve_run_dir
+from podcast_maker.services import prompt_template_store
 
-router = APIRouter(prefix="/prompts-test-api", tags=["prompts-test-api"])
-
-LOCAL_USER_ID = "lab-local-user"
+router = APIRouter(prefix="/prompts-test-api", tags=["prompts-test-api"], dependencies=[Depends(get_lab_user)])
 
 
 class CompareRequest(BaseModel):
@@ -51,12 +49,6 @@ class PromptTemplateResponse(BaseModel):
     updated_at_utc: str
 
 
-@dataclass
-class AuthContext:
-    user_id: str
-    method: str = "disabled"
-
-
 def _sanitize_template_text(value: str, field_name: str) -> str:
     cleaned = value.strip()
     if not cleaned:
@@ -82,17 +74,8 @@ def _to_template_response(row: Mapping[str, Any]) -> PromptTemplateResponse:
     )
 
 
-async def get_prompts_test_auth() -> AuthContext:
-    """Return a fixed local auth context for the isolated prompts lab backend."""
-    return AuthContext(user_id=LOCAL_USER_ID)
-
-
 def _default_runs_root() -> Path:
-    return BACKEND_ROOT.parent / "common_resources" / "experiments_runs"
-
-
-def _default_fixtures_root() -> Path:
-    return BACKEND_ROOT / "prompts_test" / "fixtures"
+    return RUNS_DIR
 
 
 def _resolve_runs_root(runs_root: str | None) -> Path:
@@ -107,7 +90,7 @@ def _read_manifest(run_dir: Path) -> dict | None:
 
 
 @router.get("/meta")
-async def prompts_test_meta(_auth: AuthContext = Depends(get_prompts_test_auth)):
+async def prompts_test_meta(_auth: AuthContext = Depends(get_lab_user)):
     hosts = [
         {
             "id": profile.id,
@@ -130,7 +113,7 @@ async def prompts_test_meta(_auth: AuthContext = Depends(get_prompts_test_auth))
 @router.get("/runs")
 async def prompts_test_list_runs(
     runs_root: str | None = None,
-    _auth: AuthContext = Depends(get_prompts_test_auth),
+    _auth: AuthContext = Depends(get_lab_user),
 ):
     root = _resolve_runs_root(runs_root)
     runs = []
@@ -153,7 +136,7 @@ async def prompts_test_list_runs(
 async def prompts_test_run_details(
     run_id: str,
     runs_root: str | None = None,
-    _auth: AuthContext = Depends(get_prompts_test_auth),
+    _auth: AuthContext = Depends(get_lab_user),
 ):
     root = _resolve_runs_root(runs_root)
     run_dir = resolve_run_dir(root, run_id)
@@ -186,7 +169,7 @@ async def prompts_test_run_file(
     run_id: str,
     file_name: str,
     runs_root: str | None = None,
-    _auth: AuthContext = Depends(get_prompts_test_auth),
+    _auth: AuthContext = Depends(get_lab_user),
 ):
     root = _resolve_runs_root(runs_root)
     run_dir = resolve_run_dir(root, run_id)
@@ -209,8 +192,8 @@ class EvaluateRunRequest(BaseModel):
 
 
 @router.get("/eval-rubrics")
-async def list_eval_rubrics(_auth: AuthContext = Depends(get_prompts_test_auth)):
-    from evaluation.rubric import list_rubrics
+async def list_eval_rubrics(_auth: AuthContext = Depends(get_lab_user)):
+    from podcast_maker.evaluation.rubric import list_rubrics
 
     return {"rubrics": list_rubrics()}
 
@@ -220,7 +203,7 @@ async def prompts_test_evaluate_run(
     run_id: str,
     payload: EvaluateRunRequest,
     runs_root: str | None = None,
-    _auth: AuthContext = Depends(get_prompts_test_auth),
+    _auth: AuthContext = Depends(get_lab_user),
 ):
     root = _resolve_runs_root(runs_root)
     run_dir = resolve_run_dir(root, run_id)
@@ -229,7 +212,7 @@ async def prompts_test_evaluate_run(
     for rel_path in list(payload.content_files.values()) + list((payload.context_files or {}).values()):
         _resolve_run_file(run_dir, rel_path)
 
-    from evaluation.evaluator import EvaluationError, evaluate_run
+    from podcast_maker.evaluation.evaluator import EvaluationError, evaluate_run
 
     try:
         result = evaluate_run(
@@ -248,7 +231,7 @@ async def prompts_test_evaluate_run(
 async def prompts_test_get_evaluation(
     run_id: str,
     runs_root: str | None = None,
-    _auth: AuthContext = Depends(get_prompts_test_auth),
+    _auth: AuthContext = Depends(get_lab_user),
 ):
     root = _resolve_runs_root(runs_root)
     run_dir = resolve_run_dir(root, run_id)
@@ -261,7 +244,7 @@ async def prompts_test_get_evaluation(
 @router.post("/compare")
 async def prompts_test_compare(
     payload: CompareRequest,
-    _auth: AuthContext = Depends(get_prompts_test_auth),
+    _auth: AuthContext = Depends(get_lab_user),
 ):
     try:
         root = _resolve_runs_root(payload.runs_root)
@@ -281,7 +264,7 @@ async def prompts_test_compare(
 @router.get("/prompt-templates")
 async def prompts_test_list_prompt_templates(
     stage: Literal["architect", "researcher", "outliner", "scriptwriter"] | None = None,
-    auth: AuthContext = Depends(get_prompts_test_auth),
+    auth: AuthContext = Depends(get_lab_user),
 ):
     rows = prompt_template_store.list_templates(auth.user_id, stage)
     return {"templates": [_to_template_response(row).model_dump() for row in rows]}
@@ -290,7 +273,7 @@ async def prompts_test_list_prompt_templates(
 @router.post("/prompt-templates")
 async def prompts_test_create_prompt_template(
     payload: PromptTemplateCreateRequest,
-    auth: AuthContext = Depends(get_prompts_test_auth),
+    auth: AuthContext = Depends(get_lab_user),
 ):
     name = _sanitize_template_text(payload.name, "name")
     prompt_text = _sanitize_template_text(payload.prompt_text, "prompt_text")
@@ -308,7 +291,7 @@ async def prompts_test_create_prompt_template(
 @router.get("/prompt-templates/{template_id}")
 async def prompts_test_get_prompt_template(
     template_id: str,
-    auth: AuthContext = Depends(get_prompts_test_auth),
+    auth: AuthContext = Depends(get_lab_user),
 ):
     safe_id = _validate_template_id(template_id)
     try:
@@ -322,7 +305,7 @@ async def prompts_test_get_prompt_template(
 async def prompts_test_update_prompt_template(
     template_id: str,
     payload: PromptTemplateUpdateRequest,
-    auth: AuthContext = Depends(get_prompts_test_auth),
+    auth: AuthContext = Depends(get_lab_user),
 ):
     safe_id = _validate_template_id(template_id)
     if payload.name is None and payload.prompt_text is None:
@@ -348,7 +331,7 @@ async def prompts_test_update_prompt_template(
 @router.delete("/prompt-templates/{template_id}")
 async def prompts_test_delete_prompt_template(
     template_id: str,
-    auth: AuthContext = Depends(get_prompts_test_auth),
+    auth: AuthContext = Depends(get_lab_user),
 ):
     safe_id = _validate_template_id(template_id)
     try:
@@ -364,7 +347,6 @@ async def prompts_test_delete_prompt_template(
 
 import yaml
 
-PIPELINES_DIR = BACKEND_ROOT.parent / "common_resources" / "templates"
 
 class PipelineRunRequest(BaseModel):
     pipeline_yaml: str
@@ -374,7 +356,7 @@ class PipelineRunRequest(BaseModel):
 
 
 @router.get("/pipelines")
-async def list_pipelines(_auth: AuthContext = Depends(get_prompts_test_auth)):
+async def list_pipelines(_auth: AuthContext = Depends(get_lab_user)):
     PIPELINES_DIR.mkdir(parents=True, exist_ok=True)
     pipelines = []
     for template_dir in PIPELINES_DIR.iterdir():
@@ -416,22 +398,22 @@ def _new_run_dir(runs_root: Path, pipeline_id: str) -> Path:
 @router.post("/pipelines/run")
 async def run_pipeline(
     payload: PipelineRunRequest,
-    _auth: AuthContext = Depends(get_prompts_test_auth),
+    _auth: AuthContext = Depends(get_lab_user),
 ):
     try:
         pipeline_data = yaml.safe_load(payload.pipeline_yaml)
     except Exception as exc:
         raise HTTPException(status_code=400, detail=f"Invalid pipeline YAML: {exc}")
 
-    from engine.validate_pipeline import validate_pipeline_data
+    from podcast_maker.engine.validate_pipeline import validate_pipeline_data
     try:
         validate_pipeline_data(pipeline_data, BACKEND_ROOT)
     except Exception as exc:
         raise HTTPException(status_code=400, detail=f"Pipeline validation failed: {exc}")
 
-    from engine.executor import PipelineRunFailure
-    from engine.executor import run_pipeline as execute_pipeline
-    from engine.inputs import InputResolutionError, resolve_inputs
+    from podcast_maker.engine.executor import PipelineRunFailure
+    from podcast_maker.engine.executor import run_pipeline as execute_pipeline
+    from podcast_maker.engine.inputs import InputResolutionError, resolve_inputs
 
     try:
         resolved_inputs = resolve_inputs(pipeline_data.get("inputs") or {}, payload.inputs)
@@ -492,7 +474,7 @@ async def run_pipeline(
 
 
 @router.get("/pipelines/{pipeline_id}")
-async def get_pipeline(pipeline_id: str, _auth: AuthContext = Depends(get_prompts_test_auth)):
+async def get_pipeline(pipeline_id: str, _auth: AuthContext = Depends(get_lab_user)):
     if "/" in pipeline_id or "\\" in pipeline_id or pipeline_id.startswith("."):
         raise HTTPException(status_code=400, detail="Invalid pipeline ID")
     path = PIPELINES_DIR / pipeline_id / "pipeline.yaml"
@@ -505,7 +487,7 @@ async def get_pipeline(pipeline_id: str, _auth: AuthContext = Depends(get_prompt
 async def save_pipeline(
     pipeline_id: str,
     body: str = Body(..., description="Raw YAML content"),
-    _auth: AuthContext = Depends(get_prompts_test_auth)
+    _auth: AuthContext = Depends(get_lab_user)
 ):
     if "/" in pipeline_id or "\\" in pipeline_id or pipeline_id.startswith("."):
         raise HTTPException(status_code=400, detail="Invalid pipeline ID")
@@ -522,7 +504,7 @@ async def save_pipeline(
 
 
 @router.delete("/pipelines/{pipeline_id}")
-async def delete_pipeline(pipeline_id: str, _auth: AuthContext = Depends(get_prompts_test_auth)):
+async def delete_pipeline(pipeline_id: str, _auth: AuthContext = Depends(get_lab_user)):
     if "/" in pipeline_id or "\\" in pipeline_id or pipeline_id.startswith("."):
         raise HTTPException(status_code=400, detail="Invalid pipeline ID")
     template_dir = PIPELINES_DIR / pipeline_id
@@ -537,7 +519,7 @@ async def delete_pipeline(pipeline_id: str, _auth: AuthContext = Depends(get_pro
 
 
 @router.get("/pipeline-templates")
-async def list_pipeline_templates(_auth: AuthContext = Depends(get_prompts_test_auth)):
+async def list_pipeline_templates(_auth: AuthContext = Depends(get_lab_user)):
     templates = []
     for template_name in ["duo_long", "solo_short"]:
         path = PIPELINES_DIR / template_name / "pipeline.yaml"

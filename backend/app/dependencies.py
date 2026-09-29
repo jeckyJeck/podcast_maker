@@ -86,3 +86,35 @@ async def get_current_user(
         )
 
     return AuthContext(user_id=user.user_id)
+
+
+# ── Lab auth (local prompt-lab tooling only) ───────────────────────────────────
+LAB_USER_ID = "lab-local-user"
+
+
+def lab_auth_bypass_enabled() -> bool:
+    return os.getenv("LAB_AUTH_BYPASS", "").strip().lower() in {"1", "true", "yes", "on"}
+
+
+def check_lab_auth_config() -> None:
+    """Startup guard: refuse to run with the lab bypass in production, warn loudly otherwise."""
+    if not lab_auth_bypass_enabled():
+        return
+    if os.getenv("APP_ENV", "").strip().lower() == "production":
+        raise RuntimeError("LAB_AUTH_BYPASS must not be enabled when APP_ENV=production")
+    logger.warning(
+        "LAB_AUTH_BYPASS is ON: /prompts-test-api accepts unauthenticated requests as user '%s'. "
+        "Local development only.",
+        LAB_USER_ID,
+    )
+
+
+async def get_lab_user(
+    authorization: Optional[str] = Header(default=None),
+    auth_provider: AuthProvider = Depends(get_auth_provider),
+    repository: PodcastRepository = Depends(get_repository),
+) -> AuthContext:
+    """Auth for /prompts-test-api: fixed local user when LAB_AUTH_BYPASS is on, else real auth."""
+    if lab_auth_bypass_enabled():
+        return AuthContext(user_id=LAB_USER_ID, method="lab_bypass")
+    return await get_current_user(authorization, auth_provider, repository)

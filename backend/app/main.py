@@ -14,10 +14,11 @@ from slowapi.errors import RateLimitExceeded
 
 from podcast_maker.core.logging_config import get_logger
 from podcast_maker.core.paths import BACKEND_ROOT
-from app.dependencies import limiter
-from app.routers import hosts, podcasts, users
+from app.dependencies import check_lab_auth_config, limiter
+from app.routers import hosts, podcasts, prompts_test_api, users
 
 load_dotenv(dotenv_path=BACKEND_ROOT / ".env")
+check_lab_auth_config()
 
 app = FastAPI()
 logger = get_logger()
@@ -37,6 +38,8 @@ ALLOWED_ORIGINS = [
     "http://localhost:5173",
     # "http://localhost:3000",
     "http://127.0.0.1:5173",
+    "http://localhost:5180",  # prompts lab UI
+    "http://127.0.0.1:5180",
     # "http://127.0.0.1:3000",
     "https://podcast-maker-nine.vercel.app",
 ]
@@ -77,3 +80,4 @@ async def logging_middleware(request: Request, call_next):
 app.include_router(podcasts.router)
 app.include_router(users.router)
 app.include_router(hosts.router)
+app.include_router(prompts_test_api.router)
