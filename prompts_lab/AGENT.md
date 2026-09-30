@@ -14,14 +14,9 @@ In the future we want to add evaluation process.
 current folder structure:
 
 prompts_lab/
-├── common_resources/           <-- התיקייה המשותפת החדשה
-│   ├── PIPELINE_CONTRACT.md    <-- חוזה ה-YAML המשותף
-│   ├── templates/              <-- נקודות מוצא/טמפלייטים המכילים pipeline.yaml ופלט דיפולטיבי
-│   │   ├── duo_long/
-│   │   └── solo_short/
-│   └── experiments_runs/       <-- הרצות היסטוריות של הסוכן והבקאנד (מוחרג ב-.gitignore)
-├── lab_backend/                <-- קוד הבקאנד של המעבדה
-├── optimization_agent/         <-- קוד סוכן האופטימיזציה
-├── front_client/               <-- UI client for humen use 
-├── front_client_old/           <-- old front client (will be deleted)
-└── requirements.txt
+├── optimization_agent/         <-- optimization agent code (talks to the backend over HTTP)
+└── front_client/               <-- UI client for human use
+
+There is no lab backend: the lab uses the main backend (backend/) under /prompts-test-api.
+The YAML contract, pipelines, schemas, rubrics and run data live in backend/resources and backend/data
+(see backend/resources/PIPELINE_CONTRACT.md).

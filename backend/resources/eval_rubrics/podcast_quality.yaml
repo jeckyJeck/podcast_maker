@@ -1,4 +1,4 @@
-# Rubric for judging a finished podcast script. Loaded by lab_backend/evaluation/rubric.py.
+# Rubric for judging a finished podcast script. Loaded by podcast_maker/evaluation/rubric.py.
 # Dimension names/descriptions are free text - the judge derives dimension keys from `name`.
 # Edit this file to change what gets scored; nothing about these dimensions is hardcoded in code.
 
