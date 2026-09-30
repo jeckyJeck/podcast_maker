@@ -318,7 +318,7 @@ Single JSON response:
 response:
   kind: json
   file: outputs/blueprint.json
-  schema: engine/schemas/blueprint.schema.json
+  schema: resources/schemas/blueprint.schema.json
   extraction:
     mode: json_object
     allow_markdown_fence: true

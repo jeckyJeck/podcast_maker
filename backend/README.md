@@ -14,9 +14,11 @@ The backend of Podcast Maker is a FastAPI-based service responsible for orchestr
 - **Background Processing**: Handles long-running generation tasks from research through audio.
 - **Rate Limiting**: Integrated using `slowapi`.
 
-## Prompt Lab Scope
+## Pipelines and the Prompt Lab
 
-The production backend does not serve prompt lab endpoints. Prompt lab traffic belongs to the isolated backend in `prompts_lab/lab_backend`.
+Podcast text generation (architect -> researcher -> outliner -> scriptwriter) runs through the YAML pipeline engine in `podcast_maker/engine`. The `dialogue` format uses `resources/pipelines/duo_long`, `solo` uses `resources/pipelines/solo_short`; `podcast_maker/core/podcast_job.py` runs the pipeline, uploads each artifact, then does TTS and transcripts. The YAML contract is in `resources/PIPELINE_CONTRACT.md`.
+
+The same backend serves the prompt lab (`prompts_lab/`) under `/prompts-test-api`. Set `LAB_AUTH_BYPASS=true` in `backend/.env` for local lab use (unauthenticated requests run as `lab-local-user`); the app refuses to start with it if `APP_ENV=production`. Without the flag the lab routes use normal Supabase auth. Never set it in deploy config.
 
 ## Project Structure
 
@@ -24,12 +26,15 @@ The production backend does not serve prompt lab endpoints. Prompt lab traffic b
 backend/
 |-- app/
 |   |-- main.py             # Application entry point and middleware
-|   |-- dependencies.py     # FastAPI dependencies
-|   `-- routers/            # API endpoints for podcasts, hosts, and users
+|   |-- dependencies.py     # FastAPI dependencies (auth, lab auth)
+|   `-- routers/            # API endpoints: podcasts, hosts, users, prompts-test-api
 |-- podcast_maker/          # Core generation engine
-|   |-- core/               # AI agent implementations
+|   |-- core/               # Podcast job runner, hosts, paths
+|   |-- engine/             # YAML pipeline engine
+|   |-- evaluation/         # LLM-judge evaluation
 |   `-- services/           # External service adapters
-|-- prompts/                # System instructions for AI roles
+|-- resources/              # Versioned: pipelines, schemas, hosts.json, eval rubrics
+|-- data/                   # Runtime, gitignored: prompt templates, experiment runs
 |-- Dockerfile              # Container configuration
 `-- requirements.txt        # Python dependencies
 ```

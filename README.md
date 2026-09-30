@@ -8,8 +8,8 @@ Podcast Maker transforms a topic into a produced podcast episode with research, 
 
 Podcast Maker uses large language models and text-to-speech technologies to automate the podcast production pipeline:
 
-1. **Researcher**: Performs research on the chosen topic.
-2. **Architect**: Defines the episode blueprint and style.
+1. **Architect**: Defines the episode blueprint and style.
+2. **Researcher**: Performs research on the chosen topic.
 3. **Outliner**: Structures the content into a coherent flow.
 4. **Scriptwriter**: Crafts a natural-sounding dialogue between hosts.
 5. **Audio Producer**: Generates audio and synchronized transcripts.
@@ -39,9 +39,10 @@ podcastMaker/
 |-- backend/                     # FastAPI server logic
 |   |-- app/                     # API routes and dependencies
 |   |-- podcast_maker/           # Core generation engine
-|   |   |-- core/                # Agent logic
+|   |   |-- core/                # Podcast job runner, hosts, paths
+|   |   |-- engine/              # YAML pipeline engine
 |   |   `-- services/            # Cloud and AI providers
-|   |-- prompts/                 # System prompts for AI agents
+|   |-- resources/               # Pipelines (YAML), schemas, hosts, rubrics
 |   `-- requirements.txt         # Backend dependencies
 |-- frontend/                    # React + Vite application
 |   |-- src/                     # React source code
@@ -50,7 +51,7 @@ podcastMaker/
 |   |   |-- hooks/               # Custom logic hooks
 |   |   `-- services/            # API client
 |   `-- package.json             # Frontend dependencies
-|-- prompts/                     # Global prompt templates
+|-- prompts_lab/                 # Prompt lab UI + optimization agent (use the backend's /prompts-test-api)
 `-- README.md                    # Main documentation
 ```
 
