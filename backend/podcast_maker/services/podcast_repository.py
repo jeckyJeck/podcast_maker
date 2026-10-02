@@ -26,8 +26,15 @@ class PodcastRepository(ABC):
         """Return the user's preferred hosts, falling back to defaults if unset."""
 
     @abstractmethod
-    def create_queued_podcast(self, user_id: str, task_id: str, config: Dict[str, Any]) -> Dict[str, Any]:
-        """Create a new podcast record in the 'queued' state."""
+    def create_queued_podcast(
+        self,
+        user_id: str,
+        task_id: str,
+        config: Dict[str, Any],
+        urls: Optional[Dict[str, str]] = None,
+        checkpoint: str = "requested",
+    ) -> Dict[str, Any]:
+        """Create a new podcast record in the 'queued' state (optionally with its first artifact URLs/checkpoint)."""
 
     @abstractmethod
     def get_podcast_by_task_id(self, user_id: str, task_id: str) -> Optional[Dict[str, Any]]:

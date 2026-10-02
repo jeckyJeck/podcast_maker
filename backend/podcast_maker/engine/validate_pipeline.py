@@ -338,6 +338,9 @@ def validate_pipeline_data(data: Any, root: Path) -> None:
     if data.get("version") != 1:
         _add(issues, "version", "must be 1")
     _validate_id(data.get("id"), "id", issues)
+    host_count = data.get("host_count")
+    if host_count is not None and (isinstance(host_count, bool) or not isinstance(host_count, int) or host_count < 1):
+        _add(issues, "host_count", "must be a positive integer")
     _validate_defaults(data.get("defaults"), issues)
 
     input_names = _validate_inputs(data.get("inputs"), issues)

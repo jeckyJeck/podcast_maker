@@ -2,6 +2,7 @@ version: 1
 id: solo_short
 name: Solo Short
 description: Five-minute single-host podcast prompt pipeline.
+host_count: 1
 defaults:
   model:
     provider: gemini

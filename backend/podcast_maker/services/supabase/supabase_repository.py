@@ -100,15 +100,17 @@ class SupabaseRepository(PodcastRepository):
         user_id: str,
         task_id: str,
         config: Dict[str, Any],
+        urls: Optional[Dict[str, str]] = None,
+        checkpoint: str = "requested",
     ) -> Dict[str, Any]:
         topic = str(config.get("topic") or "Untitled Podcast")
         payload = {
             "title": topic,
-            "urls": {},
+            "urls": dict(urls or {}),
             "user_id": user_id,
             "task_id": task_id,
             "status": "queued",
-            "checkpoint": "requested",
+            "checkpoint": checkpoint,
             "config": config,
             "error": None,
         }

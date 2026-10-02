@@ -62,6 +62,12 @@ stages:
 `description`
 : Optional human-readable description.
 
+`host_count`
+: Optional positive integer: how many hosts (voices) the pipeline's script is written
+  for. Used by the production API to validate a podcast request's `host_ids` and to pick
+  a pipeline when the request does not name one. The pipeline `id` is the production
+  "format" name.
+
 `defaults`
 : Optional defaults inherited by stages. A stage can override them.
 
@@ -77,6 +83,11 @@ files. Tooling must derive these from the YAML (or from a run's saved `pipeline.
 and never assume particular names. Evaluation is a separate process and is not configured here.
 
 ## Inputs
+
+Production (`/create-podcast/`) supplies the platform inputs `topic`, `host_profiles`
+(formatted profiles of the selected hosts) and `host_name` (first host's name) by name,
+plus any other declared input passed in the request's `inputs` object. A required input
+that has no default and is not supplied rejects the request.
 
 ```yaml
 inputs:

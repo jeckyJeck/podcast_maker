@@ -2,6 +2,7 @@ version: 1
 id: duo_long
 name: Duo Long
 description: Long two-host podcast prompt pipeline.
+host_count: 2
 defaults:
   model:
     provider: gemini
