@@ -32,6 +32,7 @@ function AppInner() {
     user,
     selectedFormat: hosts.selectedFormat,
     selectedHostIds: hosts.selectedHostIds,
+    maxHosts: hosts.maxHosts,
     refreshCloudHistory,
   });
 
@@ -116,6 +117,8 @@ function AppInner() {
       <CreateScreen
         hosts={hosts.hosts}
         hostsLoading={hosts.hostsLoading}
+        formats={hosts.formats}
+        maxHosts={hosts.maxHosts}
         selectedFormat={hosts.selectedFormat}
         selectedHostIds={hosts.selectedHostIds}
         hostPickerOpen={hosts.hostPickerOpen}

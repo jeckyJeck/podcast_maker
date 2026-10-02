@@ -1,13 +1,15 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { User } from '@supabase/supabase-js';
-import { DEFAULT_HOST_IDS, FORMAT_MAX_HOSTS } from '../config/podcast';
+import { DEFAULT_HOST_IDS, maxHostsFor } from '../config/podcast';
 import { podcastApi } from '../services/api';
 import { isValidHostSelection, loadSession } from '../services/podcastPersistence';
-import type { HostProfile, PodcastFormat } from '../types/podcast';
+import type { HostProfile, PodcastFormat, PodcastFormatInfo } from '../types/podcast';
 
 export interface UsePodcastHostsResult {
   hosts: HostProfile[];
   hostsLoading: boolean;
+  formats: PodcastFormatInfo[];
+  maxHosts: number;
   selectedFormat: PodcastFormat;
   selectedHostIds: string[];
   setSelectedHostIds: React.Dispatch<React.SetStateAction<string[]>>;
@@ -23,8 +25,9 @@ export const usePodcastHosts = (user: User | null): UsePodcastHostsResult => {
   const persistedSession = useMemo(() => loadSession(), []);
 
   const [selectedFormat, setSelectedFormat] = useState<PodcastFormat>(
-    persistedSession?.selectedFormat ?? 'dialogue',
+    persistedSession?.selectedFormat ?? '',
   );
+  const [formats, setFormats] = useState<PodcastFormatInfo[]>([]);
   const [selectedHostIds, setSelectedHostIds] = useState<string[]>(
     persistedSession?.selectedHostIds ?? [...DEFAULT_HOST_IDS],
   );
@@ -41,6 +44,22 @@ export const usePodcastHosts = (user: User | null): UsePodcastHostsResult => {
   }, []);
 
   useEffect(() => {
+    podcastApi
+      .getFormats()
+      .then((r) => {
+        setFormats(r.formats);
+        // Keep the remembered format if it still exists; otherwise pick the one written for the current hosts.
+        setSelectedFormat((prev) =>
+          r.formats.some((f) => f.id === prev)
+            ? prev
+            : (r.formats.find((f) => f.host_count === selectedHostIds.length) ?? r.formats[0])?.id ?? '',
+        );
+      })
+      .catch(console.error);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     if (!user) return;
     podcastApi
       .getUserPreferences()
@@ -53,15 +72,15 @@ export const usePodcastHosts = (user: User | null): UsePodcastHostsResult => {
   }, [user]);
 
   const handleFormatChange = useCallback((fmt: PodcastFormat) => {
-    const newMax = FORMAT_MAX_HOSTS[fmt];
-    const prevMax = FORMAT_MAX_HOSTS[selectedFormat];
+    const newMax = maxHostsFor(formats, fmt);
+    const prevMax = maxHostsFor(formats, selectedFormat);
     setSelectedFormat(fmt);
     if (newMax < prevMax) {
       setSelectedHostIds((prev) => prev.slice(-newMax));
     } else if (newMax > selectedHostIds.length) {
       setHostPickerOpen(true);
     }
-  }, [selectedFormat, selectedHostIds.length]);
+  }, [formats, selectedFormat, selectedHostIds.length]);
 
   const saveHostsPreference = useCallback(async (ids: string[]) => {
     setSelectedHostIds(ids);
@@ -78,6 +97,8 @@ export const usePodcastHosts = (user: User | null): UsePodcastHostsResult => {
   return {
     hosts,
     hostsLoading,
+    formats,
+    maxHosts: maxHostsFor(formats, selectedFormat),
     selectedFormat,
     selectedHostIds,
     setSelectedHostIds,

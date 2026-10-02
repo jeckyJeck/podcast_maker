@@ -1,24 +1,8 @@
 import React from 'react';
 import { FaCheck, FaComments, FaPen, FaPlay, FaUser, FaVolumeUp } from 'react-icons/fa';
 import { FaWandMagicSparkles } from 'react-icons/fa6';
-import { FORMAT_MAX_HOSTS } from '../config/podcast';
 import { StatusDisplay } from './StatusDisplay';
-import type { HostProfile, PodcastFormat, PodcastTaskStatus } from '../types/podcast';
-
-const FORMAT_OPTIONS: { value: PodcastFormat; title: string; description: string; meta: string }[] = [
-  {
-    value: 'dialogue',
-    title: 'Dialogue',
-    description: 'Dynamic conversation between two AI hosts with natural banter.',
-    meta: '2 hosts',
-  },
-  {
-    value: 'solo',
-    title: 'Solo',
-    description: 'A focused monologue built for storytelling and analysis.',
-    meta: '1 host',
-  },
-];
+import type { HostProfile, PodcastFormat, PodcastFormatInfo, PodcastTaskStatus } from '../types/podcast';
 
 const traitForTone = (tone: string) => {
   const value = tone.toLowerCase();
@@ -31,6 +15,8 @@ const traitForTone = (tone: string) => {
 interface HostsSliceProps {
   hosts: HostProfile[];
   hostsLoading: boolean;
+  formats: PodcastFormatInfo[];
+  maxHosts: number;
   selectedFormat: PodcastFormat;
   selectedHostIds: string[];
   hostPickerOpen: boolean;
@@ -39,11 +25,10 @@ interface HostsSliceProps {
 }
 
 const InlineHostPicker: React.FC<HostsSliceProps> = ({
-  hosts, hostsLoading, selectedHostIds, selectedFormat,
+  hosts, hostsLoading, selectedHostIds, maxHosts,
   hostPickerOpen, setHostPickerOpen, saveHostsPreference,
 }) => {
   const [localSelected, setLocalSelected] = React.useState<string[]>(selectedHostIds);
-  const maxHosts = FORMAT_MAX_HOSTS[selectedFormat];
 
   React.useEffect(() => {
     if (hostPickerOpen) setLocalSelected(selectedHostIds);
@@ -153,7 +138,7 @@ const InlineHostPicker: React.FC<HostsSliceProps> = ({
 };
 
 const SelectedHostsStrip: React.FC<Omit<HostsSliceProps, 'saveHostsPreference'>> = ({
-  hosts, hostsLoading, selectedHostIds, hostPickerOpen, setHostPickerOpen, selectedFormat,
+  hosts, hostsLoading, selectedHostIds, hostPickerOpen, setHostPickerOpen, maxHosts,
 }) => {
   const selectedHosts = selectedHostIds
     .map((id) => hosts.find((h) => h.id === id))
@@ -204,7 +189,7 @@ const SelectedHostsStrip: React.FC<Omit<HostsSliceProps, 'saveHostsPreference'>>
         onClick={() => setHostPickerOpen(!hostPickerOpen)}
         className="mt-3 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-[#b8c7ff] transition-all hover:border-[#9bb8ff]/50"
       >
-        {hostPickerOpen ? 'Close hosts' : `Edit ${FORMAT_MAX_HOSTS[selectedFormat]} host${FORMAT_MAX_HOSTS[selectedFormat] > 1 ? 's' : ''}`}
+        {hostPickerOpen ? 'Close hosts' : `Edit ${maxHosts} host${maxHosts > 1 ? 's' : ''}`}
       </button>
     </div>
   );
@@ -224,7 +209,7 @@ export interface CreateScreenProps extends HostsSliceProps {
 
 export const CreateScreen: React.FC<CreateScreenProps> = ({
   hosts, hostsLoading, selectedHostIds, hostPickerOpen, setHostPickerOpen, saveHostsPreference,
-  selectedFormat, handleFormatChange,
+  formats, maxHosts, selectedFormat, handleFormatChange,
   topic, setTopic,
   isSubmitting, handleSubmit, handleReset,
   effectiveStatus, podcastReady,
@@ -249,15 +234,15 @@ export const CreateScreen: React.FC<CreateScreenProps> = ({
       <section>
         <p className="mb-5 text-xs font-bold uppercase tracking-[0.24em] text-[#b8c7ff]">01. Choose format</p>
         <div className="grid gap-5 sm:grid-cols-2">
-          {FORMAT_OPTIONS.map((opt) => {
-            const isSelected = selectedFormat === opt.value;
-            const Icon = opt.value === 'dialogue' ? FaComments : FaUser;
+          {formats.map((opt) => {
+            const isSelected = selectedFormat === opt.id;
+            const Icon = opt.host_count === 1 ? FaUser : FaComments;
             return (
               <button
-                key={opt.value}
+                key={opt.id}
                 type="button"
                 disabled={isSubmitting || showStatus}
-                onClick={() => handleFormatChange(opt.value)}
+                onClick={() => handleFormatChange(opt.id)}
                 className={`group min-h-64 rounded-[1.75rem] border p-7 text-left transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50 ${
                   isSelected
                     ? 'border-[#7e61ff] bg-[radial-gradient(circle_at_80%_20%,rgba(77,142,255,0.15),rgba(255,255,255,0.045)_45%,rgba(18,18,20,0.94)_100%)] shadow-[0_0_0_1px_rgba(77,142,255,0.45),0_24px_80px_rgba(87,27,193,0.18)]'
@@ -266,10 +251,10 @@ export const CreateScreen: React.FC<CreateScreenProps> = ({
               >
                 <Icon className={isSelected ? 'text-[#b8c7ff]' : 'text-[#a7aab8]'} size={28} />
                 <div className="mt-8">
-                  <h2 className="font-display text-2xl font-extrabold text-white">{opt.title}</h2>
+                  <h2 className="font-display text-2xl font-extrabold text-white">{opt.name}</h2>
                   <p className="mt-3 min-h-12 text-sm leading-6 text-[#d8d9e0]">{opt.description}</p>
                 </div>
-                <p className="mt-10 text-[10px] font-bold uppercase tracking-[0.22em] text-white">{opt.meta}</p>
+                <p className="mt-10 text-[10px] font-bold uppercase tracking-[0.22em] text-white">{opt.host_count ? `${opt.host_count} host${opt.host_count > 1 ? 's' : ''}` : ''}</p>
               </button>
             );
           })}
@@ -284,6 +269,8 @@ export const CreateScreen: React.FC<CreateScreenProps> = ({
           selectedHostIds={selectedHostIds}
           hostPickerOpen={hostPickerOpen}
           setHostPickerOpen={setHostPickerOpen}
+          formats={formats}
+          maxHosts={maxHosts}
           selectedFormat={selectedFormat}
         />
         <InlineHostPicker
@@ -293,6 +280,8 @@ export const CreateScreen: React.FC<CreateScreenProps> = ({
           hostPickerOpen={hostPickerOpen}
           setHostPickerOpen={setHostPickerOpen}
           saveHostsPreference={saveHostsPreference}
+          formats={formats}
+          maxHosts={maxHosts}
           selectedFormat={selectedFormat}
         />
       </section>
@@ -338,6 +327,8 @@ export const CreateScreen: React.FC<CreateScreenProps> = ({
       {showStatus && (
         <StatusDisplay
           status={effectiveStatus?.status ?? 'failed'}
+          checkpoint={effectiveStatus?.checkpoint}
+          stages={effectiveStatus?.stages ?? undefined}
           error={effectiveStatus?.error}
         />
       )}

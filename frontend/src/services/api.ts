@@ -4,6 +4,7 @@ import type {
   PodcastTaskStatus,
   AvailableHostsResponse,
   PodcastFormat,
+  FormatsResponse,
   UserPodcastsResponse,
   UserPreferencesResponse,
 } from '../types/podcast';
@@ -116,6 +117,11 @@ export const podcastApi = {
       ...(hostIds && { host_ids: hostIds }),
       ...(format && { format })
     });
+    return response.data;
+  },
+
+  getFormats: async (): Promise<FormatsResponse> => {
+    const response = await apiClient.get<FormatsResponse>('/formats');
     return response.data;
   },
 

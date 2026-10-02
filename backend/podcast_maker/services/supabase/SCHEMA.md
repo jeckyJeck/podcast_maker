@@ -27,30 +27,41 @@
 | `user_id` | `uuid` | FK to `auth.users.id` |
 | `task_id` | `text` | stable creation task/storage identifier |
 | `status` | `text` | `queued`, `processing`, `failed`, or `completed` |
-| `checkpoint` | `text` | last completed pipeline checkpoint |
-| `config` | `jsonb` | normalized create-podcast payload |
+| `checkpoint` | `text` | last completed checkpoint: `requested`, `pipeline` (YAML saved), a stage id per finished stage, then `audio`, `transcript`, `completed` |
+| `config` | `jsonb` | normalized create-podcast payload plus the frozen plan: `inputs` and `stages` |
 | `error` | `text` | latest failure message, if any |
 | `created_at` | `timestamptz` | creation timestamp |
 | `updated_at` | `timestamptz` | update timestamp |
 
-`urls` example:
+`urls` example (one entry per checkpoint; stage keys are the stage ids of the episode's pipeline YAML):
 
 ```json
 {
+  "pipeline": "https://.../pipeline.yaml",
+  "architect": "https://.../blueprint.json",
+  "researcher": "https://.../research.md",
+  "outliner": "https://.../outline.json",
+  "scriptwriter": "https://.../script.txt",
   "audio": "https://...",
-  "transcript": "https://..."
+  "transcript": "https://...",
+  "transcript_vtt": "https://..."
 }
 ```
 
-`config` example:
+`config` example (`format` is a pipeline id; `inputs` are the pipeline's resolved inputs, frozen at creation):
 
 ```json
 {
   "topic": "History of packet switching",
   "host_ids": ["sarah_curious", "mike_expert"],
-  "format": "dialogue"
+  "format": "duo_long",
+  "inputs": {"topic": "History of packet switching", "host_profiles": "...", "host_name": "Sarah"},
+  "stages": ["architect", "researcher", "outliner", "scriptwriter"]
 }
 ```
+
+The pipeline YAML itself is saved as a file in the episode's storage folder (`urls.pipeline`), not in the
+database; no column was added for it.
 
 ## Relationships (visual)
 

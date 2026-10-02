@@ -1,11 +1,11 @@
+// URLs of an episode's files. Stage artifacts are keyed by the pipeline's stage ids (any names);
+// `pipeline` is the saved pipeline YAML; `audio`, `transcript`, `transcript_vtt` are the fixed tail.
 export interface PodcastFiles {
-  blueprint?: string;
-  research?: string;
-  outline?: string;
-  script?: string;
+  pipeline?: string;
   audio?: string;
   transcript?: string;
   transcript_vtt?: string;
+  [stageId: string]: string | undefined;
 }
 
 export interface TranscriptSegment {
@@ -17,15 +17,8 @@ export interface TranscriptSegment {
 
 export type TaskStatus = 'queued' | 'processing' | 'completed' | 'failed';
 
-export type PodcastCheckpoint =
-  | 'requested'
-  | 'blueprint'
-  | 'research'
-  | 'outline'
-  | 'script'
-  | 'audio'
-  | 'transcript'
-  | 'completed';
+// 'pipeline' (YAML saved), then a stage id per finished stage, then 'audio', 'transcript', 'completed'.
+export type PodcastCheckpoint = string;
 
 export interface PodcastTaskStatus {
   podcast_id?: string;
@@ -33,6 +26,7 @@ export interface PodcastTaskStatus {
   status: TaskStatus;
   url: PodcastFiles | null;
   checkpoint?: PodcastCheckpoint;
+  stages?: string[] | null; // stage ids of this episode's pipeline, in order
   error?: string;
 }
 
@@ -42,7 +36,19 @@ export interface CreatePodcastResponse {
   message: string;
 }
 
-export type PodcastFormat = 'dialogue' | 'solo';
+// A format is a pipeline id (see GET /formats).
+export type PodcastFormat = string;
+
+export interface PodcastFormatInfo {
+  id: PodcastFormat;
+  name: string;
+  description: string;
+  host_count: number | null;
+}
+
+export interface FormatsResponse {
+  formats: PodcastFormatInfo[];
+}
 
 export interface HostProfile {
   id: string;
@@ -65,6 +71,7 @@ export interface PodcastConfig {
   topic: string;
   host_ids: string[];
   format: PodcastFormat;
+  stages?: string[];
 }
 
 export interface UserPodcastRecord {
@@ -76,6 +83,7 @@ export interface UserPodcastRecord {
   config?: PodcastConfig;
   status: TaskStatus;
   checkpoint?: PodcastCheckpoint;
+  stages?: string[] | null;
   url: PodcastFiles | null;
   error?: string;
   created_at?: string;

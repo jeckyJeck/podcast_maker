@@ -19,21 +19,8 @@ const isObjectRecord = (value: unknown): value is Record<string, unknown> =>
 const isPodcastFiles = (value: unknown): value is PodcastFiles => {
   if (!isObjectRecord(value)) return false;
 
-  const fileKeys: Array<keyof PodcastFiles> = [
-    'blueprint',
-    'research',
-    'outline',
-    'script',
-    'audio',
-    'transcript',
-    'transcript_vtt',
-  ];
-
-  for (const key of fileKeys) {
-    if (value[key] !== undefined && typeof value[key] !== 'string') return false;
-  }
-
-  return true;
+  // Keys are stage ids chosen by the pipeline, so only the values are checked.
+  return Object.values(value).every((url) => url === undefined || typeof url === 'string');
 };
 
 const isTaskStatus = (value: unknown): value is PodcastTaskStatus['status'] =>
@@ -52,15 +39,10 @@ const isPodcastTaskStatus = (value: unknown): value is PodcastTaskStatus => {
 export const resolvePodcastFiles = (
   statusFiles: PodcastFiles,
   cachedFiles: Partial<PodcastFiles>,
-): PodcastFiles => ({
-  blueprint: cachedFiles.blueprint ?? statusFiles.blueprint,
-  research: cachedFiles.research ?? statusFiles.research,
-  outline: cachedFiles.outline ?? statusFiles.outline,
-  script: cachedFiles.script ?? statusFiles.script,
-  audio: cachedFiles.audio ?? statusFiles.audio,
-  transcript: cachedFiles.transcript ?? statusFiles.transcript,
-  transcript_vtt: cachedFiles.transcript_vtt ?? statusFiles.transcript_vtt,
-});
+): PodcastFiles =>
+  Object.fromEntries(
+    Object.entries(statusFiles).map(([key, url]) => [key, cachedFiles[key] ?? url]),
+  ) as PodcastFiles;
 
 export interface PodcastHistoryItem {
   id: string;
@@ -96,7 +78,7 @@ export const loadSession = (): PersistedSession | null => {
     return {
       topic: typeof parsed.topic === 'string' ? parsed.topic : '',
       taskId: typeof parsed.taskId === 'string' ? parsed.taskId : null,
-      selectedFormat: parsed.selectedFormat === 'solo' ? 'solo' : 'dialogue',
+      selectedFormat: typeof parsed.selectedFormat === 'string' ? parsed.selectedFormat : '',
       selectedHostIds: isValidHostSelection(parsed.selectedHostIds)
         ? parsed.selectedHostIds
         : [...DEFAULT_HOST_IDS],
@@ -148,7 +130,7 @@ export const loadHistory = (): PodcastHistoryItem[] => {
           podcastId: typeof item.podcastId === 'string' ? item.podcastId : item.id,
           topic: item.topic,
           taskId: item.taskId,
-          selectedFormat: item.selectedFormat === 'solo' ? 'solo' : 'dialogue',
+          selectedFormat: typeof item.selectedFormat === 'string' ? item.selectedFormat : '',
           selectedHostIds: item.selectedHostIds,
           currentTime: item.currentTime,
           status: item.status,
@@ -172,7 +154,7 @@ export const upsertHistory = (
   session: PersistedSession,
 ): PodcastHistoryItem[] => {
   if (!session.status?.url) return items;
-  const identity = session.taskId ?? session.status.url.audio ?? session.status.url.script;
+  const identity = session.taskId ?? session.status.url.audio ?? session.status.url.pipeline;
   if (!identity) return items;
   const existing = items.find((i) => (i.taskId ?? i.status.url?.audio) === identity);
   const next: PodcastHistoryItem = {
@@ -202,10 +184,10 @@ export const mapCloudToHistory = (r: UserPodcastRecord): PodcastHistoryItem | nu
     podcastId: r.id,
     topic: config?.topic || r.topic,
     taskId: r.task_id,
-    selectedFormat: config?.format || r.format || (hostIds.length === 1 ? 'solo' : 'dialogue'),
+    selectedFormat: config?.format || r.format || '',
     selectedHostIds: hostIds,
     currentTime: 0,
-    status: { status: r.status, url: r.url, checkpoint: r.checkpoint, error: r.error },
+    status: { status: r.status, url: r.url, checkpoint: r.checkpoint, stages: r.stages ?? config?.stages, error: r.error },
     updatedAt: r.updated_at ?? r.created_at ?? new Date().toISOString(),
   };
 };

@@ -1,5 +1,4 @@
 import { podcastApi } from './api';
-import { FORMAT_MAX_HOSTS } from '../config/podcast';
 import type { PodcastFormat } from '../types/podcast';
 
 export const CREATE_PODCAST_FAILURE_MESSAGE = 'שגיאה ביצירת הפודקאסט. אנא נסה שוב.';
@@ -8,12 +7,14 @@ type ValidateCreatePodcastInputParams = {
   topic: string;
   selectedFormat: PodcastFormat;
   selectedHostIds: string[];
+  maxHosts: number; // hosts the selected format needs
 };
 
 export const validateCreatePodcastInput = ({
   topic,
   selectedFormat,
   selectedHostIds,
+  maxHosts,
 }: ValidateCreatePodcastInputParams): { isValid: true } | { isValid: false; message: string } => {
   if (!topic.trim()) {
     return {
@@ -22,14 +23,14 @@ export const validateCreatePodcastInput = ({
     };
   }
 
-  const maxHosts = FORMAT_MAX_HOSTS[selectedFormat];
+  if (!selectedFormat) {
+    return { isValid: false, message: 'אנא בחר פורמט לפודקאסט' };
+  }
+
   if (selectedHostIds.length !== maxHosts) {
     return {
       isValid: false,
-      message:
-        selectedFormat === 'dialogue'
-          ? 'בפורמט שיחה צריך לבחור בדיוק 2 מארחים'
-          : 'בפורמט סולו צריך לבחור בדיוק מארח אחד',
+      message: maxHosts === 1 ? 'בפורמט זה צריך לבחור בדיוק מארח אחד' : `בפורמט זה צריך לבחור בדיוק ${maxHosts} מארחים`,
     };
   }
 

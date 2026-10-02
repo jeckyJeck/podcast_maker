@@ -21,6 +21,7 @@ export interface UsePodcastSessionOptions {
   user: User | null;
   selectedFormat: PodcastFormat;
   selectedHostIds: string[];
+  maxHosts: number;
   refreshCloudHistory: () => void;
 }
 
@@ -49,6 +50,7 @@ export const usePodcastSession = ({
   user,
   selectedFormat,
   selectedHostIds,
+  maxHosts,
   refreshCloudHistory,
 }: UsePodcastSessionOptions): UsePodcastSessionResult => {
   const persistedSession = useMemo(() => loadSession(), []);
@@ -144,7 +146,7 @@ export const usePodcastSession = ({
   }, []);
 
   const handleSubmit = useCallback(async () => {
-    const validation = validateCreatePodcastInput({ topic, selectedFormat, selectedHostIds });
+    const validation = validateCreatePodcastInput({ topic, selectedFormat, selectedHostIds, maxHosts });
     if (!validation.isValid) {
       alert(validation.message);
       return;
@@ -153,7 +155,7 @@ export const usePodcastSession = ({
     setRestoredStatus(null);
     clearFileCache();
     try {
-      const nextTaskId = await createPodcastTask({ topic, selectedFormat, selectedHostIds });
+      const nextTaskId = await createPodcastTask({ topic, selectedFormat, selectedHostIds, maxHosts });
       setTaskId(nextTaskId);
       if (user) refreshCloudHistory();
     } catch (err) {
@@ -162,7 +164,7 @@ export const usePodcastSession = ({
     } finally {
       setIsSubmitting(false);
     }
-  }, [topic, selectedFormat, selectedHostIds, user, refreshCloudHistory, clearFileCache]);
+  }, [topic, selectedFormat, selectedHostIds, maxHosts, user, refreshCloudHistory, clearFileCache]);
 
   const resetSessionFields = useCallback(() => {
     setTopic('');

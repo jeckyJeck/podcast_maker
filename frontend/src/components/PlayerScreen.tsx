@@ -22,15 +22,12 @@ const formatTime = (seconds: number): string => {
   return `${m}:${s.toString().padStart(2, '0')}`;
 };
 
-const FILE_META: { key: keyof PodcastFiles; filename: string }[] = [
-  { key: 'audio',          filename: 'podcast.mp3' },
-  { key: 'script',         filename: 'script.txt' },
-  { key: 'research',       filename: 'research.md' },
-  { key: 'blueprint',      filename: 'blueprint.json' },
-  { key: 'outline',        filename: 'outline.json' },
-  { key: 'transcript',     filename: 'transcript.json' },
-  { key: 'transcript_vtt', filename: 'transcript.vtt' },
-];
+// File name inside the zip: the stored file's own name (stage artifacts are named by the pipeline).
+const zipFileName = (key: string, url: string): string => {
+  if (key === 'audio') return 'podcast.mp3';
+  const last = decodeURIComponent(url.split('?')[0].split('/').pop() || '');
+  return last || key;
+};
 
 const downloadZip = async (
   files: PodcastFiles,
@@ -45,9 +42,9 @@ const downloadZip = async (
     if (!folder) throw new Error('Failed to create folder');
 
     await Promise.all(
-      FILE_META.map(async ({ key, filename }) => {
-        const url = files[key];
+      Object.entries(files).map(async ([key, url]) => {
         if (!url) return;
+        const filename = zipFileName(key, url);
         const res = await fetchWithRetry(url);
         if (!res.ok) {
           throw new Error(`Failed to download ${filename}`);

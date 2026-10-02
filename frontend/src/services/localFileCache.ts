@@ -3,15 +3,8 @@ import { fetchWithRetry } from './http';
 
 const PODCAST_FILES_CACHE_NAME = 'podcast-maker-files-v1';
 
-const FILE_KEYS: Array<keyof PodcastFiles> = [
-  'blueprint',
-  'research',
-  'outline',
-  'script',
-  'audio',
-  'transcript',
-  'transcript_vtt',
-];
+// Every file the episode has; stage artifact keys depend on the pipeline.
+const fileKeys = (files: PodcastFiles): string[] => Object.keys(files);
 
 const canUseCacheApi = (): boolean => {
   return typeof window !== 'undefined' && 'caches' in window;
@@ -25,7 +18,7 @@ export const cachePodcastFiles = async (files: PodcastFiles): Promise<void> => {
   const cache = await window.caches.open(PODCAST_FILES_CACHE_NAME);
 
   await Promise.all(
-    FILE_KEYS.map(async (key) => {
+    fileKeys(files).map(async (key) => {
       const url = files[key];
       if (!url) {
         return;
@@ -61,7 +54,7 @@ export const getCachedPodcastBlobUrls = async (
   const cachedBlobUrls: Partial<PodcastFiles> = {};
 
   await Promise.all(
-    FILE_KEYS.map(async (key) => {
+    fileKeys(files).map(async (key) => {
       const sourceUrl = files[key];
       if (!sourceUrl) {
         return;
