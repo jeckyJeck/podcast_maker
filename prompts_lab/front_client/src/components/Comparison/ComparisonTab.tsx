@@ -30,18 +30,13 @@ export default function ComparisonTab() {
         getRun(runB, token)
       ]);
 
-      // Load specific files content (e.g. prompt_architect, blueprint.json, research.md, outline.json, script.txt)
+      // Load every file the run produced (stage outputs are pipeline-defined), except bookkeeping files.
       const loadContents = async (details: any, runId: string) => {
         const fileContents: Record<string, string> = {};
-        const targets = [
-          "blueprint.json", "blueprint.snapshot.json",
-          "research.md", "research.snapshot.md",
-          "outline.json", "outline.snapshot.json",
-          "script.txt", "script.snapshot.txt"
-        ];
-        
+        const skip = ["run_manifest.json", "evaluation.json"];
+
         for (const file of details.files) {
-          if (targets.includes(file) || file.startsWith("prompt_")) {
+          if (!skip.includes(file)) {
             try {
               fileContents[file] = await getRunFile(runId, file, token);
             } catch {
@@ -72,8 +67,14 @@ export default function ComparisonTab() {
     setTimeout(() => setCopiedId(null), 2000);
   };
 
+  // Label a file by the stage that wrote it (from the run's pipeline YAML), else by its path.
   const formatStageLabel = (file: string) => {
-    return file.replace(".json", "").replace(".md", "").replace(".txt", "").replace("prompt_", "Prompt: ").toUpperCase();
+    const outputs: Record<string, string> = {
+      ...(detailsB?.details.stage_outputs || {}),
+      ...(detailsA?.details.stage_outputs || {})
+    };
+    const stage = Object.keys(outputs).find(id => outputs[id] === file);
+    return (stage ?? file).toUpperCase();
   };
 
   return (
@@ -109,7 +110,7 @@ export default function ComparisonTab() {
           <select className="form-select" value={runA} onChange={e => setRunA(e.target.value)}>
             <option value="">Select first run...</option>
             {runs.map(r => (
-              <option key={r.run_id} value={r.run_id}>{r.run_id} ({r.topic || "no topic"})</option>
+              <option key={r.run_id} value={r.run_id}>{r.run_id} ({r.label || r.pipeline_id || "no label"})</option>
             ))}
           </select>
         </div>
@@ -119,7 +120,7 @@ export default function ComparisonTab() {
           <select className="form-select" value={runB} onChange={e => setRunB(e.target.value)}>
             <option value="">Select second run...</option>
             {runs.map(r => (
-              <option key={r.run_id} value={r.run_id}>{r.run_id} ({r.topic || "no topic"})</option>
+              <option key={r.run_id} value={r.run_id}>{r.run_id} ({r.label || r.pipeline_id || "no label"})</option>
             ))}
           </select>
         </div>
@@ -142,8 +143,9 @@ export default function ComparisonTab() {
               </div>
               <div style={{ fontSize: "0.85rem", color: "#94a3b8", display: "flex", flexDirection: "column", gap: "0.25rem" }}>
                 <div>ID: <strong style={{ color: "#f8fafc" }}>{detailsA.details.run_id}</strong></div>
-                <div>Topic: <strong>{detailsA.details.manifest?.topic || "N/A"}</strong></div>
-                <div>Created: <strong>{detailsA.details.manifest?.created_at_utc || "N/A"}</strong></div>
+                <div>Label: <strong>{detailsA.details.manifest?.label || "N/A"}</strong></div>
+                <div>Pipeline: <strong>{detailsA.details.manifest?.pipeline_id || "N/A"}</strong></div>
+                <div>Created: <strong>{detailsA.details.manifest?.started_at_utc || "N/A"}</strong></div>
               </div>
             </div>
             <div className="compare-box">
@@ -152,8 +154,9 @@ export default function ComparisonTab() {
               </div>
               <div style={{ fontSize: "0.85rem", color: "#94a3b8", display: "flex", flexDirection: "column", gap: "0.25rem" }}>
                 <div>ID: <strong style={{ color: "#f8fafc" }}>{detailsB.details.run_id}</strong></div>
-                <div>Topic: <strong>{detailsB.details.manifest?.topic || "N/A"}</strong></div>
-                <div>Created: <strong>{detailsB.details.manifest?.created_at_utc || "N/A"}</strong></div>
+                <div>Label: <strong>{detailsB.details.manifest?.label || "N/A"}</strong></div>
+                <div>Pipeline: <strong>{detailsB.details.manifest?.pipeline_id || "N/A"}</strong></div>
+                <div>Created: <strong>{detailsB.details.manifest?.started_at_utc || "N/A"}</strong></div>
               </div>
             </div>
           </div>

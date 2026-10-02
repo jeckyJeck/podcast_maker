@@ -72,6 +72,17 @@ stages:
 : Required non-empty list. Stages run in order in v1. A stage may consume only
   pipeline inputs, its map item/context, or outputs from previous stages.
 
+`evaluation`
+: Optional. Tells tooling (lab UI, optimization agent) what to judge when a run is
+  evaluated without explicit files: `content` (a stage id or list of stage ids whose
+  output files are judged) and `context` (list of stage ids whose outputs are shown to
+  the judge as supporting material). Every id must be a stage that writes an output file.
+  Without this block the final stage's output file is judged, with no context.
+
+The pipeline YAML is the single source of truth for stage ids, input names and output
+files. Tooling must derive these from the YAML (or from a run's saved `pipeline.yaml`)
+and never assume particular names.
+
 ## Inputs
 
 ```yaml
@@ -172,6 +183,9 @@ stages:
 `tools`
 : Optional list of provider tool names to attach to this stage's LLM call. Defaults
   to none. See "Tools" below.
+
+`temperature`
+: Optional sampling temperature (number, 0-2) for this stage's LLM calls.
 
 `failure`
 : Optional stage-level failure policy override.
@@ -474,4 +488,5 @@ A valid v1 pipeline must satisfy:
 - Output response references are legal for the stage execution.
 - Stage `tools`, if present, is a list of strings and every entry is a known tool
   name.
+- `evaluation`, if present, references only stages that write an output file.
 

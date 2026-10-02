@@ -6,6 +6,8 @@ import re
 import sys
 from typing import Any
 
+import yaml
+
 try:
     from .agent_llm import AgentLLM, ToolCall, ToolSpec, build_agent_llm, PROVIDERS
     from . import tools as tools_module
@@ -71,12 +73,36 @@ def describe_tools(tool_specs: list[ToolSpec]) -> str:
     return "\n".join(lines)
 
 
+def stage_output_files(pipeline_data: dict[str, Any]) -> dict[str, str]:
+    """{stage_id: run-relative output file} read straight from the pipeline YAML."""
+    files: dict[str, str] = {}
+    for stage in pipeline_data.get("stages") or []:
+        response = stage.get("response") or {}
+        file_name = response.get("file") if stage.get("execution") == "single" else response.get("aggregate_file")
+        if stage.get("id") and file_name:
+            files[stage["id"]] = file_name
+    return files
+
+
 def describe_pipeline(workspace_info: WorkspaceInfo) -> str:
     """Describe the real pipeline this run is improving: every stage's current prompt
     text, read live from the sandboxed workspace copy (never from the backend
     directly, so the model always sees exactly what it's allowed to edit)."""
     manifest = json.loads((workspace_info.root / "manifest.json").read_text(encoding="utf-8"))
     sections = [f"Format: {workspace_info.format}", f"Source: backend pipeline {manifest['pipeline_id']!r} at {manifest['backend_url']} (read-only; edit via the workspace)"]
+    # Inputs and stage ids/outputs are defined by the pipeline YAML itself; surface them so the model never guesses.
+    pipeline_data = yaml.safe_load((workspace_info.root / "pipeline.yaml").read_text(encoding="utf-8")) or {}
+    input_lines = [
+        f"- {name} (type: {spec.get('type', 'text')}, "
+        + ("required" if spec.get("required") else f"default: {spec.get('default')!r}")
+        + ")"
+        for name, spec in (pipeline_data.get("inputs") or {}).items()
+    ]
+    sections.append("Pipeline inputs (pass these as `inputs` to run_pipeline):\n" + ("\n".join(input_lines) or "(none)"))
+    sections.append(
+        "Stage output files: "
+        + ", ".join(f"{stage}: {file}" for stage, file in stage_output_files(pipeline_data).items())
+    )
     for stage_id, entry in manifest.get("stages", {}).items():
         prompt_path = workspace_info.root / entry["workspace_file"]
         prompt_text = prompt_path.read_text(encoding="utf-8") if prompt_path.exists() else "(missing)"
@@ -284,7 +310,7 @@ def run_agent(
                 stage_id = action["params"].get("stage_id")
                 if stage_id:
                     changes_made.append(f"PROMOTED:{stage_id}")
-            if tool_name in {"run_evaluation", "run_all_test_topics"} and not result.startswith("error:"):
+            if tool_name in {"run_evaluation", "run_all_test_cases"} and not result.startswith("error:"):
                 results[f"step_{step}"] = result
             last_tool = {
                 "step": step,

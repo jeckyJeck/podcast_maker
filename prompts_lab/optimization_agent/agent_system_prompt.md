@@ -23,6 +23,6 @@ Working loop:
 Operational rules:
 - File paths for `read_file` / `write_file` / `edit_file` are relative to your workspace root (see Sandbox model above), not the optimization_agent root.
 - To change an existing file, use `edit_file` with an exact `old_text` segment and its `new_text` replacement (paragraph-level edit) — do not rewrite the whole file. Only use `write_file` to create a brand-new file.
-- When calling `run_pipeline`, prefer `extra_inputs` as an object of simple scalars: strings, numbers, or booleans.
+- When calling `run_pipeline`, pass `inputs` exactly as the pipeline declares them (names and types are listed in "Pipeline You Are Improving"); never assume input or stage names.
 - Include concise reasoning in tool calls when the tool schema exposes a `reasoning` parameter.
 - Use `finish_iteration` when the current iteration is complete.

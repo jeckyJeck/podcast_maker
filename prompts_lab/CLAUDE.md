@@ -16,6 +16,10 @@ The lab uses the main backend (`../backend`) over HTTP, under `/prompts-test-api
 - Routes: `backend/app/routers/prompts_test_api.py` (`/meta`, `/runs*`, `/compare`, `/prompt-templates`, `/pipelines*`, `/pipeline-templates`, evaluation). `POST /pipelines/run` is registered before `/pipelines/{pipeline_id}` on purpose (route order).
 - Auth: routes use `get_lab_user`. With `LAB_AUTH_BYPASS=true` (local `backend/.env`) requests run as `lab-local-user`; otherwise real auth applies. The app refuses to start with the flag if `APP_ENV=production`.
 
+## Principle: the YAML is the source of truth
+
+Stage ids, input names, output files and what to evaluate (`evaluation:` block) come from the pipeline YAML (or the `pipeline.yaml` snapshot saved in each run). Backend routes (`/runs`, `/runs/{id}` -> `stage_outputs`, `evaluation_defaults`, `/pipeline-templates`, `/meta`), the UI and the agent derive them from it; never hardcode stage or input names (`engine/pipeline_meta.py` holds the helpers).
+
 ## Folder map
 
 - `front_client/` - React/Vite UI (visual pipeline builder, run/compare, evaluation). Dev server on :5180, proxies `/prompts-test-api` to the backend on :8000.

@@ -43,6 +43,11 @@ export default function EvaluationTab() {
     try {
       const details = await getRun(runId, token);
       setRunFiles(details.files);
+      // Preselect what the run's pipeline YAML says should be judged (editable below).
+      if (details.evaluation_defaults) {
+        setContentFiles(new Set(Object.values(details.evaluation_defaults.content_files)));
+        setContextFiles(new Set(Object.values(details.evaluation_defaults.context_files)));
+      }
       try {
         const existing = await getRunEvaluation(runId, token);
         setEvaluation(existing);
@@ -117,7 +122,7 @@ export default function EvaluationTab() {
             <option value="">Select a run...</option>
             {runs.map(r => (
               <option key={r.run_id} value={r.run_id}>
-                {r.run_id} ({r.topic || "no topic"})
+                {r.run_id} ({r.label || r.pipeline_id || "no label"})
               </option>
             ))}
           </select>

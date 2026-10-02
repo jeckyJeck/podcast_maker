@@ -91,11 +91,14 @@ def get_evaluation(run_id: str) -> dict[str, Any] | None:
 
 def evaluate_run(
     run_id: str,
-    content_files: dict[str, str],
+    content_files: dict[str, str] | None = None,
     context_files: dict[str, str] | None = None,
     rubric_id: str = "podcast_quality",
 ) -> dict[str, Any]:
-    body: dict[str, Any] = {"content_files": content_files, "rubric_id": rubric_id}
+    """Judge a run. Without explicit files the backend uses the run's pipeline YAML (`evaluation:` block)."""
+    body: dict[str, Any] = {"rubric_id": rubric_id}
+    if content_files:
+        body["content_files"] = content_files
     if context_files:
         body["context_files"] = context_files
     return request("POST", f"/runs/{run_id}/evaluate", json=body).json()["evaluation"]

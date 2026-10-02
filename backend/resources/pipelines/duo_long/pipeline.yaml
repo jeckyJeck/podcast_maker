@@ -893,3 +893,7 @@ stages:
     script_scenes:
       source: response.items
   temperature: 0.8
+evaluation:
+  content: scriptwriter
+  context:
+  - researcher

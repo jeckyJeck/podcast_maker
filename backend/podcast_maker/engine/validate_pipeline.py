@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from podcast_maker.core.paths import BACKEND_ROOT
+from podcast_maker.engine.pipeline_meta import stage_output_files
 
 try:
     import yaml
@@ -330,6 +331,28 @@ def _validate_outputs(outputs: Any, stage_path: str, execution: str, issues: lis
     return names
 
 
+def _validate_evaluation(evaluation: Any, stage_files: dict[str, str], issues: list[ValidationIssue]) -> None:
+    if evaluation is None:
+        return
+    if not _is_mapping(evaluation):
+        _add(issues, "evaluation", "must be a mapping")
+        return
+    content = evaluation.get("content")
+    refs = {
+        "evaluation.content": [content] if isinstance(content, str) else content,
+        "evaluation.context": evaluation.get("context"),
+    }
+    for path, ids in refs.items():
+        if ids is None:
+            continue
+        if not _is_list(ids) or not all(isinstance(i, str) for i in ids):
+            _add(issues, path, "must be a stage id or a list of stage ids")
+            continue
+        for stage_id in ids:
+            if stage_id not in stage_files:
+                _add(issues, path, f"stage {stage_id!r} does not exist or does not write an output file")
+
+
 def validate_pipeline_data(data: Any, root: Path) -> None:
     issues: list[ValidationIssue] = []
     if not _is_mapping(data):
@@ -395,6 +418,12 @@ def validate_pipeline_data(data: Any, root: Path) -> None:
 
         if isinstance(stage_id, str):
             available_outputs[stage_id] = output_names
+
+    _validate_evaluation(
+        data.get("evaluation"),
+        stage_output_files({"stages": [s for s in stages if _is_mapping(s)]}),
+        issues,
+    )
 
     if issues:
         raise PipelineValidationError(issues)

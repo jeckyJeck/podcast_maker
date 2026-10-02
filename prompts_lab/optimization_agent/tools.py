@@ -20,15 +20,7 @@ except ImportError:  # pragma: no cover - supports direct script execution
 
 ROOT = Path(__file__).resolve().parent
 EXPERIMENTS_DIR = ROOT / "experiments"
-TEST_TOPICS_PATH = ROOT / "test_topics.yaml"
-
-# Files a pipeline run writes into its run directory on the backend.
-STAGE_FILES = {
-    "script": "outputs/script.txt",
-    "outline": "outputs/outline.json",
-    "blueprint": "outputs/blueprint.json",
-    "research": "outputs/research.md",
-}
+TEST_CASES_PATH = ROOT / "test_cases.yaml"
 MAX_LISTED_RUNS = 30
 
 # Set by agent.py at startup once a workspace exists. read_file/write_file/edit_file
@@ -115,7 +107,8 @@ def run_summaries(limit: int = MAX_LISTED_RUNS) -> list[dict[str, Any]]:
             {
                 "run_id": run["run_id"],
                 "created_at": run.get("created_at_utc"),
-                "topic": run.get("topic"),
+                "label": run.get("label"),
+                "pipeline_id": run.get("pipeline_id"),
                 "overall_score": evaluation.get("overall_score"),
                 "dimensions": evaluation.get("dimensions"),
             }
@@ -131,28 +124,34 @@ def list_runs() -> str:
         return f"error: {exc}"
 
 
-def _read_run(run_id: str, stages: list[str]) -> str:
+def _read_run(run_id: str, only_final_stage: bool) -> str:
+    """Manifest, evaluation and stage outputs. Stage ids and files come from the run's own pipeline YAML."""
     try:
+        details = backend_client.get_run(run_id)
+        stage_outputs: dict[str, str] = details.get("stage_outputs") or {}
+        if only_final_stage and stage_outputs:
+            final_stage = list(stage_outputs)[-1]
+            stage_outputs = {final_stage: stage_outputs[final_stage]}
         data: dict[str, Any] = {
-            "manifest": backend_client.get_run(run_id).get("manifest"),
+            "manifest": details.get("manifest"),
             "evaluation": backend_client.get_evaluation(run_id),
         }
-        for stage in stages:
-            text = backend_client.read_run_file(run_id, STAGE_FILES[stage])
-            data[stage] = _json_or_none(text) if STAGE_FILES[stage].endswith(".json") else text
+        for stage_id, file_name in stage_outputs.items():
+            text = backend_client.read_run_file(run_id, file_name)
+            data[stage_id] = _json_or_none(text) if file_name.endswith(".json") else text
         return json.dumps(data, ensure_ascii=False, indent=2)
     except Exception as exc:  # noqa: BLE001 - tool boundary
         return f"error: {exc}"
 
 
 def read_run(run_id: str) -> str:
-    """Return the manifest, evaluation and script of a run as a JSON object."""
-    return _read_run(run_id, ["script"])
+    """Return the manifest, evaluation and final-stage output of a run as a JSON object."""
+    return _read_run(run_id, only_final_stage=True)
 
 
 def read_run_full(run_id: str) -> str:
-    """Return all major contents of a run as a JSON object."""
-    return _read_run(run_id, ["blueprint", "research", "outline", "script"])
+    """Return the manifest, evaluation and every stage's output of a run as a JSON object."""
+    return _read_run(run_id, only_final_stage=False)
 
 
 def diff_files(path_a: str, path_b: str) -> str:
@@ -169,18 +168,20 @@ def diff_files(path_a: str, path_b: str) -> str:
         return f"error: {exc}"
 
 
-def diff_runs(run_id_a: str, run_id_b: str, stage: str = "script") -> str:
-    """Return a diff of a specific output file between two runs."""
-    if stage not in STAGE_FILES:
-        return f"error: unknown stage: {stage}"
+def diff_runs(run_id_a: str, run_id_b: str, stage: str | None = None) -> str:
+    """Diff one stage's output file between two runs (default: the final stage)."""
     try:
-        return backend_client.compare_runs(run_id_a, run_id_b, STAGE_FILES[stage])
+        stage_outputs: dict[str, str] = backend_client.get_run(run_id_a).get("stage_outputs") or {}
+        stage = stage or (list(stage_outputs)[-1] if stage_outputs else None)
+        if stage not in stage_outputs:
+            return f"error: unknown stage {stage!r}; run {run_id_a} has stages: {', '.join(stage_outputs) or '(none)'}"
+        return backend_client.compare_runs(run_id_a, run_id_b, stage_outputs[stage])
     except Exception as exc:  # noqa: BLE001 - tool boundary
         return f"error: {exc}"
 
 
-def run_pipeline(topic: str, format: str, extra_inputs: dict | None = None) -> str:
-    """Run the workspace's (edited) pipeline on the backend for a topic; returns the new run_id."""
+def run_pipeline(format: str, inputs: dict | None = None) -> str:
+    """Run the workspace's (edited) pipeline on the backend; `inputs` are the pipeline's declared inputs."""
     try:
         if CONTENT_ROOT is None:
             return "error: no workspace active"
@@ -188,21 +189,15 @@ def run_pipeline(topic: str, format: str, extra_inputs: dict | None = None) -> s
         if format != manifest["format"]:
             return f"error: this workspace edits pipeline {manifest['format']!r}; cannot run format {format!r}"
         pipeline_yaml = workspace_module.build_pipeline_yaml(CONTENT_ROOT)
-        result = backend_client.run_pipeline(pipeline_yaml, {"topic": topic, **(extra_inputs or {})})
-        return result["run_id"]
+        return backend_client.run_pipeline(pipeline_yaml, dict(inputs or {}))["run_id"]
     except Exception as exc:  # noqa: BLE001 - tool boundary
         return f"error: pipeline failed\n{exc}"
 
 
 def run_evaluation(run_id: str) -> str:
-    """Run the backend's LLM judge on a completed run (stored as the run's evaluation)."""
+    """Score a completed run with the backend's LLM judge; what is judged comes from the run's pipeline YAML."""
     try:
-        context_files = {}
-        if backend_client.read_run_file(run_id, STAGE_FILES["research"]) is not None:
-            context_files["research"] = STAGE_FILES["research"]
-        evaluation = backend_client.evaluate_run(
-            run_id, content_files={"script": STAGE_FILES["script"]}, context_files=context_files or None
-        )
+        evaluation = backend_client.evaluate_run(run_id)
         return json.dumps(
             {
                 "run_id": run_id,
@@ -217,26 +212,26 @@ def run_evaluation(run_id: str) -> str:
         return f"error: evaluation failed\n{exc}"
 
 
-def run_all_test_topics(extra_inputs: dict | None = None) -> str:
-    """Run and evaluate every topic in test_topics.yaml that matches the workspace's pipeline."""
+def run_all_test_cases() -> str:
+    """Run and evaluate every case in test_cases.yaml that matches the workspace's pipeline."""
     try:
         if CONTENT_ROOT is None:
             return "error: no workspace active"
         workspace_format = workspace_module.load_manifest(CONTENT_ROOT)["format"]
-        config = yaml.safe_load(TEST_TOPICS_PATH.read_text(encoding="utf-8"))
+        config = yaml.safe_load(TEST_CASES_PATH.read_text(encoding="utf-8"))
         summary: dict[str, Any] = {}
-        for topic in config.get("topics", []):
-            if topic["format"] != workspace_format:
+        for case in config.get("cases", []):
+            if case["format"] != workspace_format:
                 continue
-            run_id = run_pipeline(topic["topic"], topic["format"], extra_inputs)
+            run_id = run_pipeline(case["format"], case.get("inputs"))
             if run_id.startswith("error:"):
-                summary[topic["id"]] = {"error": run_id}
+                summary[case["id"]] = {"error": run_id}
                 continue
             evaluation = run_evaluation(run_id)
             if evaluation.startswith("error:"):
-                summary[topic["id"]] = {"run_id": run_id, "error": evaluation}
+                summary[case["id"]] = {"run_id": run_id, "error": evaluation}
                 continue
-            summary[topic["id"]] = json.loads(evaluation)
+            summary[case["id"]] = json.loads(evaluation)
         return json.dumps(summary, ensure_ascii=False, indent=2)
     except Exception as exc:  # noqa: BLE001 - tool boundary
         return f"error: {exc}"
@@ -319,7 +314,7 @@ TOOLS: dict[str, Callable[..., str]] = {
     "diff_against_source": diff_against_source,
     "run_pipeline": run_pipeline,
     "run_evaluation": run_evaluation,
-    "run_all_test_topics": run_all_test_topics,
+    "run_all_test_cases": run_all_test_cases,
     "log_experiment": log_experiment,
     "revert_file": revert_file,
     "promote_prompt": promote_prompt,
@@ -398,7 +393,7 @@ TOOL_SPECS: list[ToolSpec] = [
             {
                 "run_id_a": {"type": "string"},
                 "run_id_b": {"type": "string"},
-                "stage": {"type": "string", "enum": ["script", "outline", "blueprint", "research"]},
+                "stage": {"type": "string", "description": "Stage id from the pipeline; defaults to the final stage."},
             },
             ["run_id_a", "run_id_b"],
         ),
@@ -425,16 +420,16 @@ TOOL_SPECS: list[ToolSpec] = [
     ToolSpec(
         name="run_pipeline",
         description=(
-            "Run your workspace's edited pipeline on the backend for a topic; format must be the "
-            "pipeline you are working on. Returns the new run_id."
+            "Run your workspace's edited pipeline on the backend. format must be the pipeline you are "
+            "working on; inputs must match that pipeline's declared inputs (listed in your context). "
+            "Returns the new run_id."
         ),
         parameters=object_schema(
             {
-                "topic": {"type": "string"},
                 "format": {"type": "string"},
-                "extra_inputs": {"type": "object"},
+                "inputs": {"type": "object"},
             },
-            ["topic", "format"],
+            ["format", "inputs"],
         ),
     ),
     ToolSpec(
@@ -443,9 +438,9 @@ TOOL_SPECS: list[ToolSpec] = [
         parameters=object_schema({"run_id": {"type": "string"}}, ["run_id"]),
     ),
     ToolSpec(
-        name="run_all_test_topics",
-        description="Run and evaluate every test topic (test_topics.yaml) that matches your pipeline.",
-        parameters=object_schema({"extra_inputs": {"type": "object"}}),
+        name="run_all_test_cases",
+        description="Run and evaluate every test case (test_cases.yaml) that matches your pipeline.",
+        parameters=object_schema(),
     ),
     ToolSpec(
         name="log_experiment",

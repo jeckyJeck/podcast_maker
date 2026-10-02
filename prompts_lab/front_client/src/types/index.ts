@@ -84,7 +84,9 @@ export interface RunListItem {
   run_id: string;
   run_directory: string;
   has_manifest: boolean;
-  topic: string | null;
+  label: string | null; // value of the pipeline's primary text input, derived from its YAML
+  pipeline_id: string | null;
+  inputs: Record<string, any> | null;
   stages: string[];
   created_at_utc: string | null;
 }
@@ -94,4 +96,6 @@ export interface RunDetails {
   run_directory: string;
   files: string[];
   manifest: any | null;
+  stage_outputs: Record<string, string>; // stage id -> output file, from the run's pipeline YAML
+  evaluation_defaults: { content_files: Record<string, string>; context_files: Record<string, string> } | null;
 }

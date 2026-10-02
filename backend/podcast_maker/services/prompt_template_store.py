@@ -3,11 +3,11 @@ from __future__ import annotations
 import json
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Literal, TypedDict
+from typing import TypedDict
 
 from podcast_maker.core.paths import TEMPLATES_DIR
 
-StageName = Literal["architect", "researcher", "outliner", "scriptwriter"]
+StageName = str  # stage ids come from each pipeline YAML
 TEMPLATES_ROOT = TEMPLATES_DIR
 
 

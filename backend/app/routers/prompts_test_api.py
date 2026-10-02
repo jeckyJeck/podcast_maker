@@ -6,16 +6,21 @@ from datetime import datetime, timezone
 import json
 import uuid
 from pathlib import Path
-from typing import Any, Literal, Mapping
+from typing import Any, Mapping
 
-from fastapi import APIRouter, Body, Depends, HTTPException, Response
+import yaml
+from fastapi import APIRouter, Body, Depends, HTTPException, Query, Response
 from pydantic import BaseModel, Field
 
 from app.dependencies import AuthContext, get_lab_user
 from podcast_maker.core.hosts_config import AVAILABLE_HOSTS
 from podcast_maker.core.paths import BACKEND_ROOT, PIPELINES_DIR, RUNS_DIR
+from podcast_maker.engine.pipeline_meta import evaluation_targets, run_label, stage_output_files
 from podcast_maker.evaluation.compare import compare_files, list_run_directories, resolve_run_dir
 from podcast_maker.services import prompt_template_store
+
+# Stage ids are defined by each pipeline YAML; templates just need a filesystem/identifier-safe tag.
+STAGE_ID_PATTERN = r"^[A-Za-z0-9_-]{1,64}$"
 
 router = APIRouter(prefix="/prompts-test-api", tags=["prompts-test-api"], dependencies=[Depends(get_lab_user)])
 
@@ -29,7 +34,7 @@ class CompareRequest(BaseModel):
 
 
 class PromptTemplateCreateRequest(BaseModel):
-    stage: Literal["architect", "researcher", "outliner", "scriptwriter"]
+    stage: str = Field(pattern=STAGE_ID_PATTERN)
     name: str = Field(min_length=1)
     prompt_text: str = Field(min_length=1)
 
@@ -42,7 +47,7 @@ class PromptTemplateUpdateRequest(BaseModel):
 class PromptTemplateResponse(BaseModel):
     id: str
     user_id: str
-    stage: Literal["architect", "researcher", "outliner", "scriptwriter"]
+    stage: str
     name: str
     prompt_text: str
     created_at_utc: str
@@ -66,7 +71,7 @@ def _to_template_response(row: Mapping[str, Any]) -> PromptTemplateResponse:
     return PromptTemplateResponse(
         id=str(row.get("id", "")),
         user_id=str(row.get("user_id", "")),
-        stage=row.get("stage", "architect"),
+        stage=str(row.get("stage", "")),
         name=str(row.get("name", "")),
         prompt_text=str(row.get("prompt_text", "")),
         created_at_utc=str(row.get("created_at_utc", "")),
@@ -80,6 +85,33 @@ def _default_runs_root() -> Path:
 
 def _resolve_runs_root(runs_root: str | None) -> Path:
     return Path(runs_root) if runs_root else _default_runs_root()
+
+
+def _run_pipeline_data(run_dir: Path) -> dict | None:
+    """The pipeline YAML snapshot saved with a run (source of truth for its stages/inputs)."""
+    snapshot = run_dir / "pipeline.yaml"
+    if not snapshot.is_file():
+        return None
+    try:
+        return yaml.safe_load(snapshot.read_text(encoding="utf-8")) or None
+    except yaml.YAMLError:
+        return None
+
+
+def _run_label_for(run_dir: Path, manifest: dict | None) -> str | None:
+    """Stored label, or (for runs recorded before labels existed) derived from the run's pipeline snapshot."""
+    if not manifest:
+        return None
+    if manifest.get("label"):
+        return manifest["label"]
+    pipeline_data = _run_pipeline_data(run_dir)
+    return run_label(pipeline_data, manifest.get("inputs") or {}) if pipeline_data else None
+
+
+def _list_pipeline_dirs() -> list[Path]:
+    if not PIPELINES_DIR.is_dir():
+        return []
+    return sorted(d for d in PIPELINES_DIR.iterdir() if (d / "pipeline.yaml").is_file())
 
 
 def _read_manifest(run_dir: Path) -> dict | None:
@@ -103,8 +135,7 @@ async def prompts_test_meta(_auth: AuthContext = Depends(get_lab_user)):
     ]
 
     return {
-        "formats": ["dialogue", "solo"],
-        "default_host_ids": ["sarah_curious", "mike_expert"],
+        "formats": [d.name for d in _list_pipeline_dirs()],
         "hosts": hosts,
         "default_runs_root": str(_default_runs_root()),
     }
@@ -124,7 +155,9 @@ async def prompts_test_list_runs(
                 "run_id": run_dir.name,
                 "run_directory": str(run_dir),
                 "has_manifest": manifest is not None,
-                "topic": (manifest or {}).get("inputs", {}).get("topic"),
+                "label": _run_label_for(run_dir, manifest),
+                "pipeline_id": (manifest or {}).get("pipeline_id"),
+                "inputs": (manifest or {}).get("inputs"),
                 "stages": (manifest or {}).get("run_stages", []),
                 "created_at_utc": (manifest or {}).get("started_at_utc"),
             }
@@ -140,13 +173,19 @@ async def prompts_test_run_details(
 ):
     root = _resolve_runs_root(runs_root)
     run_dir = resolve_run_dir(root, run_id)
-    files = sorted([item.name for item in run_dir.iterdir() if item.is_file()])
+    # Stage outputs live in pipeline-defined subdirectories (e.g. outputs/...), so list recursively.
+    files = sorted(item.relative_to(run_dir).as_posix() for item in run_dir.rglob("*") if item.is_file())
     manifest = _read_manifest(run_dir)
+    pipeline_data = _run_pipeline_data(run_dir)
     return {
         "run_id": run_dir.name,
         "run_directory": str(run_dir),
         "files": files,
         "manifest": manifest,
+        "stage_outputs": stage_output_files(pipeline_data) if pipeline_data else {},
+        "evaluation_defaults": (
+            dict(zip(("content_files", "context_files"), evaluation_targets(pipeline_data))) if pipeline_data else None
+        ),
     }
 
 
@@ -186,7 +225,8 @@ async def prompts_test_run_file(
 
 
 class EvaluateRunRequest(BaseModel):
-    content_files: dict[str, str] = Field(min_length=1)
+    # Optional: when omitted, the run's pipeline YAML decides (its `evaluation:` block, else the final stage output).
+    content_files: dict[str, str] | None = None
     rubric_id: str = "podcast_quality"
     context_files: dict[str, str] | None = None
 
@@ -208,8 +248,22 @@ async def prompts_test_evaluate_run(
     root = _resolve_runs_root(runs_root)
     run_dir = resolve_run_dir(root, run_id)
 
+    content_files, context_files = payload.content_files, payload.context_files
+    if not content_files:
+        pipeline_data = _run_pipeline_data(run_dir)
+        if not pipeline_data:
+            raise HTTPException(
+                status_code=400,
+                detail="content_files not given and the run has no pipeline.yaml snapshot to derive them from",
+            )
+        content_files, default_context = evaluation_targets(pipeline_data)
+        if context_files is None:
+            context_files = default_context or None
+        if not content_files:
+            raise HTTPException(status_code=400, detail="The run's pipeline has no output file to evaluate")
+
     # Validate every referenced path stays inside run_dir before touching the evaluator.
-    for rel_path in list(payload.content_files.values()) + list((payload.context_files or {}).values()):
+    for rel_path in list(content_files.values()) + list((context_files or {}).values()):
         _resolve_run_file(run_dir, rel_path)
 
     from podcast_maker.evaluation.evaluator import EvaluationError, evaluate_run
@@ -217,9 +271,9 @@ async def prompts_test_evaluate_run(
     try:
         result = evaluate_run(
             run_dir,
-            content_files=payload.content_files,
+            content_files=content_files,
             rubric_id=payload.rubric_id,
-            context_files=payload.context_files,
+            context_files=context_files,
         )
     except EvaluationError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
@@ -263,7 +317,7 @@ async def prompts_test_compare(
 
 @router.get("/prompt-templates")
 async def prompts_test_list_prompt_templates(
-    stage: Literal["architect", "researcher", "outliner", "scriptwriter"] | None = None,
+    stage: str | None = Query(default=None, pattern=STAGE_ID_PATTERN),
     auth: AuthContext = Depends(get_lab_user),
 ):
     rows = prompt_template_store.list_templates(auth.user_id, stage)
@@ -344,8 +398,6 @@ async def prompts_test_delete_prompt_template(
 # ============================================================================
 # PIPELINE BUILDER & EXECUTION ENDPOINTS
 # ============================================================================
-
-import yaml
 
 
 class PipelineRunRequest(BaseModel):
@@ -452,6 +504,7 @@ async def run_pipeline(
         "started_at_utc": started_iso,
         "finished_at_utc": datetime.now(timezone.utc).isoformat(),
         "inputs": resolved_inputs,
+        "label": run_label(pipeline_data, resolved_inputs),
         "run_stages": sorted(run_stages),
         "stage_results": result["stage_results"],
         "overall_status": overall_status,
@@ -521,19 +574,16 @@ async def delete_pipeline(pipeline_id: str, _auth: AuthContext = Depends(get_lab
 @router.get("/pipeline-templates")
 async def list_pipeline_templates(_auth: AuthContext = Depends(get_lab_user)):
     templates = []
-    for template_name in ["duo_long", "solo_short"]:
-        path = PIPELINES_DIR / template_name / "pipeline.yaml"
-        if path.exists():
-            try:
-                yaml_content = path.read_text(encoding="utf-8")
-                content = yaml.safe_load(yaml_content) or {}
-                templates.append({
-                    "id": template_name,
-                    "name": content.get("name", template_name),
-                    "description": content.get("description", ""),
-                    "yaml": yaml_content
-                })
-            except Exception:
-                pass
+    for template_dir in _list_pipeline_dirs():
+        try:
+            yaml_content = (template_dir / "pipeline.yaml").read_text(encoding="utf-8")
+            content = yaml.safe_load(yaml_content) or {}
+        except (OSError, yaml.YAMLError):
+            continue
+        templates.append({
+            "id": template_dir.name,
+            "name": content.get("name", template_dir.name),
+            "description": content.get("description", ""),
+            "yaml": yaml_content,
+        })
     return {"templates": templates}
-
