@@ -18,7 +18,7 @@ The lab uses the main backend (`../backend`) over HTTP, under `/prompts-test-api
 
 ## Principle: the YAML is the source of truth
 
-Stage ids, input names, output files and what to evaluate (`evaluation:` block) come from the pipeline YAML (or the `pipeline.yaml` snapshot saved in each run). Backend routes (`/runs`, `/runs/{id}` -> `stage_outputs`, `evaluation_defaults`, `/pipeline-templates`, `/meta`), the UI and the agent derive them from it; never hardcode stage or input names (`engine/pipeline_meta.py` holds the helpers).
+Stage ids, input names and output files come from the pipeline YAML (or the `pipeline.yaml` snapshot saved in each run). Backend routes (`/runs`, `/runs/{id}` -> `stage_outputs`, `evaluation_defaults` (final stage), `/pipeline-templates`, `/meta`), the UI and the agent derive them from it; never hardcode stage or input names (`engine/pipeline_meta.py` holds the helpers).
 
 ## Folder map
 

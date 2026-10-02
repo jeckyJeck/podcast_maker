@@ -46,7 +46,7 @@ export default function EvaluationTab() {
       // Preselect what the run's pipeline YAML says should be judged (editable below).
       if (details.evaluation_defaults) {
         setContentFiles(new Set(Object.values(details.evaluation_defaults.content_files)));
-        setContextFiles(new Set(Object.values(details.evaluation_defaults.context_files)));
+        setContextFiles(new Set(Object.values(details.evaluation_defaults.context_files ?? {})));
       }
       try {
         const existing = await getRunEvaluation(runId, token);

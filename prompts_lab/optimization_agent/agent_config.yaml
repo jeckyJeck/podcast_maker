@@ -1,0 +1,25 @@
+# The agent's own settings (not backend data and not part of any pipeline YAML).
+#
+# evaluation: what the judge sees for each pipeline id. `content` and `context` are stage ids of
+# that pipeline. Missing `content` = the pipeline's final stage; missing `context` = none.
+evaluation:
+  duo_long: {content: [scriptwriter], context: [researcher]}
+  solo_short: {content: [scriptwriter], context: [researcher]}
+
+# test_cases: fixed cases used by run_all_test_cases. `format` is the backend pipeline id and
+# `inputs` are that pipeline's declared inputs. Only cases matching the workspace's pipeline run.
+test_cases:
+  - id: sql_history
+    format: duo_long
+    inputs: {topic: "The invention of SQL"}
+    tags: [historical, technical]
+
+  - id: gps_explainer
+    format: solo_short
+    inputs: {topic: "How GPS works"}
+    tags: [technical, scientific]
+
+  - id: french_revolution
+    format: duo_long
+    inputs: {topic: "The French Revolution"}
+    tags: [historical, narrative]

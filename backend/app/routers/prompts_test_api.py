@@ -15,7 +15,7 @@ from pydantic import BaseModel, Field
 from app.dependencies import AuthContext, get_lab_user
 from podcast_maker.core.hosts_config import AVAILABLE_HOSTS
 from podcast_maker.core.paths import BACKEND_ROOT, PIPELINES_DIR, RUNS_DIR
-from podcast_maker.engine.pipeline_meta import evaluation_targets, run_label, stage_output_files
+from podcast_maker.engine.pipeline_meta import default_evaluation_files, run_label, stage_output_files
 from podcast_maker.evaluation.compare import compare_files, list_run_directories, resolve_run_dir
 from podcast_maker.services import prompt_template_store
 
@@ -183,9 +183,7 @@ async def prompts_test_run_details(
         "files": files,
         "manifest": manifest,
         "stage_outputs": stage_output_files(pipeline_data) if pipeline_data else {},
-        "evaluation_defaults": (
-            dict(zip(("content_files", "context_files"), evaluation_targets(pipeline_data))) if pipeline_data else None
-        ),
+        "evaluation_defaults": {"content_files": default_evaluation_files(pipeline_data)} if pipeline_data else None,
     }
 
 
@@ -225,7 +223,7 @@ async def prompts_test_run_file(
 
 
 class EvaluateRunRequest(BaseModel):
-    # Optional: when omitted, the run's pipeline YAML decides (its `evaluation:` block, else the final stage output).
+    # Optional: when omitted, the run's final stage output is judged (found via the run's pipeline.yaml snapshot).
     content_files: dict[str, str] | None = None
     rubric_id: str = "podcast_quality"
     context_files: dict[str, str] | None = None
@@ -256,9 +254,7 @@ async def prompts_test_evaluate_run(
                 status_code=400,
                 detail="content_files not given and the run has no pipeline.yaml snapshot to derive them from",
             )
-        content_files, default_context = evaluation_targets(pipeline_data)
-        if context_files is None:
-            context_files = default_context or None
+        content_files = default_evaluation_files(pipeline_data)
         if not content_files:
             raise HTTPException(status_code=400, detail="The run's pipeline has no output file to evaluate")
 

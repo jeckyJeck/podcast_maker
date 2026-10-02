@@ -30,25 +30,11 @@ def final_stage_id(pipeline_data: dict[str, Any]) -> str | None:
     return list(files)[-1] if files else None
 
 
-def evaluation_targets(pipeline_data: dict[str, Any]) -> tuple[dict[str, str], dict[str, str]]:
-    """(content_files, context_files) to judge, each {name: run-relative file}.
-
-    From the optional top-level `evaluation: {content: <stage id | [ids]>, context: [ids]}`
-    block; without it, the final stage's output is the content and there is no context.
-    """
-    files = stage_output_files(pipeline_data)
-    spec = pipeline_data.get("evaluation") or {}
-    content_ids = spec.get("content")
-    if content_ids is None:
-        final = final_stage_id(pipeline_data)
-        content_ids = [final] if final else []
-    elif isinstance(content_ids, str):
-        content_ids = [content_ids]
-    context_ids = spec.get("context") or []
-    return (
-        {stage_id: files[stage_id] for stage_id in content_ids if stage_id in files},
-        {stage_id: files[stage_id] for stage_id in context_ids if stage_id in files},
-    )
+def default_evaluation_files(pipeline_data: dict[str, Any]) -> dict[str, str]:
+    """Default content to judge for a run: the final stage's output file, {stage_id: file}.
+    Evaluation is a separate process and keeps its own settings; the pipeline YAML only says what files exist."""
+    final = final_stage_id(pipeline_data)
+    return {final: stage_output_files(pipeline_data)[final]} if final else {}
 
 
 def run_label(pipeline_data: dict[str, Any], inputs: dict[str, Any]) -> str | None:

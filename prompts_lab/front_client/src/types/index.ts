@@ -97,5 +97,5 @@ export interface RunDetails {
   files: string[];
   manifest: any | null;
   stage_outputs: Record<string, string>; // stage id -> output file, from the run's pipeline YAML
-  evaluation_defaults: { content_files: Record<string, string>; context_files: Record<string, string> } | null;
+  evaluation_defaults: { content_files: Record<string, string>; context_files?: Record<string, string> } | null;
 }

@@ -20,7 +20,7 @@ except ImportError:  # pragma: no cover - supports direct script execution
 
 ROOT = Path(__file__).resolve().parent
 EXPERIMENTS_DIR = ROOT / "experiments"
-TEST_CASES_PATH = ROOT / "test_cases.yaml"
+CONFIG_PATH = ROOT / "agent_config.yaml"
 MAX_LISTED_RUNS = 30
 
 # Set by agent.py at startup once a workspace exists. read_file/write_file/edit_file
@@ -194,10 +194,29 @@ def run_pipeline(format: str, inputs: dict | None = None) -> str:
         return f"error: pipeline failed\n{exc}"
 
 
+def _load_config() -> dict[str, Any]:
+    return yaml.safe_load(CONFIG_PATH.read_text(encoding="utf-8")) or {}
+
+
+def _evaluation_files(run_id: str) -> tuple[dict[str, str] | None, dict[str, str] | None]:
+    """(content_files, context_files) for a run, from this agent's evaluation settings for the run's pipeline.
+    Stage ids are resolved to files through the run's own pipeline YAML; (None, None) = backend default."""
+    details = backend_client.get_run(run_id)
+    stage_outputs: dict[str, str] = details.get("stage_outputs") or {}
+    settings = (_load_config().get("evaluation") or {}).get((details.get("manifest") or {}).get("pipeline_id")) or {}
+
+    def resolve(stage_ids: list[str] | None) -> dict[str, str] | None:
+        files = {sid: stage_outputs[sid] for sid in stage_ids or [] if sid in stage_outputs}
+        return files or None
+
+    return resolve(settings.get("content")), resolve(settings.get("context"))
+
+
 def run_evaluation(run_id: str) -> str:
-    """Score a completed run with the backend's LLM judge; what is judged comes from the run's pipeline YAML."""
+    """Score a completed run with the backend's LLM judge, using this agent's evaluation settings."""
     try:
-        evaluation = backend_client.evaluate_run(run_id)
+        content_files, context_files = _evaluation_files(run_id)
+        evaluation = backend_client.evaluate_run(run_id, content_files, context_files)
         return json.dumps(
             {
                 "run_id": run_id,
@@ -213,14 +232,13 @@ def run_evaluation(run_id: str) -> str:
 
 
 def run_all_test_cases() -> str:
-    """Run and evaluate every case in test_cases.yaml that matches the workspace's pipeline."""
+    """Run and evaluate every test case in agent_config.yaml that matches the workspace's pipeline."""
     try:
         if CONTENT_ROOT is None:
             return "error: no workspace active"
         workspace_format = workspace_module.load_manifest(CONTENT_ROOT)["format"]
-        config = yaml.safe_load(TEST_CASES_PATH.read_text(encoding="utf-8"))
         summary: dict[str, Any] = {}
-        for case in config.get("cases", []):
+        for case in _load_config().get("test_cases", []):
             if case["format"] != workspace_format:
                 continue
             run_id = run_pipeline(case["format"], case.get("inputs"))
@@ -439,7 +457,7 @@ TOOL_SPECS: list[ToolSpec] = [
     ),
     ToolSpec(
         name="run_all_test_cases",
-        description="Run and evaluate every test case (test_cases.yaml) that matches your pipeline.",
+        description="Run and evaluate every test case (agent_config.yaml) that matches your pipeline.",
         parameters=object_schema(),
     ),
     ToolSpec(

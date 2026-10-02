@@ -6,7 +6,7 @@ The agent holds no copy of the pipeline engine or of the data. Everything (pipel
 python agent.py --format duo_long --task "..."
 ```
 
-Environment: `BACKEND_URL` (default `http://127.0.0.1:8000`); `BACKEND_TOKEN` only if the backend runs with real auth. `test_cases.yaml` lists the fixed cases (pipeline id + inputs) for `run_all_test_cases`; `workspace/` and `experiments/` are local scratch.
+Environment: `BACKEND_URL` (default `http://127.0.0.1:8000`); `BACKEND_TOKEN` only if the backend runs with real auth. `agent_config.yaml` holds the agent's own settings: per-pipeline evaluation settings (which stage outputs the judge sees) and the fixed test cases (pipeline id + inputs) for `run_all_test_cases`; `workspace/` and `experiments/` are local scratch.
 
 The optimization agent can run against different reasoning model providers through the `AgentLLM` abstraction in `agent_llm.py`.
 
