@@ -1,9 +1,15 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { User } from '@supabase/supabase-js';
-import { DEFAULT_HOST_IDS, maxHostsFor } from '../config/podcast';
+import {
+  DEFAULT_HOST_IDS,
+  defaultFormValues,
+  formInputsFor,
+  maxHostsFor,
+  type FormatInputFormValues,
+} from '../config/podcast';
 import { podcastApi } from '../services/api';
 import { isValidHostSelection, loadSession } from '../services/podcastPersistence';
-import type { HostProfile, PodcastFormat, PodcastFormatInfo } from '../types/podcast';
+import type { FormatInput, HostProfile, PodcastFormat, PodcastFormatInfo } from '../types/podcast';
 
 export interface UsePodcastHostsResult {
   hosts: HostProfile[];
@@ -11,6 +17,9 @@ export interface UsePodcastHostsResult {
   formats: PodcastFormatInfo[];
   maxHosts: number;
   selectedFormat: PodcastFormat;
+  formInputs: FormatInput[];
+  inputValues: FormatInputFormValues;
+  setInputValue: (name: string, value: string | boolean) => void;
   selectedHostIds: string[];
   setSelectedHostIds: React.Dispatch<React.SetStateAction<string[]>>;
   setSelectedFormat: React.Dispatch<React.SetStateAction<PodcastFormat>>;
@@ -34,6 +43,15 @@ export const usePodcastHosts = (user: User | null): UsePodcastHostsResult => {
   const [hosts, setHosts] = useState<HostProfile[]>([]);
   const [hostsLoading, setHostsLoading] = useState(true);
   const [hostPickerOpen, setHostPickerOpen] = useState(false);
+
+  // The selected format's extra inputs (from its pipeline YAML, via GET /formats), reset to their
+  // defaults whenever the format changes.
+  const formInputs = useMemo(() => formInputsFor(formats, selectedFormat), [formats, selectedFormat]);
+  const [inputValues, setInputValues] = useState<FormatInputFormValues>({});
+  useEffect(() => setInputValues(defaultFormValues(formInputs)), [formInputs]);
+  const setInputValue = useCallback((name: string, value: string | boolean) => {
+    setInputValues((prev) => ({ ...prev, [name]: value }));
+  }, []);
 
   useEffect(() => {
     podcastApi
@@ -100,6 +118,9 @@ export const usePodcastHosts = (user: User | null): UsePodcastHostsResult => {
     formats,
     maxHosts: maxHostsFor(formats, selectedFormat),
     selectedFormat,
+    formInputs,
+    inputValues,
+    setInputValue,
     selectedHostIds,
     setSelectedHostIds,
     setSelectedFormat,

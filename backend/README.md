@@ -24,7 +24,7 @@ When a podcast is created, its exact pipeline YAML is saved in the episode's buc
 
 ### API
 
-- `GET /formats` lists the formats: one per pipeline YAML (`id` is the pipeline id; `host_count` from its YAML).
+- `GET /formats` lists the formats: one per pipeline YAML (`id` is the pipeline id; `host_count` from its YAML). Each format also lists its `inputs`: the declared inputs a request may set in `inputs` (all but `topic`, `host_profiles`, `host_name`), each as `{name, type, required, default}`.
 - `POST /create-podcast/` takes `topic`, `host_ids`, optional `format` (a pipeline id; default: the format written for that many hosts) and optional `inputs` for any other input the pipeline declares. `topic`, `host_profiles` and `host_name` are supplied by the platform.
 - `GET /status/{task_id}` returns `status`, `checkpoint`, `stages` (the pipeline's stage ids), `url` (the file URLs above) and `error`.
 

@@ -39,12 +39,26 @@ export interface CreatePodcastResponse {
 // A format is a pipeline id (see GET /formats).
 export type PodcastFormat = string;
 
+export type FormatInputType = 'text' | 'number' | 'boolean' | 'json';
+
+// An input the format's pipeline declares beyond the platform ones (topic, hosts).
+export interface FormatInput {
+  name: string;
+  type: FormatInputType;
+  required: boolean;
+  default: unknown;
+}
+
 export interface PodcastFormatInfo {
   id: PodcastFormat;
   name: string;
   description: string;
   host_count: number | null;
+  inputs: FormatInput[];
 }
+
+// Values sent as the request's `inputs`, keyed by input name.
+export type PodcastInputValues = Record<string, unknown>;
 
 export interface FormatsResponse {
   formats: PodcastFormatInfo[];

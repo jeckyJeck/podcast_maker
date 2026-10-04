@@ -4,6 +4,7 @@ import type {
   PodcastTaskStatus,
   AvailableHostsResponse,
   PodcastFormat,
+  PodcastInputValues,
   FormatsResponse,
   UserPodcastsResponse,
   UserPreferencesResponse,
@@ -110,12 +111,14 @@ export const podcastApi = {
   createPodcast: async (
     topic: string,
     hostIds?: string[],
-    format?: PodcastFormat
+    format?: PodcastFormat,
+    inputs?: PodcastInputValues
   ): Promise<CreatePodcastResponse> => {
     const response = await apiClient.post<CreatePodcastResponse>('/create-podcast/', {
       topic,
       ...(hostIds && { host_ids: hostIds }),
-      ...(format && { format })
+      ...(format && { format }),
+      ...(inputs && Object.keys(inputs).length > 0 && { inputs })
     });
     return response.data;
   },

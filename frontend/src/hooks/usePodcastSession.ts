@@ -15,13 +15,16 @@ import {
   type PersistedSession,
 } from '../services/podcastPersistence';
 import { usePodcastStatus } from './usePodcastStatus';
-import type { PodcastFiles, PodcastFormat, PodcastTaskStatus } from '../types/podcast';
+import type { FormatInputFormValues } from '../config/podcast';
+import type { FormatInput, PodcastFiles, PodcastFormat, PodcastTaskStatus } from '../types/podcast';
 
 export interface UsePodcastSessionOptions {
   user: User | null;
   selectedFormat: PodcastFormat;
   selectedHostIds: string[];
   maxHosts: number;
+  formInputs: FormatInput[];
+  inputValues: FormatInputFormValues;
   refreshCloudHistory: () => void;
 }
 
@@ -51,6 +54,8 @@ export const usePodcastSession = ({
   selectedFormat,
   selectedHostIds,
   maxHosts,
+  formInputs,
+  inputValues,
   refreshCloudHistory,
 }: UsePodcastSessionOptions): UsePodcastSessionResult => {
   const persistedSession = useMemo(() => loadSession(), []);
@@ -146,7 +151,7 @@ export const usePodcastSession = ({
   }, []);
 
   const handleSubmit = useCallback(async () => {
-    const validation = validateCreatePodcastInput({ topic, selectedFormat, selectedHostIds, maxHosts });
+    const validation = validateCreatePodcastInput({ topic, selectedFormat, selectedHostIds, maxHosts, formInputs, inputValues });
     if (!validation.isValid) {
       alert(validation.message);
       return;
@@ -155,7 +160,7 @@ export const usePodcastSession = ({
     setRestoredStatus(null);
     clearFileCache();
     try {
-      const nextTaskId = await createPodcastTask({ topic, selectedFormat, selectedHostIds, maxHosts });
+      const nextTaskId = await createPodcastTask({ topic, selectedFormat, selectedHostIds, maxHosts, formInputs, inputValues });
       setTaskId(nextTaskId);
       if (user) refreshCloudHistory();
     } catch (err) {
@@ -164,7 +169,7 @@ export const usePodcastSession = ({
     } finally {
       setIsSubmitting(false);
     }
-  }, [topic, selectedFormat, selectedHostIds, maxHosts, user, refreshCloudHistory, clearFileCache]);
+  }, [topic, selectedFormat, selectedHostIds, maxHosts, formInputs, inputValues, user, refreshCloudHistory, clearFileCache]);
 
   const resetSessionFields = useCallback(() => {
     setTopic('');

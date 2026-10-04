@@ -2,7 +2,8 @@ import React from 'react';
 import { FaCheck, FaComments, FaPen, FaPlay, FaUser, FaVolumeUp } from 'react-icons/fa';
 import { FaWandMagicSparkles } from 'react-icons/fa6';
 import { StatusDisplay } from './StatusDisplay';
-import type { HostProfile, PodcastFormat, PodcastFormatInfo, PodcastTaskStatus } from '../types/podcast';
+import { inputLabel, type FormatInputFormValues } from '../config/podcast';
+import type { FormatInput, HostProfile, PodcastFormat, PodcastFormatInfo, PodcastTaskStatus } from '../types/podcast';
 
 const traitForTone = (tone: string) => {
   const value = tone.toLowerCase();
@@ -195,8 +196,60 @@ const SelectedHostsStrip: React.FC<Omit<HostsSliceProps, 'saveHostsPreference'>>
   );
 };
 
+interface FormatInputFieldsProps {
+  formInputs: FormatInput[];
+  inputValues: FormatInputFormValues;
+  setInputValue: (name: string, value: string | boolean) => void;
+  disabled: boolean;
+}
+
+// One field per extra input the selected format's pipeline declares (see GET /formats).
+const FormatInputFields: React.FC<FormatInputFieldsProps> = ({ formInputs, inputValues, setInputValue, disabled }) => (
+  <div className="mt-5 flex flex-col gap-4">
+    {formInputs.map((input) => {
+      const id = `format-input-${input.name}`;
+      const label = `${inputLabel(input.name)}${input.required ? ' *' : ''}`;
+      const value = inputValues[input.name];
+      if (input.type === 'boolean') {
+        return (
+          <label key={input.name} htmlFor={id} className="flex items-center gap-3 px-4 text-sm text-[#d8d9e0]">
+            <input
+              id={id}
+              type="checkbox"
+              checked={value === true}
+              onChange={(e) => setInputValue(input.name, e.target.checked)}
+              disabled={disabled}
+              className="h-4 w-4 accent-[#4D8EFF]"
+            />
+            {label}
+          </label>
+        );
+      }
+      return (
+        <div key={input.name} className="flex flex-col gap-2">
+          <label htmlFor={id} className="px-4 text-xs font-bold uppercase tracking-[0.18em] text-[#a7aab8]">
+            {label}
+          </label>
+          <input
+            id={id}
+            type={input.type === 'number' ? 'number' : 'text'}
+            value={typeof value === 'string' ? value : ''}
+            onChange={(e) => setInputValue(input.name, e.target.value)}
+            placeholder={input.default == null ? '' : String(input.default)}
+            disabled={disabled}
+            className="rounded-full bg-white/[0.07] px-5 py-3 text-base text-white outline-none placeholder:text-[#777b87]"
+          />
+        </div>
+      );
+    })}
+  </div>
+);
+
 export interface CreateScreenProps extends HostsSliceProps {
   handleFormatChange: (format: PodcastFormat) => void;
+  formInputs: FormatInput[];
+  inputValues: FormatInputFormValues;
+  setInputValue: (name: string, value: string | boolean) => void;
   topic: string;
   setTopic: (v: string) => void;
   isSubmitting: boolean;
@@ -210,6 +263,7 @@ export interface CreateScreenProps extends HostsSliceProps {
 export const CreateScreen: React.FC<CreateScreenProps> = ({
   hosts, hostsLoading, selectedHostIds, hostPickerOpen, setHostPickerOpen, saveHostsPreference,
   formats, maxHosts, selectedFormat, handleFormatChange,
+  formInputs, inputValues, setInputValue,
   topic, setTopic,
   isSubmitting, handleSubmit, handleReset,
   effectiveStatus, podcastReady,
@@ -310,6 +364,14 @@ export const CreateScreen: React.FC<CreateScreenProps> = ({
               <FaWandMagicSparkles aria-hidden="true" />
             </button>
           </div>
+          {formInputs.length > 0 && (
+            <FormatInputFields
+              formInputs={formInputs}
+              inputValues={inputValues}
+              setInputValue={setInputValue}
+              disabled={isSubmitting}
+            />
+          )}
           <div>
             {effectiveStatus?.status === 'failed' && (
               <button

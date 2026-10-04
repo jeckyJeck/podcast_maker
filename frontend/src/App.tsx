@@ -33,6 +33,8 @@ function AppInner() {
     selectedFormat: hosts.selectedFormat,
     selectedHostIds: hosts.selectedHostIds,
     maxHosts: hosts.maxHosts,
+    formInputs: hosts.formInputs,
+    inputValues: hosts.inputValues,
     refreshCloudHistory,
   });
 
@@ -125,6 +127,9 @@ function AppInner() {
         setHostPickerOpen={hosts.setHostPickerOpen}
         saveHostsPreference={hosts.saveHostsPreference}
         handleFormatChange={hosts.handleFormatChange}
+        formInputs={hosts.formInputs}
+        inputValues={hosts.inputValues}
+        setInputValue={hosts.setInputValue}
         topic={session.topic}
         setTopic={session.setTopic}
         isSubmitting={session.isSubmitting}

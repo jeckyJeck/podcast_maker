@@ -65,9 +65,29 @@ def list_formats() -> list[dict[str, Any]]:
                 "name": data.get("name", data["id"]),
                 "description": data.get("description", ""),
                 "host_count": data.get("host_count"),
+                "inputs": user_inputs(data),
             }
         )
     return formats
+
+
+def user_inputs(pipeline_data: dict[str, Any]) -> list[dict[str, Any]]:
+    """The declared inputs a request may set (everything but the platform inputs), in YAML order,
+    so a client can build a form for them. `json` inputs are included; clients decide what to show."""
+    specs = []
+    for name, spec in (pipeline_data.get("inputs") or {}).items():
+        if name in PLATFORM_INPUTS:
+            continue
+        spec = spec or {}
+        specs.append(
+            {
+                "name": name,
+                "type": spec.get("type", "text"),
+                "required": bool(spec.get("required", False)) and "default" not in spec,
+                "default": spec.get("default"),
+            }
+        )
+    return specs
 
 
 def choose_format(host_count: int) -> str:
